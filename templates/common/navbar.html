@@ -1,0 +1,81 @@
+{% load static %}
+
+
+<div id="preloader">
+    <div id="ctn-preloader" class="ctn-preloader">
+        <div class="icon"><img src="{% static 'images/loader.gif' %}" alt="" class="m-auto d-block" width="64">
+        </div>
+    </div>
+</div>
+
+
+<header class="theme-main-menu menu-overlay menu-style-one sticky-menu">
+
+    <!-- /.alert-wrapper -->
+    <div class="inner-content gap-one">
+        <div class="top-header position-relative">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="logo order-lg-0">
+                    <a href="/" class="d-flex align-items-center">
+                        <img src="{% static 'images/logo/logo_01.svg' %}" alt="">
+                    </a>
+                </div>
+                <!-- logo -->
+                <div class="right-widget ms-auto ms-lg-0 me-3 me-lg-0 order-lg-3">
+                    <ul class="d-flex align-items-center style-none">
+                        {% if not request.user.is_authenticated %}
+                            <li>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="btn-one"><i
+                                        class="fa-regular fa-lock"></i> <span>Login / Register</span></a>
+                            </li>
+                        {% else %}
+                            <li class="d-none d-md-inline-block ms-3">
+                                <a href="dashboard/" class="btn-two" target=""><span>Dashboard</span>
+                                    <i class="fa-thin fa-arrow-up-right"></i></a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <nav class="navbar navbar-expand-lg p0 order-lg-2">
+                    <button class="navbar-toggler d-block d-lg-none" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav align-items-lg-center">
+                            <li class="d-block d-lg-none">
+                                <div class="logo"><a href="/" class="d-block"><img
+                                        src="{% static 'images/logo/logo_01.svg' %}" alt=""></a></div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'index' %}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'about-us' %}">About Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'faq' %}">FAQ</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                            </li>
+
+                            <li class="nav-item dashboard-menu">
+                                <a class="nav-link" href="/blog">Blog</a>
+                            </li>
+
+                            {#                                    <li class="d-md-none ps-2 pe-2 mt-20">#}
+                            {#                                        <a href="dashboard/add-property.html" class="btn-two w-100"#}
+                            {#                                           target="_blank"><span>Add Listing</span> <i#}
+                            {#                                                class="fa-thin fa-arrow-up-right"></i></a>#}
+                            {#                                    </li>#}
+
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div> <!--/.top-header-->
+    </div> <!-- /.inner-content -->
+</header>

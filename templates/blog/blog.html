@@ -1,0 +1,79 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% load blog_filters %}
+
+{% block content %}
+    <body>
+    <div class="main-page-wrapper">
+
+    {% include 'common/navbar.html' %}
+
+
+
+    <!-- 
+=============================================
+Inner Banner
+============================================== 
+-->
+    <div class="inner-banner-one inner-banner bg-pink text-center z-1 pt-160 lg-pt-130 pb-160 xl-pb-120 md-pb-80 position-relative">
+        <div class="container">
+            <h3 class="mb-35 xl-mb-20 pt-15">FixToFlip Blog</h3>
+            <ul class="theme-breadcrumb style-none d-inline-flex align-items-center justify-content-center position-relative z-1 bottom-line">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li>/</li>
+                <li>Blog</li>
+            </ul>
+        </div>
+        <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/assets/ils_07.svg' %}" alt="" class="lazy-img shapes w-100 illustration">
+    </div>
+    <!-- /.inner-banner-one -->
+
+
+
+
+    <!--
+=====================================================
+Blog Section Three
+=====================================================
+-->
+    <div class="blog-section-three mt-130 xl-mt-100 mb-150 xl-mb-100">
+    <div class="container">
+        <div class="blog-filter-nav">
+            <ul class="style-none d-flex justify-content-center flex-wrap isotop-menu-wrapper">
+                <li class="is-checked" data-filter="*">All</li>
+                {% for category in categories %}
+                    <li data-filter=".{{ category.name }}">{{ category.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="isotop-gallery-wrapper" class="grid-2column pt-60 lg-pt-40">
+            <div class="grid-sizer"></div>
+
+            {% for post in posts %}
+                <div class="isotop-item {{ post.category }}">
+                    <article class="blog-meta-one mb-70 lg-mb-40">
+                        <figure class="post-img border-25 position-relative m0" style="background-image: url({{ post.image.url }});">
+                            <a href="{% url 'blog_post_page' post.slug %}" class="stretched-link date tran3s">{{ post.created_at | date:"d M Y"}}</a>
+                        </figure>
+                        <div class="post-data">
+                            <div class="post-info"><a href="{% url 'blog_post_page' post.slug %}"></a> {{ post.content|readtime }}</div>
+                            <div class="d-flex justify-content-between align-items-sm-center flex-wrap">
+                                <a href="{% url 'blog_post_page' post.slug %}" class="blog-title"><h4>{{ post.title }}</h4></a>
+                                <a href="{% url 'blog_post_page' post.slug %}" class="read-btn rounded-circle d-flex align-items-center justify-content-center tran3s"><i class="bi bi-arrow-up-right"></i></a>
+                            </div>
+                        </div>
+                    </article>
+                    <!-- /.blog-meta-one -->
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    
+
+
+
+    {% include 'common/fancy-banner-two.html' %}
+
+
+{% endblock %}

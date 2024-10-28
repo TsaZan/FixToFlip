@@ -1,0 +1,50 @@
+from django.contrib.auth.views import LoginView
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, CreateView, DetailView, UpdateView
+
+from FixToFlip.accounts.models import BaseAccount
+from FixToFlip.dashboard.forms import PropertyAddForm
+from FixToFlip.properties.models import Property
+
+
+class DashboardView(TemplateView):
+    template_name = 'dashboard/dashboard-index.html'
+
+
+class DashboardPropertyView(TemplateView):
+    template_name = 'dashboard/properties-list.html'
+
+
+class DashboardTasksView(TemplateView):
+    template_name = 'dashboard/tasks.html'
+
+
+class PropertyDetailsView(DetailView):
+    model = Property
+    template_name = 'dashboard/property-details.html'
+
+
+class PropertyAddView(CreateView):
+    model = Property
+    form_class = PropertyAddForm
+    template_name = 'dashboard/add-property.html'
+    success_url = reverse_lazy('properties_main_page')
+
+
+class ProfileEditTemplate(TemplateView):
+    model = BaseAccount
+    template_name = 'dashboard/profile.html'
+    success_url = reverse_lazy('dashboard')
+    fields = '__all__'
+
+
+class DashboardCreditsView(TemplateView):
+    template_name = 'dashboard/credits-list.html'
+
+
+class CreditAddView(CreateView):
+    model = Property
+    form_class = PropertyAddForm
+    template_name = 'dashboard/add-credit.html'
+    success_url = reverse_lazy('credits_main_page')

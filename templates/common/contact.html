@@ -1,0 +1,148 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block content %}
+    <body>
+    <div class="main-page-wrapper">
+
+        {% include 'common/navbar.html' %}
+        <!--
+=============================================
+Inner Banner
+==============================================
+-->
+        <div class="inner-banner-one inner-banner bg-pink text-center z-1 pt-160 lg-pt-130 pb-160 xl-pb-120 md-pb-80 position-relative">
+            <div class="container">
+                <h3 class="mb-35 xl-mb-20 pt-15">Contact Us</h3>
+                <ul class="theme-breadcrumb style-none d-inline-flex align-items-center justify-content-center position-relative z-1 bottom-line">
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li>/</li>
+                    <li> Contact Us</li>
+                </ul>
+            </div>
+            <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/assets/ils_07.svg' %}" alt=""
+                 class="lazy-img shapes w-100 illustration">
+        </div>
+        <!-- /.inner-banner-one -->
+
+        <!--
+		=====================================================
+			Contact Us
+		=====================================================
+		-->
+        <div class="contact-us mt-130 xl-mt-100 pt-80 lg-pt-60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xxl-9 col-xl-8 col-lg-10 m-auto">
+                        <div class="title-one text-center wow fadeInUp">
+                            <h3>Questions? Feel Free to Reach Out Via Message.</h3>
+                        </div>
+                        <!-- /.title-one -->
+                    </div>
+                </div>
+            </div>
+            <div class="address-banner wow fadeInUp mt-60 lg-mt-40">
+                <div class="container">
+                    <div class="d-flex flex-wrap justify-content-center justify-content-lg-between">
+                        <div class="block position-relative z-1 mt-25">
+                            <div class="d-xl-flex align-items-center">
+                                <div class="icon rounded-circle d-flex align-items-center justify-content-center"><img
+                                        src="{% static 'images/lazy.svg' %}"
+                                        data-src="{% static 'images/icon/icon_39.svg' %}" alt="" class="lazy-img">
+                                </div>
+                                <div class="text">
+                                    <p class="fs-22">We’r always happy to help.</p>
+                                    <a href="#" class="tran3s">ask@homy.com</a>
+                                </div>
+                                <!-- /.text -->
+                            </div>
+                        </div>
+                        <!-- /.block -->
+                        <div class="block position-relative skew-line z-1 mt-25">
+                            <div class="d-xl-flex align-items-center">
+                                <div class="icon rounded-circle d-flex align-items-center justify-content-center"><img
+                                        src="{% static 'images/lazy.svg' %}"
+                                        data-src="{% static 'images/icon/icon_39.svg' %}" alt="" class="lazy-img">
+                                </div>
+                                <div class="text">
+                                    <p class="fs-22">Our hotline number</p>
+                                    <a href="#" class="tran3s">+757 699 4478,</a>
+                                    <a href="#" class="tran3s">&nbsp; +991 377 9731</a>
+                                </div>
+                                <!-- /.text -->
+                            </div>
+                        </div>
+                        <!-- /.block -->
+                        <div class="block position-relative z-1 mt-25">
+                            <div class="d-xl-flex align-items-center">
+                                <div class="icon rounded-circle d-flex align-items-center justify-content-center"><img
+                                        src="{% static 'images/lazy.svg' %}"
+                                        data-src="{% static 'images/icon/icon_39.svg' %}" alt="" class="lazy-img">
+                                </div>
+                                <div class="text">
+                                    <p class="fs-22">Live chat</p>
+                                    <a href="#" class="tran3s">www.homylivechat.com</a>
+                                </div>
+                                <!-- /.text -->
+                            </div>
+                        </div>
+                        <!-- /.block -->
+                    </div>
+                </div>
+            </div>
+            <!-- /.address-banner -->
+
+            <div class="bg-pink mt-150 xl-mt-120 md-mt-80">
+                <div class="row">
+                    <div class="col-xl-7 col-lg-6">
+                        <div class="form-style-one wow fadeInUp">
+                            <form action="inc/contact.php" id="contact-form" data-toggle="validator">
+                                <h3>Send Message</h3>
+                                <div class="messages"></div>
+                                <div class="row controls">
+                                    <div class="col-12">
+                                        <div class="input-group-meta form-group mb-30">
+                                            <label for="">Name*</label>
+                                            <input type="text" placeholder="Your Name*" name="name" required="required"
+                                                   data-error="Name is required.">
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="input-group-meta form-group mb-40">
+                                            <label for="">Email*</label>
+                                            <input type="email" placeholder="Email Address*" name="email"
+                                                   required="required" data-error="Valid email is required.">
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="input-group-meta form-group mb-35">
+                                        <textarea placeholder="Your message*" name="message" required="required"
+                                                  data-error="Please,leave us a message."></textarea>
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn-nine text-uppercase rounded-3 fw-normal w-100">Send Message
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div> <!-- /.form-style-one -->
+                    </div>
+                    <div class="col-xl-5 col-lg-6 d-flex order-lg-first justify-content-center align-items-center">
+                        <div class="contact-map-banner w-100">
+                            <div class="gmap_canvas h-100 w-100">
+                                <iframe class="gmap_iframe h-100 w-100" loading="lazy"
+                                        src="https://maps.google.com/maps?width=400&amp;height=300&amp;hl=en&amp;q=dhaka collage&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.contact-us -->
+    </div>
+
+{% endblock %}

@@ -1,0 +1,192 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% load blog_filters %}
+{% block content %}
+
+
+    <div class="main-page-wrapper">
+
+        {% include 'common/navbar.html' %}
+
+        <div class="inner-banner-one inner-banner bg-pink text-center z-1 pt-160 lg-pt-130 pb-160 xl-pb-120 md-pb-80 position-relative">
+            <div class="container">
+                <h3 class="mb-35 xl-mb-20 pt-15">{{ post.title }}</h3>
+                <ul class="theme-breadcrumb style-none d-inline-flex align-items-center justify-content-center position-relative z-1 bottom-line">
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li>/</li>
+                    <li><a href="{% url 'blog_main_page' %}">Blog</a></li>
+                </ul>
+            </div>
+            <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/assets/ils_07.svg' %}" alt=""
+                 class="lazy-img shapes w-100 illustration">
+        </div>
+        <!-- /.inner-banner-one -->
+        <!--
+=====================================================
+Blog Details
+=====================================================
+-->
+        <div class="blog-details border-top xl-mt-1 pt-100 xl-pt-80 mb-150 xl-mb-100">
+            <div class="container">
+                <div class="row gx-xl-5">
+                    <div class="col-lg-8">
+                    </div>
+                </div>
+                <div class="row gx-xl-5">
+                    <div class="col-lg-8">
+                        <article class="blog-post-meta">
+                            <figure class="post-img position-relative m0"
+                                    style="background-image: url({{ post.image.url }});">
+                                <div class="fw-500 date d-inline-block">{{ post.created_at | date:"d M Y" }}</div>
+                            </figure>
+                            <div class="post-data pt-50 md-pt-30">
+                                <p>{{ post.content | markdown | safe }}</p>
+                                <p>{{ post.content }}</p>
+                                {% if post.quote %}
+                                    <div class="quote-wrapper">
+                                        <div class="icon rounded-circle d-flex align-items-center justify-content-center m-auto">
+                                            <img src="{% static 'images/lazy.svg' %}"
+                                                 data-src="{% static 'images/icon/icon_67.svg' %}" alt=""
+                                                 class="lazy-img"></div>
+                                        <div class="row">
+                                            <div class="col-xxl-10 col-xl-11 col-lg-12 col-md-9 m-auto">
+                                                <h4>Quick solutions coupled with extraordinary nice performance—a
+                                                    recommendation that's great.</h4>
+                                            </div>
+                                        </div>
+                                        <h6>James Bond. <span>USA</span></h6>
+                                    </div>
+
+                                {% endif %}
+                            </div>
+                            <div class="bottom-widget d-sm-flex align-items-center justify-content-between">
+                                <ul class="d-flex align-items-center tags style-none pt-20">
+                                    <li>Tag:</li>
+                                    {% for keyword in keywords %}
+                                        <li><a href="/{{ keyword | add_dashes }}">{{ keyword }}</a></li>
+                                    {% endfor %}
+
+
+                                </ul>
+                                <ul class="d-flex share-icon align-items-center style-none pt-20">
+                                    <li>Share:</li>
+                                    <li><a href="#"><i class="fa-brands fa-whatsapp"></i></a></li>
+                                    <li><a href="#"><i class="fa-brands fa-x-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                                    <li><a href="#"><i class="fa-brands fa-viber"></i></a></li>
+                                </ul>
+                            </div>
+                        </article>
+                        <!-- /.blog-meta-three -->
+                        <div class="blog-comment-area">
+                            <h3 class="blog-inner-title pb-35">{{ post.comments.count }}
+                                {% if post.comments.count == 1 %}Comment
+                                {% else %}Comments{% endif %}</h3>
+                            {% for comment in post.comments.all %}
+                                <div class="comment position-relative d-flex">
+                                    <img src="{% static 'images/lazy.svg' %}"
+                                         data-src="{% static 'images/blog/avatar_01.jpg' %}" alt=""
+                                         class="lazy-img user-avatar rounded-circle">
+                                    <div class="comment-text">
+                                        <div class="name fw-500">{{ comment.author }}</div>
+                                        <div class="date">{{ comment.created_at }}</div>
+                                        <p>{{ comment.content }} </p>
+                                    </div> <!-- /.comment-text -->
+                                </div> <!-- /.comment -->
+                            {% endfor %}
+                        </div>
+                        <!-- /.blog-comment-area -->
+                        <div class="blog-comment-form">
+                            <h3 class="blog-inner-title">Leave A Comment</h3>
+                            {% if not request.user.is_authenticated %}
+                                <p><a href="#" data-bs-toggle="modal" data-bs-target="#loginModal"
+                                      class="text-decoration-underline fw-500">Sign in</a> Sign-in to post your comment or
+                                    signup if you don’t have any account.</p>
+                                </div>
+                                <div>
+                            {% else %}
+                                <form method="post" class="mt-30">
+{#                                    <div class="input-wrapper mb-30">#}
+{#                                        <label>Name*</label>#}
+{#                                        <input type="text" placeholder="Rashed Kabir">#}
+{#                                    </div> <!-- /.input-wrapper -->#}
+{#                                    <div class="input-wrapper mb-40">#}
+{#                                        <label>Email*</label>#}
+{#                                        <input type="email" placeholder="rshdkabir@gmail.com">#}
+{#                                    </div> <!-- /.input-wrapper -->#}
+{#                                    <div class="input-wrapper mb-30">#}
+{#                                        <textarea placeholder="Your Comment"></textarea>#}
+{#                                    </div> <!-- /.input-wrapper -->#}
+                                    {{ form }}
+                                    {% csrf_token %}
+                                    <button class="btn-five rounded-0">Post Comment</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                        <!-- /.blog-comment-form -->
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="blog-sidebar dot-bg ms-xxl-4 md-mt-60">
+                            <div class="search-form bg-white mb-30">
+                                <form action="#" class="position-relative">
+                                    <input type="text" placeholder="Search...">
+                                    <button><i class="fa-sharp fa-regular fa-magnifying-glass"></i></button>
+                                </form>
+                            </div>
+                            <!-- /.search-form -->
+
+                            <div class="categories bg-white bg-wrapper mb-30">
+                                <h5 class="mb-20">Category</h5>
+                                <ul class="style-none">
+                                    {% for category in categories %}
+                                        <li><a href="#">{{ category.name }} ({{ category.posts.count }})</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <!-- /.categories -->
+
+                            <div class="recent-news bg-white bg-wrapper mb-30">
+                                <h5 class="mb-20">Recent Posts</h5>
+                                {% for post in posts %}
+
+                                    <div class="news-block d-flex align-items-center pb-25">
+                                        <div><img src="{% static 'images/lazy.svg' %}" data-src="{{ post.image.url }}"
+                                                  alt=""
+                                                  class="lazy-img"></div>
+                                        <div class="post ps-4">
+                                            <h4 class="mb-5"><a href="{% url 'blog_post_page' post.slug %}"
+                                                                class="title tran3s">{{ post.title }}</a></h4>
+                                            <div class="date">{{ post.created_at | date:"d M Y" }}</div>
+                                        </div>
+                                    </div>
+
+                                {% endfor %}
+
+                                <!-- /.recent-news -->
+                                <div class="keyword bg-white bg-wrapper">
+                                    <h5 class="mb-20">Keywords</h5>
+                                    <ul class="style-none d-flex flex-wrap">
+                                        <li><a href="#">Ideas</a></li>
+                                        <li><a href="#">Education</a></li>
+                                        <li><a href="#">Design</a></li>
+                                        <li><a href="#">Development</a></li>
+                                        <li><a href="#">Branding</a></li>
+                                    </ul>
+                                </div>
+                                <!-- /.keyword -->
+                            </div>
+                            <!-- /.theme-sidebar-one -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.blog-details -->
+            {% include 'common/fancy-banner-two.html' %}
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.page-wrapper -->
+
+
+
+{% endblock %}

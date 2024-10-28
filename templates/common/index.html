@@ -1,0 +1,318 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block content %}
+    <body>
+    <div class="main-page-wrapper">
+
+        {% include 'common/navbar.html' %}
+
+
+        <!-- 
+=============================================
+Section one
+============================================== 
+-->
+        <div class="hero-banner-one bg-pink z-1 pt-225 xl-pt-200 pb-250 xl-pb-150 lg-pb-100 position-relative">
+            <div class="container position-relative">
+                <div class="row">
+                    <div class="col-xxl-10 col-xl-9 col-lg-10 col-md-10 m-auto">
+                        <h1 class="hero-heading text-center wow fadeInUp">Get the ideal home for your <span
+                                class="d-inline-block position-relative">family <img
+                                src="{% static 'images/lazy.svg' %}"
+                                data-src="{% static 'images/shape/shape_01.svg' %}"
+                                alt="" class="lazy-img"></span>
+                        </h1>
+                        <p class="fs-24 color-dark text-center pt-35 pb-35 wow fadeInUp" data-wow-delay="0.1s">We’ve
+                            more than 745,000 apartments, place & plot.</p>
+                    </div>
+                </div>
+            </div>
+            <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/assets/ils_01.svg' %}" alt=""
+                 class="lazy-img shapes w-100 illustration">
+        </div>
+        <!-- /.hero-banner-one -->
+
+
+        <!-- 
+=============================================
+Feedback Section
+============================================== 
+-->
+        <div class="feedback-section-one position-relative z-1 pt-70 md-pt-50 pb-80 md-pb-60">
+            <div class="main-content m-auto">
+                <div class="feedback-slider-one position-static">
+                    <div class="item">
+                        <div class="feedback-block-one text-center">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <img src="{% static 'images/media/img_01.jpg' %}" alt=""
+                                         class="rounded-circle m-auto avatar">
+                                    <h6 class="fs-20 m0 pt-10">Jonathan Harry</h6>
+                                    <span class="fs-16">Milan, Itlay</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <blockquote>Efficient, knowledgeable, & made our home search a smooth experience.
+                                        Highly recommended agency!
+                                    </blockquote>
+                                </div>
+                                <div class="col-md-3">
+                                    <img src="{% static 'images/lazy.svg' %}"
+                                         data-src="{% static 'images/assets/rating_01.png' %}" alt=""
+                                         class="lazy-img m-auto">
+                                    <p class="text-center m0 pt-10"><span class="fw-500 color-dark">13k rating</span>
+                                        (4.7 Rating)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.feedback-block-one -->
+                    </div>
+                    <div class="item">
+                        <div class="feedback-block-one text-center">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <img src="{% static 'images/media/img_02.jpg' %}" alt=""
+                                         class="rounded-circle m-auto avatar">
+                                    <h6 class="fs-20 m0 pt-10">Sofia Rena</h6>
+                                    <span class="fs-16">New York, USA</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <blockquote>People who are sentinels are definitely the working very hard now, so
+                                        that they can enjoy the fruits.
+                                    </blockquote>
+                                </div>
+                                <div class="col-md-3">
+                                    <img src="{% static 'images/lazy.svg' %}"
+                                         data-src="{% static 'images/assets/rating_01.png' %}" alt=""
+                                         class="lazy-img m-auto">
+                                    <p class="text-center m0 pt-10"><span class="fw-500 color-dark">10k rating</span>
+                                        (4.5 Rating)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.feedback-block-one -->
+                    </div>
+                    <div class="item">
+                        <div class="feedback-block-one text-center">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <img src="{% static 'images/media/img_03.jpg' %}" alt=""
+                                         class="rounded-circle m-auto avatar">
+                                    <h6 class="fs-20 m0 pt-10">Rashed Kabir</h6>
+                                    <span class="fs-16">Dhaka, BD</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <blockquote>They are very strict about themselves and their work, and do not have a
+                                        carefree attitude to anything in life.
+                                    </blockquote>
+                                </div>
+                                <div class="col-md-3">
+                                    <img src="{% static 'images/lazy.svg' %}"
+                                         data-src="{% static 'images/assets/rating_01.png' %}" alt=""
+                                         class="lazy-img m-auto">
+                                    <p class="text-center m0 pt-10"><span class="fw-500 color-dark">11k rating</span>
+                                        (4.8 Rating)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.feedback-block-one -->
+                    </div>
+                </div>
+                <div id="advantages"></div>
+                <!-- /.feedback-slider-one -->
+            </div>
+        </div>
+        <!-- /.feedback-section-one -->
+
+
+        <!--
+=====================================================
+BLock Feature One - Advantages block
+=====================================================
+-->
+        <div class="block-feature-one mt-150 xl-mt-120">
+            <div class="container">
+                <div class="title-one text-center mb-50 xl-mb-30 lg-mb-20 wow fadeInUp">
+                    <h3>Unlock Homy's <span>advantages <img src="{% static 'images/lazy.svg' %}"
+                                                            data-src="{% static 'images/shape/title_shape_01.svg' %}"
+                                                            alt=""
+                                                            class="lazy-img"></span></h3>
+                    <p class="fs-24">Your trusted real estate partner in every transaction.</p>
+                </div>
+                <!-- /.title-one -->
+
+                <div class="row gx-xl-5">
+                    <div class="col-md-4">
+                        <div class="card-style-one text-center wow fadeInUp mt-40">
+                            <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/icon/icon_01.svg' %}"
+                                 alt=""
+                                 class="lazy-img m-auto icon">
+                            <div class="fs-16 text-uppercase fw-500 fs-text mt-35 md-mt-30 mb-20">Buy a home</div>
+                            <p class="fs-24 ps-xxl-4 pe-xxl-4">Explore homy’s 2 million+ homes and uncover your ideal
+                                living space.</p>
+                        </div>
+                        <!-- /.card-style-one -->
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card-style-one text-center wow fadeInUp mt-40" data-wow-delay="0.1s">
+                            <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/icon/icon_02.svg' %}"
+                                 alt=""
+                                 class="lazy-img m-auto icon">
+                            <div class="fs-16 text-uppercase fw-500 fs-text mt-35 md-mt-30 mb-20">Rent a home</div>
+                            <p class="fs-24 ps-xxl-3 pe-xxl-3">Discover a rental you'll love on homy, thanks to 35+
+                                filters and tailored keywords.</p>
+                        </div>
+                        <!-- /.card-style-one -->
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card-style-one text-center wow fadeInUp mt-40" data-wow-delay="0.2s">
+                            <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/icon/icon_03.svg' %}"
+                                 alt=""
+                                 class="lazy-img m-auto icon">
+                            <div class="fs-16 text-uppercase fw-500 fs-text mt-35 md-mt-30 mb-20">Sell property</div>
+                            <p class="fs-24 ps-xxl-4 pe-xxl-4">List, sell, thrive – with our top-notch real estate
+                                agency. It’s super easy & fun.</p>
+                        </div>
+                        <!-- /.card-style-one -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.block-feature-one -->
+
+        <!--
+=====================================================
+We are here to help you - BLock
+=====================================================
+-->
+        <div class="block-feature-five position-relative z-1 bg-pink pt-100 lg-pt-80 pb-130 xl-pb-100 lg-pb-80 mt-225 xl-mt-200 lg-mt-150">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-8 m-auto">
+                        <div class="title-one text-center mb-35 lg-mb-20">
+                            <h3>We’re here to help <br> you get your <span>dream home<img
+                                    src="{% static 'images/lazy.svg' %}"
+                                    data-src="{% static 'images/shape/title_shape_07.svg' %}"
+                                    alt="" class="lazy-img"></span>
+                            </h3>
+                            <p class="fs-24 color-dark">It’s easy to start with us with these simple steps</p>
+                        </div>
+                        <!-- /.title-one -->
+                    </div>
+                </div>
+                <div class="row justify-content-between">
+                    <div class="col-xxl-11 m-auto">
+                        <div class="row gx-xl-5 justify-content-center">
+                            <div class="col-lg-4 col-sm-6">
+                                <div class="card-style-one text-center wow fadeInUp mt-40">
+                                    <img src="{% static 'images/lazy.svg' %}"
+                                         data-src="{% static 'images/icon/icon_07.svg' %}" alt=""
+                                         class="lazy-img m-auto icon">
+                                    <h5 class="mt-50 lg-mt-30 mb-15">Create Account</h5>
+                                    <p class="pe-xxl-4 ps-xxl-4">It’s very easy to open an account and start your
+                                        journey.</p>
+                                </div>
+                                <!-- /.card-style-one -->
+                            </div>
+                            <div class="col-lg-4 col-sm-6">
+                                <div class="card-style-one text-center wow fadeInUp mt-40 arrow position-relative"
+                                     data-wow-delay="0.1s">
+                                    <img src="{% static 'images/lazy.svg' %}"
+                                         data-src="{% static 'images/icon/icon_08.svg' %}" alt=""
+                                         class="lazy-img m-auto icon">
+                                    <h5 class="mt-50 lg-mt-30 mb-15">Find Home</h5>
+                                    <p class="pe-xxl-4 ps-xxl-4">Complete your profile with all the info to get
+                                        attention of client.</p>
+                                </div>
+                                <!-- /.card-style-one -->
+                            </div>
+                            <div class="col-lg-4 col-sm-6">
+                                <div class="card-style-one text-center wow fadeInUp mt-40" data-wow-delay="0.2s">
+                                    <img src="{% static 'images/lazy.svg' %}"
+                                         data-src="{% static 'images/icon/icon_09.svg' %}" alt=""
+                                         class="lazy-img m-auto icon">
+                                    <h5 class="mt-50 lg-mt-30 mb-15">Quick Process</h5>
+                                    <p class="pe-xxl-4 ps-xxl-4">Apply & get your preferable jobs with all the
+                                        requirements and get it.</p>
+                                </div>
+                                <!-- /.card-style-one -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/shape/shape_07.svg' %}" alt=""
+                 class="lazy-img shapes shape_01">
+            <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/shape/shape_08.svg' %}" alt=""
+                 class="lazy-img shapes shape_02">
+        </div>
+        <!-- /.block-feature-five -->
+
+
+        <!--
+=====================================================
+Fancy Banner Two
+=====================================================
+-->
+        <div class="fancy-banner-two position-relative z-1 pt-90 lg-pt-50 pb-90 lg-pb-50">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="title-one text-center text-lg-start md-mb-40 pe-xl-5">
+                            <h3 class="text-white m0">Start your <span>Journey<img src="{% static 'images/lazy.svg' %}"
+                                                                                   data-src="{% static 'images/shape/title_shape_06.svg' %}"
+                                                                                   alt="" class="lazy-img"></span> As a
+                                Retailer.</h3>
+                        </div>
+                        <!-- /.title-one -->
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-wrapper me-auto ms-auto me-lg-0">
+                            <form action="#">
+                                <input type="email" placeholder="Email address">
+                                <button>Get Started</button>
+                            </form>
+                            <div class="fs-16 mt-10 text-white">Already a Agent? <a href="#" data-bs-toggle="modal"
+                                                                                    data-bs-target="#loginModal">Sign
+                                in.</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.fancy-banner-two -->
+
+
+        <!--
+=====================================================
+Fancy Banner Three
+=====================================================
+-->
+        <div class="fancy-banner-three position-relative text-center z-1 
+        pt-200 xl-pt-150 lg-pt-100 pb-250 xl-pb-200 lg-pb-120">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-7 col-md-8 m-auto">
+                        <div class="title-one mb-45 md-mb-30">
+                            <h2>Any Inquiry? <span>Feel free<img src="{% static 'images/lazy.svg' %}"
+                                                                 data-src="{% static 'images/shape/title_shape_08.svg' %}"
+                                                                 alt=""
+                                                                 class="lazy-img"></span> To contact Us.</h2>
+                        </div>
+                        <!-- /.title-one -->
+                        <a href="{% url 'contact' %}" class="btn-five text-uppercase">SEND MESSAGE</a>
+                    </div>
+                </div>
+            </div>
+            <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/assets/ils_02.svg' %}" alt=""
+                 class="lazy-img shapes w-100 illustration">
+        </div>
+        <!-- /.fancy-banner-three -->
+
+
+        <button class="scroll-top">
+            <i class="bi bi-arrow-up-short"></i>
+        </button>
+
+    </div>
+{% endblock %}

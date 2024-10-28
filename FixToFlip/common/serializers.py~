@@ -1,0 +1,8 @@
+from rest_framework import serializers
+from FixToFlip.properties.models import Property
+
+
+class BaseViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Property
+        fields = '__all__'

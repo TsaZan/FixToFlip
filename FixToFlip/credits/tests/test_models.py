@@ -1,0 +1,96 @@
+from django.core.exceptions import ValidationError
+from django.test import TestCase
+from FixToFlip.credits.models import Credit
+from djmoney.money import Money
+
+
+class ValidCreditTest(TestCase):
+    def setUp(self):
+        self.credit = Credit.objects.create(
+            bank_name="Test Bank",
+            credit_amount=Money(5000, 'EUR'),
+            amounts_paid=Money(2000, 'EUR'),
+            credit_interest=5.0,
+            credit_description="Test Credit",
+            credit_date="2024-01-01",
+            credit_term="2025-01-01",
+            credit_type="B"
+        )
+
+    def test_credit_creation(self):
+        self.assertEqual(self.credit.bank_name, "Test Bank")
+        self.assertEqual(self.credit.credit_amount.amount, 5000)
+        self.assertEqual(self.credit.amounts_paid.amount, 2000)
+        self.assertEqual(self.credit.credit_interest, 5.0)
+        self.assertEqual(self.credit.credit_description, "Test Credit")
+        self.assertEqual(self.credit.credit_date.format(), "2024-01-01")
+        self.assertEqual(self.credit.credit_term.format(), "2025-01-01")
+        self.assertEqual(self.credit.credit_type, "B")
+
+
+class InvalidCreditTypeTest(TestCase):
+    def setUp(self):
+        self.credit = Credit.objects.create(
+            bank_name="Test Bank",
+            credit_amount=Money(5000, 'EUR'),
+            amounts_paid=Money(2000, 'EUR'),
+            credit_interest=5.0,
+            credit_description="Test Credit",
+            credit_date="2024-01-01",
+            credit_term="2025-01-01",
+            credit_type="C"
+        )
+
+    def test_invalid_credit_type(self):
+        self.assertRaises(ValidationError, self.credit.full_clean)
+
+
+class InvalidCreditAmountTest(TestCase):
+    def setUp(self):
+        self.credit = Credit.objects.create(
+            bank_name="Test Bank",
+            credit_amount=Money(-5000, 'EUR'),
+            amounts_paid=Money(2000, 'EUR'),
+            credit_interest=5.0,
+            credit_description="Test Credit",
+            credit_date="2024-01-01",
+            credit_term="2025-01-01",
+            credit_type="B"
+        )
+
+    def test_invalid_amount(self):
+        self.assertRaises(ValidationError, self.credit.full_clean)
+
+
+class InvalidAmountPaidTest(TestCase):
+    def setUp(self):
+        self.credit = Credit.objects.create(
+            bank_name="Test Bank",
+            credit_amount=Money(5000, 'EUR'),
+            amounts_paid=Money(-2000, 'EUR'),
+            credit_interest=5.0,
+            credit_description="Test Credit",
+            credit_date="2024-01-01",
+            credit_term="2025-01-01",
+            credit_type="B"
+        )
+
+    def test_invalid_amount(self):
+        self.assertRaises(ValidationError, self.credit.full_clean)
+
+
+class InvalidInterestTest(TestCase):
+    def setUp(self):
+        self.credit = Credit.objects.create(
+            bank_name="Test Bank",
+            credit_amount=Money(5000, 'EUR'),
+            amounts_paid=Money(2000, 'EUR'),
+            credit_interest=-5.0,
+            credit_description="Test Credit",
+            credit_date="2024-01-01",
+            credit_term="2025-01-01",
+            credit_type="B"
+        )
+
+    def test_invalid_amount(self):
+        self.assertRaises(ValidationError, self.credit.full_clean)

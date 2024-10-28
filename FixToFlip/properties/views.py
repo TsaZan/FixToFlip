@@ -1,0 +1,140 @@
+from django.shortcuts import redirect, render, get_object_or_404
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from djmoney.money import Money
+from djmoney.contrib.exchange.models import convert_money
+from rest_framework import generics, response, status
+from django.shortcuts import render
+
+from FixToFlip.properties.forms import PropertyAddForm, PropertyExpenseForm
+from FixToFlip.properties.models import Property, PropertyExpense
+from FixToFlip.properties.serializers import PropertySerializer, PropertyExpenseSerializer
+
+
+def properties_main_page(request):
+    context = {'properties': Property.objects.all()}
+    return render(request, 'properties/properties_main_page.html', context)
+
+
+def details_property(request, pk):
+    properties = Property.objects.filter(pk=pk)
+    expenses = PropertyExpense.objects.filter(property_id=pk)
+
+    total_expenses_eur = Money(0, 'EUR')
+
+    for expense in expenses:
+        try:
+            total_expenses_eur += convert_money(expense.utilities, 'EUR')
+            total_expenses_eur += convert_money(expense.notary_taxes, 'EUR')
+            total_expenses_eur += convert_money(expense.profit_tax, 'EUR')
+            total_expenses_eur += convert_money(expense.municipality_taxes, 'EUR')
+            total_expenses_eur += convert_money(expense.advertising, 'EUR')
+            total_expenses_eur += convert_money(expense.administrative_fees, 'EUR')
+            total_expenses_eur += convert_money(expense.insurance, 'EUR')
+        except Exception as e:
+            print(f"Conversion error: {e}")
+
+    # total_expenses_sum = 0
+    # for expense in expenses.values():
+    #     for key, value in expense.items():
+    #         if isinstance(value, Decimal):
+    #             total_expenses_sum += value
+
+    context = {'property': properties,
+               'expenses': expenses,
+               'pk': pk,
+               'total_expenses_eur': total_expenses_eur}
+
+    return render(request, 'properties/details_property.html', context)
+
+
+def add_property(request):
+    properties = Property.objects.all()
+    form = PropertyAddForm(request.POST or None)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('add_property')
+
+    context = {'form': form,
+               'properties': properties,
+               }
+
+    return render(request, 'properties/add_property.html', context)
+
+
+def edit_property(request, pk):
+    pass
+
+
+def delete_property(request, pk):
+    pass
+
+
+def add_property_expenses(request, pk):
+    form = PropertyExpenseForm(request.POST or None)
+    property_pk = Property.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            expense = form.save(commit=False)
+            expense.property = property_pk
+            form.save()
+            return redirect('details_property', pk=pk)
+
+    context = {
+        'form': form
+    }
+    return render(request, 'properties/add_property_expenses.html', context)
+
+
+def property_expenses_view(request, pk):
+    expenses = PropertyExpense.objects.filter(property_id=pk)
+
+    total_expenses_eur = Money(0, 'EUR')
+
+    for expense in expenses:
+        try:
+            total_expenses_eur += convert_money(expense.utilities, 'EUR')
+            total_expenses_eur += convert_money(expense.notary_taxes, 'EUR')
+            total_expenses_eur += convert_money(expense.profit_tax, 'EUR')
+            total_expenses_eur += convert_money(expense.municipality_taxes, 'EUR')
+            total_expenses_eur += convert_money(expense.advertising, 'EUR')
+            total_expenses_eur += convert_money(expense.administrative_fees, 'EUR')
+            total_expenses_eur += convert_money(expense.insurance, 'EUR')
+        except Exception as e:
+            print(f"Conversion error: {e}")
+
+    context = {
+        'expenses': expenses,
+        'total_expenses_eur': total_expenses_eur,
+    }
+    return render(request, 'properties/expenses.html', context)
+
+
+''' React Views '''
+
+
+class PropertyListView(generics.ListAPIView):
+    queryset = Property.objects.all()
+    serializer_class = PropertySerializer
+
+
+class PropertyDetailsView(generics.ListAPIView):
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        return Property.objects.filter(pk=pk)
+
+    serializer_class = PropertySerializer
+
+
+class PropertyExpensesView(generics.ListAPIView):
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        return PropertyExpense.objects.filter(property_id=pk)
+
+    serializer_class = PropertyExpenseSerializer
+
+
+

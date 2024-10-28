@@ -1,0 +1,166 @@
+import React, { useState, useEffect } from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { Calculator, DollarSign, TrendingUp } from 'lucide-react';
+
+const ROICalculator = () => {
+const [inputs, setInputs] = useState({
+purchasePrice: 0,
+repairCosts: 0,
+holdingCosts: 0,
+sellingPrice: 0,
+closingCosts: 0,
+});
+
+const [results, setResults] = useState({
+totalInvestment: 0,
+totalProfit: 0,
+roi: 0,
+cashOnCash: 0
+});
+
+const [chartData, setChartData] = useState([]);
+
+const calculateROI = () => {
+const totalInvestment = Number(inputs.purchasePrice) +
+Number(inputs.repairCosts) +
+Number(inputs.holdingCosts);
+    
+    const totalProfit = Number(inputs.sellingPrice) - 
+                       totalInvestment - 
+                       Number(inputs.closingCosts);
+    
+    const roi = (totalProfit / totalInvestment) * 100;
+
+    setResults({
+      totalInvestment,
+      totalProfit,
+      roi: roi.toFixed(2),
+      cashOnCash: (roi / 12).toFixed(2)
+    });
+
+    // Update chart data
+    setChartData([
+      { name: 'Purchase', value: inputs.purchasePrice },
+      { name: 'After Repairs', value: Number(inputs.purchasePrice) + Number(inputs.repairCosts) },
+      { name: 'Final Value', value: inputs.sellingPrice }
+    ]);
+  };
+
+  useEffect(() => {
+    calculateROI();
+  }, [inputs]);
+
+  return (
+    <div className="p-6 bg-white rounded-lg shadow-lg">
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold mb-4 flex items-center">
+          <Calculator className="mr-2" />
+          ROI Calculator
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">Purchase Price</label>
+              <div className="relative">
+                <span className="absolute left-3 top-2 text-gray-500"><DollarSign size={16} /></span>
+                <input
+                  type="number"
+                  className="w-full pl-8 pr-4 py-2 border rounded-lg"
+                  value={inputs.purchasePrice}
+                  onChange={(e) => setInputs({...inputs, purchasePrice: e.target.value})}
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium mb-1">Repair Costs</label>
+              <div className="relative">
+                <span className="absolute left-3 top-2 text-gray-500"><DollarSign size={16} /></span>
+                <input
+                  type="number"
+                  className="w-full pl-8 pr-4 py-2 border rounded-lg"
+                  value={inputs.repairCosts}
+                  onChange={(e) => setInputs({...inputs, repairCosts: e.target.value})}
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium mb-1">Holding Costs</label>
+              <div className="relative">
+                <span className="absolute left-3 top-2 text-gray-500"><DollarSign size={16} /></span>
+                <input
+                  type="number"
+                  className="w-full pl-8 pr-4 py-2 border rounded-lg"
+                  value={inputs.holdingCosts}
+                  onChange={(e) => setInputs({...inputs, holdingCosts: e.target.value})}
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium mb-1">Expected Selling Price</label>
+              <div className="relative">
+                <span className="absolute left-3 top-2 text-gray-500"><DollarSign size={16} /></span>
+                <input
+                  type="number"
+                  className="w-full pl-8 pr-4 py-2 border rounded-lg"
+                  value={inputs.sellingPrice}
+                  onChange={(e) => setInputs({...inputs, sellingPrice: e.target.value})}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <TrendingUp className="mr-2" />
+              Results
+            </h3>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Total Investment:</span>
+                <span className="font-semibold">${results.totalInvestment.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Total Profit:</span>
+                <span className={`font-semibold ${results.totalProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  ${results.totalProfit.toLocaleString()}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">ROI:</span>
+                <span className={`font-semibold ${results.roi >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {results.roi}%
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Monthly ROI:</span>
+                <span className={`font-semibold ${results.cashOnCash >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  {results.cashOnCash}%
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6">
+        <h3 className="text-lg font-semibold mb-4">Investment Progress</h3>
+        <div className="w-full h-64">
+          <LineChart width={600} height={250} data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="value" stroke="#2563eb" />
+          </LineChart>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ROICalculator;
