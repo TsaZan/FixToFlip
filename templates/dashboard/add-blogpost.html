@@ -1,0 +1,32 @@
+{% extends 'dashboard/dashboard-base.html' %}
+{% load static %}
+{% block content %}
+
+    <!-- 
+=============================================
+Dashboard Body
+============================================== 
+-->
+
+    <h2 class="main-title d-block d-lg-none">Add New Blog Post</h2>
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="bg-white card-box border-20">
+            <h4 class="dash-title-three">Add New Blog Post</h4>
+
+            <div class="dash-input-wrapper mb-30">
+                {{ form.as_div }}
+                {% csrf_token %}
+
+            </div>
+        </div>
+
+        <!-- /.card-box -->
+        <div class="button-group d-inline-flex align-items-center mt-30">
+            <button type="submit" class="dash-btn-two tran3s me-3">Submit Post</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><a href="javascript:window.history.back();">Cancel</a></button>
+        </div>
+    </form>
+    <!-- /.dashboard-body -->
+
+
+{% endblock %}

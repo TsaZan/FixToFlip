@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from allauth.account.forms import LoginForm
 
 
 # Create your views here.

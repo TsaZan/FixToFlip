@@ -1,4 +1,5 @@
 from cloudinary.models import CloudinaryField
+from django.conf import settings
 from django.core.validators import MinLengthValidator
 from django.db import models
 from django.urls import reverse
@@ -40,7 +41,7 @@ class BlogPost(models.Model):
     content = models.TextField()
 
     author = models.ForeignKey(
-        'accounts.BaseAccount',
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='posts',
     )
@@ -89,7 +90,7 @@ class Comment(models.Model):
     )
 
     author = models.ForeignKey(
-        to="accounts.BaseAccount",
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
 

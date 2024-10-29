@@ -1,4 +1,6 @@
 import requests
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, DetailView, CreateView
@@ -6,7 +8,7 @@ from rest_framework import generics
 from django.views.generic import View
 
 from FixToFlip.accounts.models import BaseAccount
-from FixToFlip.blog.forms import BlogPostForm
+from FixToFlip.blog.forms import BlogCommentForm
 from FixToFlip.blog.models import BlogPost, Category
 from FixToFlip.blog.serializers import BlogPostSerializer, CategorySerializer
 
@@ -59,15 +61,15 @@ class BlogPostView(View):
             'posts': BlogPost.objects.all()[:5],
             'categories': Category.objects.all(),
             'keywords': post.keywords.split(',') if post else [],
-            'form': BlogPostForm(),
+            'form': BlogCommentForm(),
         }
         return render(request, self.template_name, context)
 
     def post(self, request, slug=None):
-        form = BlogPostForm(request.POST)
+        form = BlogCommentForm(request.POST)
         if form.is_valid():
             new_post = form.save(commit=False)
-            new_post.author = BaseAccount.objects.get(username='Tsanko')  # TODO: get current user
+            new_post.author = request.user
             if slug:
                 new_post.post = get_object_or_404(BlogPost, slug=slug)
             new_post.save()

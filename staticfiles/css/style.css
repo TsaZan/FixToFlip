@@ -14110,3 +14110,14 @@ html.with-fancybox body.hide-scrollbar {
   display: none;
 }/*# sourceMappingURL=style.css.map */
 
+.tag-btn {
+    border: 1px solid #FF3F25;
+    background-color: #FF6725;
+    color: white !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease-in-out 0s;
+    border-radius: 5px;
+    padding: 5px 10px;
+    display: inline-block;
+}
+

@@ -46,8 +46,8 @@ AUTHENTICATION_APPS = [
     'allauth.socialaccount.providers.facebook',
 ]
 
-LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+ACCOUNT_LOGOUT_ON_GET = True
 
 THIRD_PARTY_APPS = [
     'djmoney',
