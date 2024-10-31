@@ -1,7 +1,7 @@
 {% extends 'dashboard/dashboard-base.html' %}
 {% load static %}
 {% block content %}
-
+{% load account %}
 <!-- 
 =============================================
 Dashboard Body
@@ -34,7 +34,7 @@ Dashboard Body
                 <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Date</th>
-                    <th scope="col">View</th>
+                    <th scope="col">Credited Amount</th>
                     <th scope="col">Status</th>
                     <th scope="col">Expenses</th>
                     <th scope="col">Action</th>
@@ -42,101 +42,57 @@ Dashboard Body
                 </tr>
                 </thead>
                 <tbody class="border-0">
-                <tr>
-                    <td>
-                        <div class="d-lg-flex align-items-center position-relative">
-                            <img src="{% static 'images/img_01.jpg' %}" alt="" class="p-img">
-                            <div class="ps-lg-4 md-pt-10">
-                                <a href="#"
-                                   class="property-name tran3s color-dark fw-500 fs-20 stretched-link">Galaxy
-                                    Flat</a>
-                                <div class="address">Mirpur 10, dhaka, BD</div>
-                                <strong class="price color-dark">$32,800</strong>
+                {% for property in properties %}
+                    <tr>
+                        <td>
+                            <div class="d-lg-flex align-items-center position-relative">
+                                <img src="{% static 'images/img_01.jpg' %}" alt="" class="p-img">
+                                <div class="ps-lg-4 md-pt-10">
+                                    <a href="{% url 'property_details' pk=property.pk %}"
+                                       class="property-name tran3s color-dark fw-500 fs-20 stretched-link">{{ property.property_name }}</a>
+                                    <div class="address">{{ property.country }}, {{ property.town }}, {{ property.address }}</div>
+                                    <strong class="price">{{ property.property_financial_information.values_list.0.1 }} {{ property.property_financial_information.values_list.0.2 }}</strong>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td>13 Jan, 2023</td>
-                    <td>1210</td>
-                    <td>
-                        <div class="property-status">Active</div>
-                    </td>
-                    <td>
-                        <div class="price color-dark fw-500">$1000</div>
-                    </td>
+                        </td>
+                        <td>{{ property.bought_date | date:"d-m-Y" }}</td>
+                        <td><strong class="price">{{ property.property_financial_information.values_list.0.7 }} {{ property.property_financial_information.values_list.0.8 }}</strong></td>
+                        <td>
+                            <div class="property-status">Active</div>
+                        </td>
+                        <td>
+                            <div class="price">{{ property.property_financial_information.values_list.0.3 }} {{ property.property_financial_information.values_list.0.4 }}</div>
+                        </td>
 
-                    <td>
-                        <div class="action-dots float-end">
-                            <button class="action-btn dropdown-toggle" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                <span></span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="{% url 'property_details' pk=1 %}"><img src="{% static '/dash/images/lazy.svg' %}"
-                                        data-src="{% static '/dash/images/icon/icon_18.svg' %}"
-                                        alt="" class="lazy-img"> View</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
-                                                                           data-src="{% static '/dash/images/icon/icon_20.svg' %}"
-                                                                           alt="" class="lazy-img">
-                                    Add expense</a></li>
-                                <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
-                                                                           data-src="{% static '/dash/images/icon/icon_20.svg' %}"
-                                                                           alt="" class="lazy-img"> Edit</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
-                                                                           data-src="{% static '/dash/images/icon/icon_21.svg' %}"
-                                                                           alt="" class="lazy-img">
-                                    Delete</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <div class="d-lg-flex align-items-center position-relative">
-                            <img src="{% static 'images/img_02.jpg' %}" alt="" class="p-img">
-                            <div class="ps-lg-4 md-pt-10">
-                                <a href="#"
-                                   class="property-name tran3s color-dark fw-500 fs-20 stretched-link">White
-                                    House villa</a>
-                                <div class="address">Ranchview, California, USA</div>
-                                <strong class="price color-dark">$42,130</strong>
+                        <td>
+                            <div class="action-dots float-end">
+                                <button class="action-btn dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="{% url 'property_details' pk=property.pk %}"><img src="{% static '/dash/images/lazy.svg' %}"
+                                            data-src="{% static '/dash/images/icon/icon_18.svg' %}"
+                                            alt="" class="lazy-img"> View</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
+                                            data-src="{% static '/dash/images/icon/icon_20.svg' %}"
+                                            alt="" class="lazy-img">
+                                        Add expense</a></li>
+                                    <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
+                                            data-src="{% static '/dash/images/icon/icon_20.svg' %}"
+                                            alt="" class="lazy-img"> Edit</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
+                                            data-src="{% static '/dash/images/icon/icon_21.svg' %}"
+                                            alt="" class="lazy-img">
+                                        Delete</a></li>
+                                </ul>
                             </div>
-                        </div>
-                    </td>
-                    <td>09 Jan, 2023</td>
-                    <td>0</td>
-                    <td>
-                        <div class="property-status pending">Pending</div>
-                    </td>
-                    <td>
-                        <div class="action-dots float-end">
-                            <button class="action-btn dropdown-toggle" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                <span></span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
-                                                                           data-src="{% static '/dash/images/icon/icon_18.svg' %}"
-                                                                           alt="" class="lazy-img"> View</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
-                                                                           data-src="{% static '/dash/images/icon/icon_19.svg' %}"
-                                                                           alt="" class="lazy-img">
-                                    Share</a></li>
-                                <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
-                                                                           data-src="{% static '/dash/images/icon/icon_20.svg' %}"
-                                                                           alt="" class="lazy-img"> Edit</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
-                                                                           data-src="{% static '/dash/images/icon/icon_21.svg' %}"
-                                                                           alt="" class="lazy-img">
-                                    Delete</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                {% endfor %}
+
                 </tbody>
             </table>
             <!-- /.table property-list-table -->

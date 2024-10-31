@@ -3,15 +3,15 @@ from urllib import request
 from django.shortcuts import render
 from django.urls import path, include
 
-from FixToFlip.dashboard.views import DashboardView, DashboardPropertyView, DashboardTasksView, PropertyAddView, \
+from FixToFlip.dashboard.views import DashboardView, DashboardTasksView, PropertyAddView, \
     PropertyDetailsView, ProfileEditTemplate, DashboardExpensesView, BlogPostsView, DashboardCreditsView, CreditAddView, \
-    AddBlogPostView, DeleteBlogPostView, EditBlogPostView
+    AddBlogPostView, DeleteBlogPostView, EditBlogPostView, DashboardPropertiesView
 
 urlpatterns = [
     path('', DashboardView.as_view(), name='dashboard'),
 
     path('properties/', include([
-        path('', DashboardPropertyView.as_view(), name='dashboard_properties'),
+        path('', DashboardPropertiesView.as_view(), name='dashboard_properties'),
         path('add-property/', PropertyAddView.as_view(), name='add_property'),
         path('<int:pk>/view/', PropertyDetailsView.as_view(), name='property_details'),
     ])),

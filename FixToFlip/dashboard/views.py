@@ -6,15 +6,20 @@ from FixToFlip.accounts.models import BaseAccount
 from FixToFlip.blog.forms import BlogPostForm
 from FixToFlip.blog.models import BlogPost
 from FixToFlip.dashboard.forms import PropertyAddForm, BlogPostDeleteForm, AddBlogPostForm
-from FixToFlip.properties.models import Property
+from FixToFlip.properties.models import Property, PropertyFinancialInformation
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/dashboard-index.html'
 
 
-class DashboardPropertyView(LoginRequiredMixin, TemplateView):
+class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/properties-list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['properties'] = Property.objects.filter(owner=self.request.user)
+        return context
 
 
 class DashboardTasksView(LoginRequiredMixin, TemplateView):

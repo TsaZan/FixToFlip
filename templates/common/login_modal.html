@@ -1,6 +1,8 @@
 {% load static %}
 {% load socialaccount %}
 
+
+
 <!-- ################### Login Modal ####################### -->
 <!-- Modal -->
 <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
@@ -28,38 +30,36 @@
                                 <p class="fs-20 color-dark">Still don't have an account? <a href="{% url 'account_signup' %}">Sign up</a>
                                 </p>
                             </div>
-                            <form action="#">
+                            <form id="login-form" action="{% url 'ajax_login' %}" method="post">
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="input-group-meta position-relative mb-25">
-                                            <label>Email*</label>
-                                            <input type="email" placeholder="Youremail@gmail.com">
+
+
+                                            {% csrf_token %}
+                                            {{ loginctx.as_p }}
+
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <div class="input-group-meta position-relative mb-20">
-                                            <label>Password*</label>
-                                            <input type="password" placeholder="Enter Password"
-                                                   class="pass_log_id">
-                                            <span class="placeholder_icon"><span class="passVicon"><img
-                                                    src="{% static 'images/icon/icon_68.svg' %}" alt=""></span></span>
-                                        </div>
-                                    </div>
+
                                     <div class="col-12">
                                         <div class="agreement-checkbox d-flex justify-content-between align-items-center">
                                             <div>
-                                                <input type="checkbox" id="remember">
-                                                <label for="remember">Keep me logged in</label>
+                                                {{ loginctx.remember.as_hidden }}
+{#                                                <input type="checkbox" id="remember" name="remember">#}
+{#                                                <label for="remember">Keep me logged in</label>#}
                                             </div>
-                                            <a href="#">Forget Password?</a>
                                         </div> <!-- /.agreement-checkbox -->
                                     </div>
                                     <div class="col-12">
-                                        <button class="btn-two w-100 text-uppercase d-block mt-20">Login
-                                        </button>
+                                        <button type="submit" id="login-form" class="btn-two w-100 text-uppercase d-block mt-20">Login</button>
                                     </div>
                                 </div>
                             </form>
+                            
+                            
+                            
+                            
                         </div>
                         <!-- /.tab-pane -->
                         <div class="tab-pane" role="tabpanel" id="fc2">
@@ -67,27 +67,15 @@
                                 <h2>Register</h2>
                                 <p class="fs-20 color-dark">Already have an account? <a href="#">Login</a></p>
                             </div>
-                            <form action="#">
+                            <form action="{% url 'account_signup' %}" method="post">
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="input-group-meta position-relative mb-25">
-                                            <label>Name*</label>
-                                            <input type="text" placeholder="Your Name">
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="input-group-meta position-relative mb-25">
-                                            <label>Email*</label>
-                                            <input type="email" placeholder="mail@example.com">
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="input-group-meta position-relative mb-20">
-                                            <label>Password*</label>
-                                            <input type="password" placeholder="Enter Password"
-                                                   class="pass_log_id">
-                                            <span class="placeholder_icon"><span class="passVicon"><img
-                                                    src="{% static 'images/icon/icon_68.svg' %}" alt=""></span></span>
+
+                                            {{ signupctx.as_p }}
+                                            {% csrf_token %}
+
+
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -138,3 +126,5 @@
         </div>
     </div>
 </div>
+
+{% include 'common/ajax-login.html' %}

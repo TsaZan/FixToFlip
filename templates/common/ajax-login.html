@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        #preloader {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="preloader">
+    <div class="ctn-preloader">
+        <img src="{% static 'images/loader.gif' %}" alt="Preloader">
+    </div>
+</div>
+
+<!-- ################### Login Modal ####################### -->
+<script>
+    $(document).ready(function () {
+        const preloader = $("#preloader");
+        const loginForm = $("#loginModal #login-form");
+        const errorContainer = $("<div class='error-messages'></div>").prependTo(loginForm);
+
+        console.log("Login form initialized.");
+
+        loginForm.on("submit", function (e) {
+            e.preventDefault();
+            console.log("Submitting form...");
+            preloader.show();
+
+            console.log("Loader image path:", "{% static 'images/lazy.svg' %}"); // Логване на пътя до изображението
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'ajax_login' %}",
+                data: loginForm.serialize(),
+                headers: { "X-Requested-With": "XMLHttpRequest" },
+                success: function (response) {
+                    console.log("AJAX response received:", response);
+                    preloader.hide();
+                    errorContainer.empty();
+
+                    if (response.success) {
+                        console.log("Login successful. Redirecting...");
+                        location.reload();
+                    } else {
+                        console.log("Login failed. Displaying errors...");
+                        console.log("Received errors:", response.errors);
+
+                        if (response.errors.__all__) {
+                            response.errors.__all__.forEach(function (message) {
+                                $("<p class='text-danger'></p>").text(message).appendTo(errorContainer);
+                            });
+                        }
+
+                        for (const [field, messages] of Object.entries(response.errors)) {
+                            if (field !== "__all__") {
+                                messages.forEach(message => {
+                                    $("<p class='text-danger'></p>").text(message).appendTo(errorContainer);
+                                });
+                            }
+                        }
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    preloader.hide();
+                    console.error("AJAX error:", textStatus, errorThrown);
+                    $("<p class='text-danger'>Възникна грешка. Моля, опитайте отново.</p>").appendTo(errorContainer);
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
