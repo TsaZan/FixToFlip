@@ -2,7 +2,7 @@
 {% load static %}
 {% load blog_filters %}
 {% block content %}
-
+{% load account %}
 
     <div class="main-page-wrapper">
 
@@ -63,17 +63,16 @@ Blog Details
                                 <ul class="d-flex align-items-center tags style-none pt-20">
                                     <li>Tag:</li>
                                     {% for keyword in keywords %}
-                                        <li><a href="/{{ keyword | add_dashes }}">{{ keyword }}</a></li>
+                                        <li><a class="tag-btn" href="/tags/{{ keyword | add_dashes }}">{{ keyword }}</a></li>
                                     {% endfor %}
 
 
                                 </ul>
                                 <ul class="d-flex share-icon align-items-center style-none pt-20">
                                     <li>Share:</li>
-                                    <li><a href="#"><i class="fa-brands fa-whatsapp"></i></a></li>
+                                    <li><a href="#"><i class="fa-brands fa-facebook"></i></a></li>
                                     <li><a href="#"><i class="fa-brands fa-x-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
-                                    <li><a href="#"><i class="fa-brands fa-viber"></i></a></li>
+                                    <li><a href="#"><i class="fa-brands fa-linkedin"></i></a></li>
                                 </ul>
                             </div>
                         </article>
@@ -106,23 +105,12 @@ Blog Details
                                 <div>
                             {% else %}
                                 <form method="post" class="mt-30">
-{#                                    <div class="input-wrapper mb-30">#}
-{#                                        <label>Name*</label>#}
-{#                                        <input type="text" placeholder="Rashed Kabir">#}
-{#                                    </div> <!-- /.input-wrapper -->#}
-{#                                    <div class="input-wrapper mb-40">#}
-{#                                        <label>Email*</label>#}
-{#                                        <input type="email" placeholder="rshdkabir@gmail.com">#}
-{#                                    </div> <!-- /.input-wrapper -->#}
-{#                                    <div class="input-wrapper mb-30">#}
-{#                                        <textarea placeholder="Your Comment"></textarea>#}
-{#                                    </div> <!-- /.input-wrapper -->#}
                                     {{ form }}
                                     {% csrf_token %}
                                     <button class="btn-five rounded-0">Post Comment</button>
                                 </form>
                             {% endif %}
-                        </div>
+                            </div>
                         <!-- /.blog-comment-form -->
                     </div>
                     <div class="col-lg-4">

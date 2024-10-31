@@ -1,7 +1,7 @@
 {% extends 'dashboard/dashboard-base.html' %}
 {% load static %}
 {% block content %}
-{% load account %}
+
 <!-- 
 =============================================
 Dashboard Body
@@ -33,37 +33,30 @@ Dashboard Body
                 <thead>
                 <tr>
                     <th scope="col">Title</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Credited Amount</th>
+                    <th scope="col">Views</th>
+                    <th scope="col">Comments</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Expenses</th>
                     <th scope="col">Action</th>
-
                 </tr>
                 </thead>
                 <tbody class="border-0">
-                {% for property in properties %}
+                {% for post in posts %}
                     <tr>
                         <td>
                             <div class="d-lg-flex align-items-center position-relative">
-                                <img src="{% static 'images/img_01.jpg' %}" alt="" class="p-img">
+                                <img src="{{ post.image.url }}" alt="" class="p-img">
                                 <div class="ps-lg-4 md-pt-10">
-                                    <a href="{% url 'property_details' pk=property.pk %}"
-                                       class="property-name tran3s color-dark fw-500 fs-20 stretched-link">{{ property.property_name }}</a>
-                                    <div class="address">{{ property.country }}, {{ property.town }}, {{ property.address }}</div>
-                                    <strong class="price">{{ property.property_financial_information.values_list.0.1 }} {{ property.property_financial_information.values_list.0.2 }}</strong>
+                                    <a href="#"
+                                       class="property-name tran3s color-dark fw-500 fs-20 stretched-link">{{ post.title }}</a>
+                                    <div class="address">Created at: {{ post.created_at|date:"d-m-Y" }}</div>
                                 </div>
                             </div>
                         </td>
-                        <td>{{ property.bought_date | date:"d-m-Y" }}</td>
-                        <td><strong class="price">{{ property.property_financial_information.values_list.0.7 }} {{ property.property_financial_information.values_list.0.8 }}</strong></td>
+                        <td>{{ post.created_at|date:"d-m-Y" }}</td>
+                        <td>{{ post.comments.count }}</td>
                         <td>
                             <div class="property-status">Active</div>
                         </td>
-                        <td>
-                            <div class="price">{{ property.property_financial_information.values_list.0.3 }} {{ property.property_financial_information.values_list.0.4 }}</div>
-                        </td>
-
                         <td>
                             <div class="action-dots float-end">
                                 <button class="action-btn dropdown-toggle" type="button"
@@ -71,28 +64,25 @@ Dashboard Body
                                     <span></span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="{% url 'property_details' pk=property.pk %}"><img src="{% static '/dash/images/lazy.svg' %}"
+                                    <li><a class="dropdown-item" href="{% url 'blog_post_page' slug=post.slug %}"><img src="{% static '/dash/images/lazy.svg' %}"
                                             data-src="{% static '/dash/images/icon/icon_18.svg' %}"
                                             alt="" class="lazy-img"> View</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
+                                    <li><a class="dropdown-item" href="{% url 'edit_blogpost' slug=post.slug %}"><img src="{% static '/dash/images/lazy.svg' %}"
                                             data-src="{% static '/dash/images/icon/icon_20.svg' %}"
                                             alt="" class="lazy-img">
-                                        Add expense</a></li>
-                                    <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
-                                            data-src="{% static '/dash/images/icon/icon_20.svg' %}"
-                                            alt="" class="lazy-img"> Edit</a>
-                                    </li>
-                                    <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
-                                            data-src="{% static '/dash/images/icon/icon_21.svg' %}"
-                                            alt="" class="lazy-img">
-                                        Delete</a></li>
+                                        Edit</a></li>
+                                    {% if request.user.is_superuser %}
+                                        <li><a class="dropdown-item" href="{% url 'delete_blogpost' slug=post.slug %}" target="_self"><img src="{% static '/dash/images/lazy.svg' %}"
+                                                                   data-src="{% static '/dash/images/icon/icon_21.svg' %}"
+                                                                   alt="" class="lazy-img">
+                                            Delete</a></li>
+                                    {% endif %}
                                 </ul>
                             </div>
                         </td>
                     </tr>
                 {% endfor %}
-
                 </tbody>
             </table>
             <!-- /.table property-list-table -->

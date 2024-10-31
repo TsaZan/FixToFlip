@@ -17,7 +17,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-
+AUTH_USER_MODEL = 'accounts.BaseAccount'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
@@ -46,8 +46,7 @@ AUTHENTICATION_APPS = [
     'allauth.socialaccount.providers.facebook',
 ]
 
-LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
+
 
 THIRD_PARTY_APPS = [
     'djmoney',
@@ -78,6 +77,7 @@ REST_FRAMEWORK = {
 INSTALLED_APPS = [
                      'django.contrib.admin',
                      'django.contrib.auth',
+                     'django.contrib.sites',
                      'django.contrib.contenttypes',
                      'django.contrib.sessions',
                      'django.contrib.messages',
@@ -117,9 +117,18 @@ CSRF_TRUSTED_ORIGINS = ['http://*.127.0.0.1']
 ALLOWED_DOMAIN = '127.0.0.1'
 SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_AUTO_SIGN_UP = True
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'none' #ONLY IN DEBUG MODE!!
+ACCOUNT_EMAIL_REQUIRED = False
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-ACCOUNT_EMAIL_VERIFICATION = "none"
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
+ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
+LOGOUT_REDIRECT_URL = "/"
+ACCOUNT_LOGOUT_ON_GET = True
+LOGIN_REDIRECT_URL = '/dashboard/'
+
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -148,6 +157,9 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'FixToFlip.common.context_processor.login_ctx.login_ctx_tag',
+                'FixToFlip.common.context_processor.login_ctx.signup_ctx_tag',
+                'django.template.context_processors.debug',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -196,7 +208,7 @@ STATICFILES_DIRS = (
 )
 
 STATIC_ROOT = BASE_DIR / 'static'
-CURRENCIES = ('USD', 'EUR', 'GBP', 'BGN', 'AED', 'CHF')
+CURRENCIES = ('USD', 'EUR', 'BGN',)
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 import mimetypes

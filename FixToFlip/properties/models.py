@@ -3,6 +3,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from djmoney.models.fields import MoneyField
 from djmoney.money import Money
+from django.conf import settings
+
 
 from FixToFlip.choices import PropertyTypeChoices, PropertyConditionChoices
 from FixToFlip.credits.models import Credit
@@ -69,6 +71,12 @@ class Property(models.Model):
         auto_now=True,
     )
 
+    owner = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='owned_properties',
+    )
+
     def __str__(self):
         if self.property_name:
             return self.property_name
@@ -115,21 +123,21 @@ class PropertyFinancialInformation(models.Model):
 
     is_credited = models.BooleanField()
 
-    if is_credited:
-        credit = models.ForeignKey(
-            to=Credit,
-            null=True,
-            blank=True,
-            on_delete=models.CASCADE,
-            related_name='credit_financial_information',
-        )
+    credit = models.ForeignKey(
+        to=Credit,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name='credit_financial_information',
+    )
 
-        credited_amount = MoneyField(
-            max_digits=10,
-            decimal_places=2,
-            validators=[MinValueValidator(0.00)],
-            default=Money(0, 'EUR'),
-        )
+    credited_amount = MoneyField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        default=Money(0, 'EUR'),
+    )
 
     property = models.ForeignKey(
         to='Property',
@@ -139,6 +147,8 @@ class PropertyFinancialInformation(models.Model):
         null=False,
     )
 
+    def __str__(self):
+        return str(self.property)
 
 class PropertyExpense(models.Model):
     '''Property expenses information. Can be seen by property owners and all authorized users.'''
