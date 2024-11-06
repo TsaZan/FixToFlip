@@ -55,6 +55,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'cities_light',
 
 ]
 
@@ -208,7 +209,8 @@ STATICFILES_DIRS = (
 )
 
 STATIC_ROOT = BASE_DIR / 'static'
-CURRENCIES = ('USD', 'EUR', 'BGN',)
+CURRENCIES = ('EUR',)
+DEFAULT_CURRENCY = 'EUR'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 import mimetypes

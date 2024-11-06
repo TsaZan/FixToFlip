@@ -36,7 +36,10 @@ Dashboard Body
                     <th scope="col">Date</th>
                     <th scope="col">Credited Amount</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Expenses</th>
+                    <th scope="col">Expected Expenses</th>
+                    <th scope="col">Currents Expenses</th>
+
+                    
                     <th scope="col">Action</th>
 
                 </tr>
@@ -50,7 +53,7 @@ Dashboard Body
                                 <div class="ps-lg-4 md-pt-10">
                                     <a href="{% url 'property_details' pk=property.pk %}"
                                        class="property-name tran3s color-dark fw-500 fs-20 stretched-link">{{ property.property_name }}</a>
-                                    <div class="address">{{ property.country }}, {{ property.town }}, {{ property.address }}</div>
+                                    <div class="address">{{ property.country }}, {{ property.city }}, {{ property.address }}</div>
                                     <strong class="price">{{ property.property_financial_information.values_list.0.1 }} {{ property.property_financial_information.values_list.0.2 }}</strong>
                                 </div>
                             </div>
@@ -58,10 +61,14 @@ Dashboard Body
                         <td>{{ property.bought_date | date:"d-m-Y" }}</td>
                         <td><strong class="price">{{ property.property_financial_information.values_list.0.7 }} {{ property.property_financial_information.values_list.0.8 }}</strong></td>
                         <td>
-                            <div class="property-status">Active</div>
+                            <div class="property-status">{{ property.property_condition }}</div>
                         </td>
                         <td>
-                            <div class="price">{{ property.property_financial_information.values_list.0.3 }} {{ property.property_financial_information.values_list.0.4 }}</div>
+                            <div class="price">{{ property.property_expenses.values_list.0.15 }} {{ property.property_expenses.values_list.0.16 }}</div>
+                        </td>
+
+                        <td>
+                            <div class="price"> EUR {{ property.current_expenses }}</div>
                         </td>
 
                         <td>
@@ -91,6 +98,7 @@ Dashboard Body
                             </div>
                         </td>
                     </tr>
+
                 {% endfor %}
 
                 </tbody>

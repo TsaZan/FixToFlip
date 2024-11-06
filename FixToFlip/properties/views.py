@@ -1,116 +1,79 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Sum
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, TemplateView, DetailView
 from djmoney.money import Money
 from djmoney.contrib.exchange.models import convert_money
 from rest_framework import generics, response, status
 from django.shortcuts import render
 
-from FixToFlip.properties.forms import PropertyAddForm, PropertyExpenseForm
+from FixToFlip.money_operations import sum_current_expenses
+from FixToFlip.properties.forms import PropertyAddForm, PropertyExpenseForm, PropertyFinancialInformationForm
 from FixToFlip.properties.models import Property, PropertyExpense
 from FixToFlip.properties.serializers import PropertySerializer, PropertyExpenseSerializer
 
 
-def properties_main_page(request):
-    context = {'properties': Property.objects.all()}
-    return render(request, 'properties/properties_main_page.html', context)
+class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
+    template_name = 'dashboard/properties-list.html'
+    if login_required:
+        login_url = 'index'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        properties = Property.objects.filter(owner=self.request.user)
+        for property in properties:
+            property.current_expenses = sum_current_expenses(property.id)
+        context['properties'] = properties
+
+        return context
 
 
-def details_property(request, pk):
-    properties = Property.objects.filter(pk=pk)
-    expenses = PropertyExpense.objects.filter(property_id=pk)
-
-    total_expenses_eur = Money(0, 'EUR')
-
-    for expense in expenses:
-        try:
-            total_expenses_eur += convert_money(expense.utilities, 'EUR')
-            total_expenses_eur += convert_money(expense.notary_taxes, 'EUR')
-            total_expenses_eur += convert_money(expense.profit_tax, 'EUR')
-            total_expenses_eur += convert_money(expense.municipality_taxes, 'EUR')
-            total_expenses_eur += convert_money(expense.advertising, 'EUR')
-            total_expenses_eur += convert_money(expense.administrative_fees, 'EUR')
-            total_expenses_eur += convert_money(expense.insurance, 'EUR')
-        except Exception as e:
-            print(f"Conversion error: {e}")
-
-    # total_expenses_sum = 0
-    # for expense in expenses.values():
-    #     for key, value in expense.items():
-    #         if isinstance(value, Decimal):
-    #             total_expenses_sum += value
-
-    context = {'property': properties,
-               'expenses': expenses,
-               'pk': pk,
-               'total_expenses_eur': total_expenses_eur}
-
-    return render(request, 'properties/details_property.html', context)
-
-
-def add_property(request):
-    properties = Property.objects.all()
-    form = PropertyAddForm(request.POST or None)
-
+def property_add_view(request):
     if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            return redirect('add_property')
+        property_form = PropertyAddForm(request.POST)
+        print(property_form.is_valid())
+        property_financial_information_form = PropertyFinancialInformationForm(request.POST)
+        expense_form = PropertyExpenseForm(request.POST)
+        print(expense_form.is_valid())
+        print(property_financial_information_form.is_valid())
 
-    context = {'form': form,
-               'properties': properties,
-               }
+        if property_form.is_valid() and property_financial_information_form.is_valid() and expense_form.is_valid():
+            property_form.instance.owner = request.user
+            property = property_form.save()
+            property_financial_information = property_financial_information_form.save(commit=False)
+            expense = expense_form.save(commit=False)
+            expense.property = property
+            expense.save()
+            if property_financial_information.credited_amount:
+                property_financial_information.is_credited = True
+                property_financial_information.property = property
+                property_financial_information.save()
 
-    return render(request, 'properties/add_property.html', context)
+            return redirect('dashboard_properties')
 
-
-def edit_property(request, pk):
-    pass
-
-
-def delete_property(request, pk):
-    pass
-
-
-def add_property_expenses(request, pk):
-    form = PropertyExpenseForm(request.POST or None)
-    property_pk = Property.objects.get(pk=pk)
-
-    if request.method == 'POST':
-        if form.is_valid():
-            expense = form.save(commit=False)
-            expense.property = property_pk
-            form.save()
-            return redirect('details_property', pk=pk)
+    else:
+        print(request.user)
+        property_form = PropertyAddForm()
+        property_financial_information_form = PropertyFinancialInformationForm()
+        expense_form = PropertyExpenseForm()
 
     context = {
-        'form': form
+        'property_form': property_form,
+        'property_financial_information_form': property_financial_information_form,
+        'expense_form': expense_form
     }
-    return render(request, 'properties/add_property_expenses.html', context)
+
+    return render(request, 'dashboard/add-property.html', context)
 
 
-def property_expenses_view(request, pk):
-    expenses = PropertyExpense.objects.filter(property_id=pk)
+class PropertyDetailsView(LoginRequiredMixin, DetailView):
+    if login_required:
+        login_url = 'index'
 
-    total_expenses_eur = Money(0, 'EUR')
-
-    for expense in expenses:
-        try:
-            total_expenses_eur += convert_money(expense.utilities, 'EUR')
-            total_expenses_eur += convert_money(expense.notary_taxes, 'EUR')
-            total_expenses_eur += convert_money(expense.profit_tax, 'EUR')
-            total_expenses_eur += convert_money(expense.municipality_taxes, 'EUR')
-            total_expenses_eur += convert_money(expense.advertising, 'EUR')
-            total_expenses_eur += convert_money(expense.administrative_fees, 'EUR')
-            total_expenses_eur += convert_money(expense.insurance, 'EUR')
-        except Exception as e:
-            print(f"Conversion error: {e}")
-
-    context = {
-        'expenses': expenses,
-        'total_expenses_eur': total_expenses_eur,
-    }
-    return render(request, 'properties/expenses.html', context)
+    model = Property
+    template_name = 'dashboard/property-details.html'
 
 
 ''' React Views '''
@@ -135,6 +98,3 @@ class PropertyExpensesView(generics.ListAPIView):
         return PropertyExpense.objects.filter(property_id=pk)
 
     serializer_class = PropertyExpenseSerializer
-
-
-

@@ -1,3 +1,4 @@
+from cities_light.admin import Country
 from django import forms
 
 from FixToFlip.properties.models import Property, PropertyForSale, PropertyExpense, PropertyFinancialInformation
@@ -29,7 +30,18 @@ class PropertyBaseForm(forms.ModelForm):
 
 
 class PropertyAddForm(PropertyBaseForm):
-    pass
+    class Meta:
+        model = Property
+        exclude = ['owner']
+
+class PropertyFinanceInformationForm(forms.ModelForm):
+    class Meta:
+        model = PropertyFinancialInformation
+        fields = '__all__'
+        widgets = {
+            'initial_price': forms.TextInput(attrs={'placeholder': 'Initial Price', }),
+            'credited_amount': forms.TextInput(attrs={'placeholder': 'Credited Amount', 'type': 'input', }),
+        }
 
 
 class PropertyEditForm(PropertyBaseForm):
@@ -64,6 +76,8 @@ class PropertyFinancialInformationForm(forms.ModelForm):
 
 class PropertyExpenseForm(forms.ModelForm):
     class Meta:
+        inline_classes = ['inline-formset']
+
         model = PropertyExpense
         fields = '__all__'
         exclude = ['property', 'expense_currency']

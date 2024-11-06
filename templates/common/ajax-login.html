@@ -26,6 +26,7 @@
 
 <!-- ################### Login Modal ####################### -->
 <script>
+
     $(document).ready(function () {
         const preloader = $("#preloader");
         const loginForm = $("#loginModal #login-form");
@@ -38,34 +39,36 @@
             console.log("Submitting form...");
             preloader.show();
 
-            console.log("Loader image path:", "{% static 'images/lazy.svg' %}"); // Логване на пътя до изображението
-
             $.ajax({
                 type: 'POST',
-                url: "{% url 'ajax_login' %}",
+                url: "{% url 'ajax_login' %}",  // Актуализираме с правилния URL за AJAX логин
                 data: loginForm.serialize(),
                 headers: { "X-Requested-With": "XMLHttpRequest" },
                 success: function (response) {
-                    console.log("AJAX response received:", response);
                     preloader.hide();
+                    window.location.reload();
+
                     errorContainer.empty();
 
-                    if (response.success) {
-                        console.log("Login successful. Redirecting...");
-                        location.reload();
+                    // Парсираме `response.html`, ако съдържа JSON данни
+                    let jsonResponse;
+                    try {
+                        jsonResponse = JSON.parse(response.html);
+                    } catch (e) {
+                        console.error("Error parsing JSON:", e);
+                        $("<p class='text-danger'>Грешка при обработката на отговора. Моля, опитайте отново.</p>").appendTo(errorContainer);
+                        return;
+                    }
+
+                    if (jsonResponse.success) {
+                        // Пренасочване при успешен логин
+                        window.location.href = jsonResponse.location;
                     } else {
                         console.log("Login failed. Displaying errors...");
-                        console.log("Received errors:", response.errors);
-
-                        if (response.errors.__all__) {
-                            response.errors.__all__.forEach(function (message) {
-                                $("<p class='text-danger'></p>").text(message).appendTo(errorContainer);
-                            });
-                        }
-
-                        for (const [field, messages] of Object.entries(response.errors)) {
-                            if (field !== "__all__") {
-                                messages.forEach(message => {
+                        if (jsonResponse.errors) {
+                            const errors = jsonResponse.errors;
+                            for (const [field, messages] of Object.entries(errors)) {
+                                messages.forEach(function (message) {
                                     $("<p class='text-danger'></p>").text(message).appendTo(errorContainer);
                                 });
                             }
@@ -79,6 +82,65 @@
                 }
             });
         });
+    });
+
+    $(document).ready(function () {
+        const preloader = $("#preloader");
+        const signupForm = $("#loginModal #signup-form");
+
+        console.log("Signup form initialized.");
+
+
+        signupForm.on("submit", function (e) {
+            e.preventDefault();
+            preloader.show();
+            clearFieldErrors(signupForm); // Изчистване на предишни грешки
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'ajax_signup' %}",
+                data: signupForm.serialize(),
+                headers: { "X-Requested-With": "XMLHttpRequest" },
+
+                success: function (jsonResponse) {
+                    preloader.hide();
+                    window.location.reload();
+
+                },
+                error: function () {
+                    preloader.hide();
+                    displayGeneralError(signupForm, "Error occurred. TAPAK");
+
+                }
+            });
+
+        });
+
+
+        const clearFieldErrors = function(form) {
+            form.find('.text-danger').remove(); // Премахване на съществуващите грешки
+        };
+
+        const displayGeneralError = function(form, message) {
+            const errorContainer = form.find('.error-messages');
+            if (errorContainer.length === 0) {
+                form.prepend("<div class='error-messages'></div>");
+            }
+            errorContainer.html(`<p class='text-danger'>${message}</p>`);
+        };
+
+
+        const displayFieldErrors = function (form, errors) {
+            $.each(errors, function (field, messages) {
+                const input = form.find(`[name="${field}"]`);
+                if (input.length) {
+                    input.prev('.text-danger').remove(); // Изчистване на предишни грешки
+                    const errorHtml = messages.map(msg => `<p class='text-danger'>${msg}</p>`).join("");
+                    input.before(errorHtml); // Показване на новите грешки
+                }
+            });
+
+        };
     });
 </script>
 

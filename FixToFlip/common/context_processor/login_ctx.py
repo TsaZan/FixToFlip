@@ -7,12 +7,9 @@ def login_ctx_tag(request):
         del form.fields['remember']
         return form
 
-    show_loader = request.session.get('show_loader', False)
-    request.session['show_loader'] = False
 
     return {
-        'loginctx': login(LoginForm),
-        'show_loader': show_loader}
+        'loginctx': login(LoginForm)}
 
 
 def signup_ctx_tag(request):
