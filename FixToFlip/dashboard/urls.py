@@ -4,9 +4,11 @@ from django.shortcuts import render
 from django.urls import path, include
 
 from FixToFlip.blog.views import BlogPostsView, EditBlogPostView, AddBlogPostView, DeleteBlogPostView
+from FixToFlip.credits.views import DashboardCreditsView, CreditAddView
 from FixToFlip.dashboard.views import DashboardView, DashboardTasksView, \
-    ProfileEditTemplate, DashboardExpensesView, DashboardCreditsView, CreditAddView
-from FixToFlip.properties.views import DashboardPropertiesView, PropertyDetailsView, property_add_view
+    ProfileEditTemplate
+from FixToFlip.properties.views import DashboardPropertiesView, PropertyDetailsView, property_add_view, \
+    DashboardExpensesView
 
 urlpatterns = [
     path('', DashboardView.as_view(), name='dashboard'),

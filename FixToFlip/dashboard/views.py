@@ -13,6 +13,12 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     if login_required:
         login_url = 'index'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['properties_count'] = Property.objects.filter(owner=self.request.user).count()
+        context['properties_in_repair'] = Property.objects.filter(owner=self.request.user,
+                                                                  property_condition='Under repair').count()
+        return context
 
 class DashboardTasksView(LoginRequiredMixin, TemplateView):
     if login_required:
@@ -31,28 +37,8 @@ class ProfileEditTemplate(LoginRequiredMixin, TemplateView):
     fields = '__all__'
 
 
-class DashboardCreditsView(LoginRequiredMixin, TemplateView):
-    if login_required:
-        login_url = 'index'
-
-    template_name = 'dashboard/credits-list.html'
 
 
-class DashboardExpensesView(LoginRequiredMixin, TemplateView):
-    if login_required:
-        login_url = 'index'
-
-    template_name = 'dashboard/expenses-list.html'
-
-
-class CreditAddView(LoginRequiredMixin, CreateView):
-    if login_required:
-        login_url = 'index'
-
-    model = Property
-    form_class = PropertyAddForm
-    template_name = 'dashboard/add-credit.html'
-    success_url = reverse_lazy('credits_main_page')
 
 
 

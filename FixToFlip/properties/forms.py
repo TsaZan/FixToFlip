@@ -34,6 +34,7 @@ class PropertyAddForm(PropertyBaseForm):
         model = Property
         exclude = ['owner']
 
+
 class PropertyFinanceInformationForm(forms.ModelForm):
     class Meta:
         model = PropertyFinancialInformation

@@ -21,7 +21,13 @@ class AddBlogPostForm(forms.ModelForm):
         fields = ['title', 'content', 'category', 'image', 'keywords']
         widgets = {
             'image': forms.ClearableFileInput(attrs={
-                'class': 'dash-input-wrapper mb-20 attached-file d-flex align-items-center justify-content-between mb-15'
+                'class': ' form-control mb-20',
+                'type': 'file',
+                'accept': 'image/*',
+                'id': 'customFile'
+            }),
+            'category': forms.Select(attrs={
+                'class': 'dash-input-wrapper mb-20 nice-select'
             }),
         }
 

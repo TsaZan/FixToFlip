@@ -1,17 +1,22 @@
+from FixToFlip.credits.models import Credit
 from FixToFlip.properties.models import Property, PropertyExpense
 
 
-@staticmethod
-def sum_current_expenses(property):
-    property = Property.objects.get(pk=property)
-    expenses = PropertyExpense.objects.filter(property_id__exact=property.id)
+def sum_current_expenses(property_id):
+    expenses = PropertyExpense.objects.filter(property_id=property_id).values(
+        'utilities', 'notary_taxes', 'profit_tax', 'municipality_taxes',
+        'advertising', 'administrative_fees', 'insurance'
+    ).first()
 
-    utilities = expenses.values_list('utilities', flat=True)
-    notary_taxes = expenses.values_list('notary_taxes', flat=True)
-    profit_tax= expenses.values_list('profit_tax', flat=True)
-    municipality_taxes= expenses.values_list('municipality_taxes', flat=True)
-    advertising= expenses.values_list('advertising', flat=True)
-    administrative_fees= expenses.values_list('administrative_fees', flat=True)
-    insurance = expenses.values_list('insurance', flat=True)
+    if not expenses:
+        return 0
 
-    return sum([utilities[0], notary_taxes[0], profit_tax[0], municipality_taxes[0], advertising[0], administrative_fees[0], insurance[0]])
+    return sum(expenses[field] for field in expenses if expenses[field] is not None)
+
+
+def credit_reminder_calculation(credit_id):
+    credit = Credit.objects.filter(id=credit_id)
+    remainder = credit[0].credit_amount - credit[0].amounts_paid
+    return remainder
+
+

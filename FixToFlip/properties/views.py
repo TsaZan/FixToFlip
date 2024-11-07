@@ -1,13 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Sum
-from django.shortcuts import redirect, render, get_object_or_404
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, TemplateView, DetailView
-from djmoney.money import Money
-from djmoney.contrib.exchange.models import convert_money
-from rest_framework import generics, response, status
+from django.shortcuts import redirect
+from django.views.generic import TemplateView, DetailView
+
+from rest_framework import generics
 from django.shortcuts import render
+from django.core.paginator import Paginator
+
 
 from FixToFlip.money_operations import sum_current_expenses
 from FixToFlip.properties.forms import PropertyAddForm, PropertyExpenseForm, PropertyFinancialInformationForm
@@ -17,12 +16,14 @@ from FixToFlip.properties.serializers import PropertySerializer, PropertyExpense
 
 class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/properties-list.html'
-    if login_required:
-        login_url = 'index'
+    login_url = 'index'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         properties = Property.objects.filter(owner=self.request.user)
+        paginator = Paginator(properties, 5)
+        page_number = self.request.GET.get('page')
+        properties = paginator.get_page(page_number)
         for property in properties:
             property.current_expenses = sum_current_expenses(property.id)
         context['properties'] = properties
@@ -33,11 +34,9 @@ class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
 def property_add_view(request):
     if request.method == 'POST':
         property_form = PropertyAddForm(request.POST)
-        print(property_form.is_valid())
+        property_form.instance.country = property_form.country
         property_financial_information_form = PropertyFinancialInformationForm(request.POST)
         expense_form = PropertyExpenseForm(request.POST)
-        print(expense_form.is_valid())
-        print(property_financial_information_form.is_valid())
 
         if property_form.is_valid() and property_financial_information_form.is_valid() and expense_form.is_valid():
             property_form.instance.owner = request.user
@@ -54,7 +53,6 @@ def property_add_view(request):
             return redirect('dashboard_properties')
 
     else:
-        print(request.user)
         property_form = PropertyAddForm()
         property_financial_information_form = PropertyFinancialInformationForm()
         expense_form = PropertyExpenseForm()
@@ -69,11 +67,29 @@ def property_add_view(request):
 
 
 class PropertyDetailsView(LoginRequiredMixin, DetailView):
-    if login_required:
-        login_url = 'index'
+    login_url = 'index'
 
     model = Property
     template_name = 'dashboard/property-details.html'
+
+
+class DashboardExpensesView(LoginRequiredMixin, TemplateView):
+    model = PropertyExpense
+    template_name = 'dashboard/expenses-list.html'
+    login_url = 'index'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        properties = Property.objects.filter(owner=self.request.user)
+        expenses_list = PropertyExpense.objects.filter(property__in=properties)
+        paginator = Paginator(expenses_list, 5)
+        page_number = self.request.GET.get('page')
+        expenses = paginator.get_page(page_number)
+
+        context['expenses'] = expenses
+
+        return context
 
 
 ''' React Views '''

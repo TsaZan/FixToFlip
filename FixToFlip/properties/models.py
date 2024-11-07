@@ -1,4 +1,4 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator
 from django.db import models
 from djmoney.models.fields import MoneyField
 from djmoney.money import Money
@@ -6,7 +6,7 @@ from django.conf import settings
 
 from FixToFlip.choices import PropertyTypeChoices, PropertyConditionChoices
 from FixToFlip.credits.models import Credit
-from FixToFlip.validators import get_current_date, get_current_year
+from FixToFlip.validators import get_current_date
 
 
 class Property(models.Model):
@@ -112,7 +112,7 @@ class Property(models.Model):
     def __str__(self):
         if self.property_name:
             return self.property_name
-        return (f'Country: {self.country} , Location: {self.town} , '
+        return (f'Country: {self.country} , Location: {self.city} , '
                 f'Address: {self.address}')
 
 
@@ -195,6 +195,7 @@ class PropertyExpense(models.Model):
     class Meta:
         verbose_name = 'Expense'
         verbose_name_plural = 'Expenses'
+        ordering = ['-last_expense_date']
 
     utilities = MoneyField(
         max_digits=MAX_DIGITS,
@@ -269,4 +270,13 @@ class PropertyExpense(models.Model):
 
     expense_details = models.TextField(blank=True, null=True)
 
-    expense_date = models.DateField(blank=True, null=True)
+    last_expense_date = models.DateField(blank=True, null=True, auto_now=True)
+
+    def expense_total(self):
+        return self.utilities + self.notary_taxes + self.profit_tax + self.municipality_taxes + self.advertising + self.administrative_fees + self.insurance
+
+    def remaining_expected_expenses(self):
+        return self.expected_expenses - self.expense_total()
+
+    def expenses_per_sqm(self):
+        return self.expense_total() / self.property.property_size
