@@ -49,8 +49,10 @@ class PropertyEditForm(PropertyBaseForm):
     pass
 
 
-class PropertyDeleteForm(forms.ModelForm):
-    pass
+class PropertyDeleteForm(PropertyBaseForm):
+    class Meta:
+        model = Property
+        fields = []
 
 
 class PropertyForSaleForm(forms.ModelForm):

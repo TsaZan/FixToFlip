@@ -8,7 +8,7 @@ from FixToFlip.credits.views import DashboardCreditsView, CreditAddView
 from FixToFlip.dashboard.views import DashboardView, DashboardTasksView, \
     ProfileEditTemplate
 from FixToFlip.properties.views import DashboardPropertiesView, PropertyDetailsView, property_add_view, \
-    DashboardExpensesView
+    DashboardExpensesView, PropertyEditView, PropertyDeleteView
 
 urlpatterns = [
     path('', DashboardView.as_view(), name='dashboard'),
@@ -17,6 +17,8 @@ urlpatterns = [
         path('', DashboardPropertiesView.as_view(), name='dashboard_properties'),
         path('add-property/', property_add_view, name='add_property'),
         path('<int:pk>/view/', PropertyDetailsView.as_view(), name='property_details'),
+        path('<int:pk>/edit/', PropertyEditView.as_view(), name='edit_property'),
+        path('<int:pk>/delete/', PropertyDeleteView.as_view(), name='delete_property'),
     ])),
 
     path('tasks/', DashboardTasksView.as_view(), name='dashboard_tasks'),

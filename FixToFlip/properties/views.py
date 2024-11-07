@@ -1,15 +1,16 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
-from django.views.generic import TemplateView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView
 
 from rest_framework import generics
 from django.shortcuts import render
 from django.core.paginator import Paginator
 
-
 from FixToFlip.money_operations import sum_current_expenses
-from FixToFlip.properties.forms import PropertyAddForm, PropertyExpenseForm, PropertyFinancialInformationForm
+from FixToFlip.properties.forms import PropertyAddForm, PropertyExpenseForm, PropertyFinancialInformationForm, \
+    PropertyEditForm, PropertyDeleteForm
 from FixToFlip.properties.models import Property, PropertyExpense
 from FixToFlip.properties.serializers import PropertySerializer, PropertyExpenseSerializer
 
@@ -34,7 +35,6 @@ class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
 def property_add_view(request):
     if request.method == 'POST':
         property_form = PropertyAddForm(request.POST)
-        property_form.instance.country = property_form.country
         property_financial_information_form = PropertyFinancialInformationForm(request.POST)
         expense_form = PropertyExpenseForm(request.POST)
 
@@ -66,6 +66,36 @@ def property_add_view(request):
     return render(request, 'dashboard/add-property.html', context)
 
 
+class PropertyEditView(LoginRequiredMixin, UpdateView):
+    login_url = 'index'
+    template_name = 'dashboard/edit-property.html'
+    property_form = PropertyEditForm
+    fields = '__all__'
+    property_financial_information_form_class = PropertyFinancialInformationForm
+    expense_form_class = PropertyExpenseForm
+    success_url = reverse_lazy('dashboard_properties')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['property_form'] = PropertyEditForm(instance=self.object)
+        context['property_financial_information_form'] = PropertyFinancialInformationForm(instance=self.object)
+        context['expense_form'] = PropertyExpenseForm(instance=self.object)
+        return context
+
+    def get_queryset(self):
+        return Property.objects.filter(owner=self.request.user)
+
+
+class PropertyDeleteView(LoginRequiredMixin, DeleteView):
+    model = Property
+    success_url = reverse_lazy('dashboard_properties')
+    login_url = 'index'
+    form_class = PropertyDeleteForm
+    property_financial_information_form_class = PropertyFinancialInformationForm
+    expense_form_class = PropertyExpenseForm
+    template_name = 'dashboard/delete-property.html'
+
+
 class PropertyDetailsView(LoginRequiredMixin, DetailView):
     login_url = 'index'
 
@@ -95,12 +125,12 @@ class DashboardExpensesView(LoginRequiredMixin, TemplateView):
 ''' React Views '''
 
 
-class PropertyListView(generics.ListAPIView):
+class PropertyListApiView(generics.ListAPIView):
     queryset = Property.objects.all()
     serializer_class = PropertySerializer
 
 
-class PropertyDetailsView(generics.ListAPIView):
+class PropertyApiView(generics.ListAPIView):
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         return Property.objects.filter(pk=pk)
@@ -108,7 +138,7 @@ class PropertyDetailsView(generics.ListAPIView):
     serializer_class = PropertySerializer
 
 
-class PropertyExpensesView(generics.ListAPIView):
+class PropertyExpensesApiView(generics.ListAPIView):
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         return PropertyExpense.objects.filter(property_id=pk)
