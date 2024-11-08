@@ -4,7 +4,6 @@ from django.contrib.sitemaps.views import sitemap
 from django.views.static import serve
 from django.conf.urls.static import static
 
-
 from FixToFlip import settings
 from FixToFlip.sitemaps import OfferSitemap
 
@@ -28,3 +27,10 @@ urlpatterns = [
     path('dashboard/', include('FixToFlip.dashboard.urls'), name='dashboard_main_page'),
 
 ]
+
+urlpatterns += static(settings.STATIC_URL,
+                      document_root=settings.STATIC_ROOT)
+
+urlpatterns += static(settings.MEDIA_URL,
+                      document_root=settings.MEDIA_ROOT
+                      )
