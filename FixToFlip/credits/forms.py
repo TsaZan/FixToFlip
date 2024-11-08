@@ -10,7 +10,13 @@ class CreditBaseForm(forms.ModelForm):
 
 
 class CreditAddForm(CreditBaseForm):
-    pass
+    class Meta:
+        model = Credit
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['credit_owner'].required = False
 
 
 class CreditEditForm(CreditBaseForm):

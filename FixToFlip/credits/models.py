@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
 from decimal import Decimal
@@ -25,7 +26,9 @@ class Credit(models.Model):
         max_digits=10,
         decimal_places=2,
         default=Money(0, 'EUR'),
-        validators=[MinMoneyValidator(Decimal(0))]
+        validators=[MinMoneyValidator(Decimal(0))],
+        null=True,
+        blank=True
     )
 
     credit_interest = models.DecimalField(
@@ -33,7 +36,12 @@ class Credit(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(0)]
     )
-
+    monthly_payment = MoneyField(
+        max_digits=10,
+        decimal_places=2,
+        default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(Decimal(0))]
+    )
     credit_description = models.TextField(
         blank=True,
         null=True,
@@ -50,7 +58,7 @@ class Credit(models.Model):
     )
 
     credit_owner = models.ForeignKey(
-        to='accounts.BaseAccount',
+        to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
 

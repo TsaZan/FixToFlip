@@ -1,33 +1,47 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, CreateView
 
 from FixToFlip.credits.forms import CreditAddForm
 from FixToFlip.credits.models import Credit
+from FixToFlip.money_operations import credit_reminder_calculation
 
 
-def CreditsView(request):
-    pass
+class DashboardCreditsView(LoginRequiredMixin, TemplateView):
+    template_name = 'dashboard/credits-list.html'
+    login_url = 'index'
+
+    def get_context_data(self, **kwargs):
+        credits_list = Credit.objects.filter(credit_owner=self.request.user)
+        paginator = Paginator(credits_list, 5)
+        page_number = self.request.GET.get('page')
+        credits = paginator.get_page(page_number)
+        for credit in credits:
+            credit.remainder = credit_reminder_calculation(credit.id)
+        context = super().get_context_data(**kwargs)
+        context['credits'] = credits
+
+        return context
 
 
 def CreditDetailsView(request, pk):
     pass
 
 
-def AddCreditView(request):
-    if request.method == 'POST':
-        form = CreditAddForm(request.POST)
-        if form.is_valid():
-            form.save()  # Save the form data to the database
-            messages.success(request, 'Credit added successfully!')
-            form = CreditAddForm()
-    else:
-        form = CreditAddForm()  # If not POST, create an empty form
+class CreditAddView(LoginRequiredMixin, CreateView):
+    model = Credit
+    form_class = CreditAddForm
+    template_name = 'dashboard/add-credit.html'
+    success_url = reverse_lazy('credits')
 
-    context = {
-        "credits": Credit.objects.all(),
-        "CreditForm": form  # Pass the form instance to the template
-    }
-    return render(request, 'credits/add-credit.html', context)
+    def form_valid(self, form):
+        form.instance.credit_owner = self.request.user
+        return super().form_valid(form)
+
+
 
 
 def EditCreditView(request, pk):

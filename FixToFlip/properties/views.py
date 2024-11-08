@@ -1,127 +1,136 @@
-from django.shortcuts import redirect, render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
-from djmoney.money import Money
-from djmoney.contrib.exchange.models import convert_money
-from rest_framework import generics, response, status
-from django.shortcuts import render
+from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView
 
-from FixToFlip.properties.forms import PropertyAddForm, PropertyExpenseForm
+from rest_framework import generics
+from django.shortcuts import render
+from django.core.paginator import Paginator
+
+from FixToFlip.money_operations import sum_current_expenses
+from FixToFlip.properties.forms import PropertyAddForm, PropertyExpenseForm, PropertyFinancialInformationForm, \
+    PropertyEditForm, PropertyDeleteForm
 from FixToFlip.properties.models import Property, PropertyExpense
 from FixToFlip.properties.serializers import PropertySerializer, PropertyExpenseSerializer
 
 
-def properties_main_page(request):
-    context = {'properties': Property.objects.all()}
-    return render(request, 'properties/properties_main_page.html', context)
+class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
+    template_name = 'dashboard/properties-list.html'
+    login_url = 'index'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        properties = Property.objects.filter(owner=self.request.user)
+        paginator = Paginator(properties, 5)
+        page_number = self.request.GET.get('page')
+        properties = paginator.get_page(page_number)
+        for property in properties:
+            property.current_expenses = sum_current_expenses(property.id)
+        context['properties'] = properties
+
+        return context
 
 
-def details_property(request, pk):
-    properties = Property.objects.filter(pk=pk)
-    expenses = PropertyExpense.objects.filter(property_id=pk)
-
-    total_expenses_eur = Money(0, 'EUR')
-
-    for expense in expenses:
-        try:
-            total_expenses_eur += convert_money(expense.utilities, 'EUR')
-            total_expenses_eur += convert_money(expense.notary_taxes, 'EUR')
-            total_expenses_eur += convert_money(expense.profit_tax, 'EUR')
-            total_expenses_eur += convert_money(expense.municipality_taxes, 'EUR')
-            total_expenses_eur += convert_money(expense.advertising, 'EUR')
-            total_expenses_eur += convert_money(expense.administrative_fees, 'EUR')
-            total_expenses_eur += convert_money(expense.insurance, 'EUR')
-        except Exception as e:
-            print(f"Conversion error: {e}")
-
-    # total_expenses_sum = 0
-    # for expense in expenses.values():
-    #     for key, value in expense.items():
-    #         if isinstance(value, Decimal):
-    #             total_expenses_sum += value
-
-    context = {'property': properties,
-               'expenses': expenses,
-               'pk': pk,
-               'total_expenses_eur': total_expenses_eur}
-
-    return render(request, 'properties/details_property.html', context)
-
-
-def add_property(request):
-    properties = Property.objects.all()
-    form = PropertyAddForm(request.POST or None)
-
+def property_add_view(request):
     if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            return redirect('add_property')
+        property_form = PropertyAddForm(request.POST)
+        property_financial_information_form = PropertyFinancialInformationForm(request.POST)
+        expense_form = PropertyExpenseForm(request.POST)
 
-    context = {'form': form,
-               'properties': properties,
-               }
+        if property_form.is_valid() and property_financial_information_form.is_valid() and expense_form.is_valid():
+            property_form.instance.owner = request.user
+            property = property_form.save()
+            property_financial_information = property_financial_information_form.save(commit=False)
+            expense = expense_form.save(commit=False)
+            expense.property = property
+            expense.save()
+            if property_financial_information.credited_amount:
+                property_financial_information.is_credited = True
+                property_financial_information.property = property
+                property_financial_information.save()
 
-    return render(request, 'properties/add_property.html', context)
+            return redirect('dashboard_properties')
 
-
-def edit_property(request, pk):
-    pass
-
-
-def delete_property(request, pk):
-    pass
-
-
-def add_property_expenses(request, pk):
-    form = PropertyExpenseForm(request.POST or None)
-    property_pk = Property.objects.get(pk=pk)
-
-    if request.method == 'POST':
-        if form.is_valid():
-            expense = form.save(commit=False)
-            expense.property = property_pk
-            form.save()
-            return redirect('details_property', pk=pk)
+    else:
+        property_form = PropertyAddForm()
+        property_financial_information_form = PropertyFinancialInformationForm()
+        expense_form = PropertyExpenseForm()
 
     context = {
-        'form': form
+        'property_form': property_form,
+        'property_financial_information_form': property_financial_information_form,
+        'expense_form': expense_form
     }
-    return render(request, 'properties/add_property_expenses.html', context)
+
+    return render(request, 'dashboard/add-property.html', context)
 
 
-def property_expenses_view(request, pk):
-    expenses = PropertyExpense.objects.filter(property_id=pk)
+class PropertyEditView(LoginRequiredMixin, UpdateView):
+    login_url = 'index'
+    template_name = 'dashboard/edit-property.html'
+    property_form = PropertyEditForm
+    fields = '__all__'
+    property_financial_information_form_class = PropertyFinancialInformationForm
+    expense_form_class = PropertyExpenseForm
+    success_url = reverse_lazy('dashboard_properties')
 
-    total_expenses_eur = Money(0, 'EUR')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['property_form'] = PropertyEditForm(instance=self.object)
+        context['property_financial_information_form'] = PropertyFinancialInformationForm(instance=self.object)
+        context['expense_form'] = PropertyExpenseForm(instance=self.object)
+        return context
 
-    for expense in expenses:
-        try:
-            total_expenses_eur += convert_money(expense.utilities, 'EUR')
-            total_expenses_eur += convert_money(expense.notary_taxes, 'EUR')
-            total_expenses_eur += convert_money(expense.profit_tax, 'EUR')
-            total_expenses_eur += convert_money(expense.municipality_taxes, 'EUR')
-            total_expenses_eur += convert_money(expense.advertising, 'EUR')
-            total_expenses_eur += convert_money(expense.administrative_fees, 'EUR')
-            total_expenses_eur += convert_money(expense.insurance, 'EUR')
-        except Exception as e:
-            print(f"Conversion error: {e}")
+    def get_queryset(self):
+        return Property.objects.filter(owner=self.request.user)
 
-    context = {
-        'expenses': expenses,
-        'total_expenses_eur': total_expenses_eur,
-    }
-    return render(request, 'properties/expenses.html', context)
+
+class PropertyDeleteView(LoginRequiredMixin, DeleteView):
+    model = Property
+    success_url = reverse_lazy('dashboard_properties')
+    login_url = 'index'
+    form_class = PropertyDeleteForm
+    property_financial_information_form_class = PropertyFinancialInformationForm
+    expense_form_class = PropertyExpenseForm
+    template_name = 'dashboard/delete-property.html'
+
+
+class PropertyDetailsView(LoginRequiredMixin, DetailView):
+    login_url = 'index'
+
+    model = Property
+    template_name = 'dashboard/property-details.html'
+
+
+class DashboardExpensesView(LoginRequiredMixin, TemplateView):
+    model = PropertyExpense
+    template_name = 'dashboard/expenses-list.html'
+    login_url = 'index'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        properties = Property.objects.filter(owner=self.request.user)
+        expenses_list = PropertyExpense.objects.filter(property__in=properties)
+        paginator = Paginator(expenses_list, 5)
+        page_number = self.request.GET.get('page')
+        expenses = paginator.get_page(page_number)
+
+        context['expenses'] = expenses
+
+        return context
 
 
 ''' React Views '''
 
 
-class PropertyListView(generics.ListAPIView):
+class PropertyListApiView(generics.ListAPIView):
     queryset = Property.objects.all()
     serializer_class = PropertySerializer
 
 
-class PropertyDetailsView(generics.ListAPIView):
+class PropertyApiView(generics.ListAPIView):
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         return Property.objects.filter(pk=pk)
@@ -129,12 +138,9 @@ class PropertyDetailsView(generics.ListAPIView):
     serializer_class = PropertySerializer
 
 
-class PropertyExpensesView(generics.ListAPIView):
+class PropertyExpensesApiView(generics.ListAPIView):
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         return PropertyExpense.objects.filter(property_id=pk)
 
     serializer_class = PropertyExpenseSerializer
-
-
-

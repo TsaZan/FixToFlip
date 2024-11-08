@@ -43,8 +43,8 @@ class OfferStatusChoices(models.TextChoices):
 
 
 class PropertyConditionChoices(models.TextChoices):
-    READY = 'R', 'Ready to sell'
-    SOLD = 'S', 'Sold'
-    FOR_SALE = 'F', 'For sale'
-    REPAIRED = 'Rp', 'Repaired'
-    UNDER_REPAIR = 'U', 'Under repair'
+    READY = 'Ready to sell', 'Ready to sell'
+    SOLD = 'Sold', 'Sold'
+    FOR_SALE = 'For sale', 'For sale'
+    REPAIRED = 'Repaired', 'Repaired'
+    UNDER_REPAIR = 'Under repair', 'Under repair'

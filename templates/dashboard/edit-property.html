@@ -9,7 +9,7 @@ Dashboard Body
 -->
 
     <h2 class="main-title d-block d-lg-none">Add New Property</h2>
-    <form method="post" action="{% url 'add_property' %}" enctype="multipart/form-data">
+    <form method="post" action="{% url 'edit_property' object.pk %}" enctype="multipart/form-data">
         {% csrf_token %}
         {{ property_form.errors }}
         <div class="bg-white card-box border-20">
@@ -201,7 +201,7 @@ Dashboard Body
 
         <!-- /.card-box -->
         <div class="button-group d-inline-flex align-items-center mt-30">
-            <button type="submit" class="dash-btn-two tran3s me-3">Submit Property</button>
+            <button type="submit" class="dash-btn-two tran3s me-3">Edit Property</button>
             <a href="{% url 'dashboard_properties' %}" class="dash-cancel-btn tran3s">Cancel</a>
         </div>
     </form>

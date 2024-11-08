@@ -3,7 +3,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
 from FixToFlip.blog.views import BlogIndexView, CategoryView, BlogPostAPIView
-from FixToFlip.properties.views import PropertyListView, PropertyDetailsView, PropertyExpensesView
+from FixToFlip.properties.views import PropertyListApiView, PropertyDetailsView, PropertyExpensesApiView
 
 app_name = "FixToFlip"
 
@@ -17,9 +17,9 @@ urlpatterns = [
 
         # PROPERTY MODEL API VIEWS
         path('properties/', include([
-            path('', PropertyListView.as_view(), name='property_list_api'),
+            path('', PropertyListApiView.as_view(), name='property_list_api'),
             path('properties/<int:pk>/', PropertyDetailsView.as_view(), name='property_details_api'),
-            path('properties/<int:pk>/expenses/', PropertyExpensesView.as_view(), name='property_expenses_api')
+            path('properties/<int:pk>/expenses/', PropertyExpensesApiView.as_view(), name='property_expenses_api')
         ])),
 
         # BLOG MODEL API VIEWS

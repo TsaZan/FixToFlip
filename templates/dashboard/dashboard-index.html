@@ -22,7 +22,7 @@ Dashboard Body
                                  class="lazy-img"></div>
                         <div class="order-sm-0">
                             <span>Total Properties</span>
-                            <div class="value fw-500">15</div>
+                            <div class="value fw-500">{{ properties_count | stringformat:"02d" }}</div>
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@ Dashboard Body
                                  class="lazy-img"></div>
                         <div class="order-sm-0">
                             <span>Repairing</span>
-                            <div class="value fw-500">03</div>
+                            <div class="value fw-500">{{ properties_in_repair | stringformat:"02d" }}</div>
                         </div>
                     </div>
                 </div>
