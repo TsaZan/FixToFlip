@@ -13,19 +13,18 @@ sitemaps = {
 }
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('FixToFlip.api_urls'), name='url_api'),
-    path('accounts/', include('allauth.urls'), name='accounts_main_page'),
-    path('accounts/', include('FixToFlip.accounts.urls'), name='account_main_page'),
-    path('blog/', include('FixToFlip.blog.urls'), name='blog_main_page'),
-    path('calculators/', include('FixToFlip.calculator.urls'), name='calculator_main_page'),
-    path('credits/', include('FixToFlip.credits.urls'), name='credits_main_page'),
-    path('notifications/', include('FixToFlip.notifications.urls'), name='notification_main_page'),
-    path('offers/', include('FixToFlip.offers.urls'), name='offers_main_page'),
-    path('properties/', include('FixToFlip.properties.urls'), name='properties_main_page'),
-    path('', include('FixToFlip.common.urls')),
-    path('sitemap.xml', sitemap, {'sitemaps': {'properties': OfferSitemap}}, name='django.contrib.sitemaps'),
-    path('dashboard/', include('FixToFlip.dashboard.urls'), name='dashboard_main_page'),
+                  path('admin/', admin.site.urls),
+                  path('api/', include('FixToFlip.api_urls'), name='url_api'),
+                  path('accounts/', include('allauth.urls'), name='accounts_main_page'),
+                  path('accounts/', include('FixToFlip.accounts.urls'), name='account_main_page'),
+                  path('blog/', include('FixToFlip.blog.urls'), name='blog_main_page'),
+                  path('calculators/', include('FixToFlip.calculator.urls'), name='calculator_main_page'),
+                  path('credits/', include('FixToFlip.credits.urls'), name='credits_main_page'),
+                  path('notifications/', include('FixToFlip.notifications.urls'), name='notification_main_page'),
+                  path('offers/', include('FixToFlip.offers.urls'), name='offers_main_page'),
+                  path('properties/', include('FixToFlip.properties.urls'), name='properties_main_page'),
+                  path('', include('FixToFlip.common.urls')),
+                  path('sitemap.xml', sitemap, {'sitemaps': {'properties': OfferSitemap}}, name='django.contrib.sitemaps'),
+                  path('dashboard/', include('FixToFlip.dashboard.urls'), name='dashboard_main_page'),
 
-]
-
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
