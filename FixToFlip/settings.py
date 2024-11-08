@@ -114,8 +114,8 @@ DJANGO_MONEY_RATES = {
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-CSRF_TRUSTED_ORIGINS = ['http://*.127.0.0.1']
-ALLOWED_DOMAIN = '127.0.0.1'
+CSRF_TRUSTED_ORIGINS = ['https://fixtoflip.azurewebsites.net', 'http://127.0.0.1', 'http://localhost']
+ALLOWED_DOMAIN = ['fixtoflip.azurewebsites.net', '127.0.0.1', 'localhost']
 SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_AUTO_SIGN_UP = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
