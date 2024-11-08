@@ -21,8 +21,8 @@ AUTH_USER_MODEL = 'accounts.BaseAccount'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-CSRF_COOKIE_SECURE = True
-ALLOWED_HOSTS = ['*', ]
+CSRF_COOKIE_SECURE = False
+ALLOWED_HOSTS = ('fixtoflip.azurewebsites.net', '127.0.0.1', 'localhost')
 
 PROJECT_APPS = [
     'FixToFlip.accounts',
@@ -200,16 +200,10 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+STATICFILES_STORAGE = ('cloudinary_storage.storage.StaticHashedCloudinaryStorage',
+                       'whitenoise.storage.CompressedManifestStaticFilesStorage')
 
 STATIC_URL = 'static/'
-
-STORAGES = {
-    # ...
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
 
 STATICFILES_DIRS = (
     BASE_DIR / 'staticfiles/',
