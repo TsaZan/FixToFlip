@@ -46,8 +46,6 @@ AUTHENTICATION_APPS = [
     'allauth.socialaccount.providers.facebook',
 ]
 
-
-
 THIRD_PARTY_APPS = [
     'djmoney',
     'djmoney.contrib.exchange',
@@ -56,6 +54,7 @@ THIRD_PARTY_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'cities_light',
+    "whitenoise.runserver_nostatic",
 
 ]
 
@@ -93,6 +92,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -120,7 +120,7 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_AUTO_SIGN_UP = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'none' #ONLY IN DEBUG MODE!!
+ACCOUNT_EMAIL_VERIFICATION = 'none'  #ONLY IN DEBUG MODE!!
 ACCOUNT_EMAIL_REQUIRED = False
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
@@ -203,6 +203,13 @@ USE_TZ = True
 STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
 
 STATIC_URL = 'static/'
+
+STORAGES = {
+    # ...
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 STATICFILES_DIRS = (
     BASE_DIR / 'staticfiles/',
