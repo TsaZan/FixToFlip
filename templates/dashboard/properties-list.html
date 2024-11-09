@@ -113,7 +113,7 @@ Dashboard Body
         {% if properties.has_previous %}
             <li class="ms-2"><a  href="?page=1" class="d-flex align-items-center">First</a></li>
 
-        <li class="me-4 ms-2"><a  href="?page={{ properties.previous_page_number }}" class="d-flex align-items-center">Previous</a></li>
+            <li class="me-4 ms-2"><a  href="?page={{ properties.previous_page_number }}" class="d-flex align-items-center">Previous</a></li>
         {% endif %}
 
         {% for num in properties.paginator.page_range %}

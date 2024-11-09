@@ -8,6 +8,7 @@ import cloudinary
 from cloudinary import CloudinaryImage
 import cloudinary.uploader
 import cloudinary.api
+import mimetypes
 import json
 
 config = cloudinary.config(secure=True)
@@ -19,10 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 AUTH_USER_MODEL = 'accounts.BaseAccount'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG')
+DEBUG = True
 
-CSRF_COOKIE_SECURE = True
-ALLOWED_HOSTS = ['*', ]
+CSRF_COOKIE_SECURE = False
+ALLOWED_HOSTS = ('fixtoflip.azurewebsites.net', '127.0.0.1', 'localhost')
 
 PROJECT_APPS = [
     'FixToFlip.accounts',
@@ -46,8 +47,6 @@ AUTHENTICATION_APPS = [
     'allauth.socialaccount.providers.facebook',
 ]
 
-
-
 THIRD_PARTY_APPS = [
     'djmoney',
     'djmoney.contrib.exchange',
@@ -56,6 +55,7 @@ THIRD_PARTY_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'cities_light',
+    "whitenoise.runserver_nostatic",
 
 ]
 
@@ -93,6 +93,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -114,13 +115,13 @@ DJANGO_MONEY_RATES = {
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-CSRF_TRUSTED_ORIGINS = ['http://*.127.0.0.1']
-ALLOWED_DOMAIN = '127.0.0.1'
+CSRF_TRUSTED_ORIGINS = ['https://fixtoflip.azurewebsites.net', 'http://127.0.0.1', 'http://localhost']
+ALLOWED_DOMAIN = ['fixtoflip.azurewebsites.net', '127.0.0.1', 'localhost']
 SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_AUTO_SIGN_UP = True
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'none' #ONLY IN DEBUG MODE!!
+ACCOUNT_EMAIL_VERIFICATION = 'none'  #ONLY IN DEBUG MODE!!
 ACCOUNT_EMAIL_REQUIRED = False
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
@@ -200,9 +201,9 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     BASE_DIR / 'staticfiles/',
@@ -212,8 +213,6 @@ STATIC_ROOT = BASE_DIR / 'static'
 CURRENCIES = ('EUR',)
 DEFAULT_CURRENCY = 'EUR'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-import mimetypes
 
 mimetypes.add_type("image/svg+xml", ".svg", True)
 mimetypes.add_type("image/svg+xml", ".svgz", True)

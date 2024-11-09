@@ -2,7 +2,6 @@ from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
 from decimal import Decimal
-
 from djmoney.models.fields import MoneyField
 from djmoney.models.validators import MinMoneyValidator
 from djmoney.money import Money

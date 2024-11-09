@@ -1,6 +1,6 @@
-{% load static %} 
- 
-    <div class="dashboard-body">
+{% load static %}
+
+<div class="dashboard-body">
     <div class="position-relative">
         <!-- ************************ Header **************************** -->
         <header class="dashboard-header">
@@ -40,7 +40,7 @@
                     <a href="{% url 'add_property' %}" class="btn-two"><span>Add Property</span> <i
                             class="fa-thin fa-arrow-up-right"></i></a>
                 </div>
-                                <div class="d-none d-md-block me-3">
+                <div class="d-none d-md-block me-3">
                     <a href="{% url 'add_credit' %}" class="btn-two"><span>Add Credit</span> <i
                             class="fa-thin fa-arrow-up-right"></i></a>
                 </div>
@@ -54,7 +54,7 @@
                     <div class="user-name-data">
                         <ul class="dropdown-menu" aria-labelledby="profile-dropdown">
                             <li>
-                                <a class="dropdown-item d-flex align-items-center" href="{% url 'profile_edit' %}"><img
+                                <a class="dropdown-item d-flex align-items-center" href="{% url 'profile_edit' request.user.pk %}"><img
                                         src="{% static 'images/lazy.svg' %}"
                                         data-src="{% static 'images/icon/icon_23.svg' %}" alt=""
                                         class="lazy-img"><span class="ms-2 ps-1">Profile</span></a>

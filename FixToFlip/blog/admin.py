@@ -1,7 +1,5 @@
 from django.contrib import admin
-
 from FixToFlip.blog.models import BlogPost, Category, Comment
-
 
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):

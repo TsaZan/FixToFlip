@@ -7,7 +7,6 @@ def login_ctx_tag(request):
         del form.fields['remember']
         return form
 
-
     return {
         'loginctx': login(LoginForm)}
 

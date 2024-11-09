@@ -18,27 +18,12 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context['properties_count'] = Property.objects.filter(owner=self.request.user).count()
         context['properties_in_repair'] = Property.objects.filter(owner=self.request.user,
                                                                   property_condition='Under repair').count()
+        context['user'] = self.request.user
         return context
+
 
 class DashboardTasksView(LoginRequiredMixin, TemplateView):
     if login_required:
         login_url = 'index'
 
     template_name = 'dashboard/tasks.html'
-
-
-class ProfileEditTemplate(LoginRequiredMixin, TemplateView):
-    if login_required:
-        login_url = 'index'
-
-    model = BaseAccount
-    template_name = 'dashboard/profile.html'
-    success_url = reverse_lazy('dashboard')
-    fields = '__all__'
-
-
-
-
-
-
-
