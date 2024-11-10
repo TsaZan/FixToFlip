@@ -76,7 +76,7 @@ Loading Transition
                     <h2>Are you sure?</h2>
                     <p>Are you sure to delete your account? All data will be lost.</p>
                     <div class="button-group d-inline-flex justify-content-center align-items-center pt-15">
-                        <a href="#" class="confirm-btn fw-500 tran3s me-3">Yes</a>
+                        <a href="{% url 'delete_account' request.user.pk %}" class="confirm-btn fw-500 tran3s me-3">Yes</a>
                         <button type="button" class="btn-close fw-500 ms-3" data-bs-dismiss="modal" aria-label="Close">
                             Cancel
                         </button>

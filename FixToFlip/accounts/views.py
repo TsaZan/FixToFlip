@@ -1,8 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView
-from FixToFlip.accounts.forms import ProfileEditForm, UserEditForm
+from django.views.generic import UpdateView, DeleteView
+from FixToFlip.accounts.forms import ProfileEditForm, UserEditForm, UserDeleteForm
 from FixToFlip.accounts.models import BaseAccount
 
 
@@ -40,3 +40,10 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
 
     def success_url(self):
         return reverse_lazy('profile_edit', kwargs={'pk': self.object.pk})
+
+
+class AccountDeleteView(LoginRequiredMixin, DeleteView):
+    model = BaseAccount
+    template_name = 'dashboard/delete-account.html'
+    success_url = reverse_lazy('index')
+
