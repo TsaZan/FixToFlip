@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 AUTH_USER_MODEL = 'accounts.BaseAccount'
-# SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = False
 
 CSRF_COOKIE_SECURE = False
@@ -66,8 +66,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication', 
+        'rest_framework.authentication.SessionAuthentication', 
+
     ],
 }
 REST_FRAMEWORK = {

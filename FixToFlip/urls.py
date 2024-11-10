@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.contrib.sitemaps.views import sitemap
 from django.views.static import serve
+from django.conf.urls.static import static
 
 from FixToFlip import settings
 from FixToFlip.sitemaps import OfferSitemap
@@ -9,9 +10,7 @@ from FixToFlip.sitemaps import OfferSitemap
 sitemaps = {
     'static': OfferSitemap
 }
-static_urlpatterns = [
-    re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
-] #Only for production
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('FixToFlip.api_urls'), name='url_api'),
@@ -26,5 +25,8 @@ urlpatterns = [
     path('', include('FixToFlip.common.urls')),
     path('sitemap.xml', sitemap, {'sitemaps': {'properties': OfferSitemap}}, name='django.contrib.sitemaps'),
     path('dashboard/', include('FixToFlip.dashboard.urls'), name='dashboard_main_page'),
-    path("", include(static_urlpatterns)),  #Only for production
+
 ]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
