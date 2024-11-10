@@ -1,10 +1,8 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.urls import reverse_lazy
-from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from FixToFlip.accounts.models import BaseAccount
-from FixToFlip.properties.forms import PropertyAddForm
+from django.views.generic import TemplateView
+
 from FixToFlip.properties.models import Property
 
 

@@ -28,3 +28,7 @@ class UserEditForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'placeholder': 'Last Name'}),
 
         }
+
+
+class UserDeleteForm(UserEditForm):
+    pass
