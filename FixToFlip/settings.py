@@ -19,8 +19,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 AUTH_USER_MODEL = 'accounts.BaseAccount'
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+DEBUG = False
 
 CSRF_COOKIE_SECURE = False
 ALLOWED_HOSTS = ('fixtoflip.azurewebsites.net', '127.0.0.1', 'localhost')
@@ -60,16 +60,15 @@ THIRD_PARTY_APPS = [
 ]
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
+
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  # За токен базирано удостоверяване
-        'rest_framework.authentication.SessionAuthentication',  # Ако използвате сесии
-        #     'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication', 
+        'rest_framework.authentication.SessionAuthentication', 
+
     ],
 }
 REST_FRAMEWORK = {
