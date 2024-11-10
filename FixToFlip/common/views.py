@@ -1,9 +1,8 @@
-from allauth.account.forms import LoginForm, SignupForm
-from allauth.account.utils import complete_signup
-from allauth.account.views import login, signup, LoginView, SignupView, PasswordResetView
-
+from allauth.account.views import login, LoginView, SignupView, PasswordResetView
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+
+from FixToFlip.accounts.models import Profile
 
 
 # Create your views here.
@@ -25,30 +24,24 @@ def faq(request):
 
 class AjaxLoginView(LoginView):
     def form_valid(self, form):
-        # Логваме потребителя, ако формата е валидна
         login(self.request, form.user)
-        return JsonResponse({'success': True, 'location': '#'})  # Успешен отговор
+        return JsonResponse({'success': True, 'location': '#'})
 
     def form_invalid(self, form):
-        # Връщаме грешките в JSON формат директно
         return JsonResponse({'success': False, 'errors': form.errors})
 
 
 class AjaxSignupView(SignupView):
 
     def form_valid(self, form):
-        response = super().form_valid(form)
+        super().form_valid(form)
+        Profile.objects.create(user=self.user)
         login(self.request, self.user)
         return JsonResponse({'success': True})
 
-    # def form_invalid(self, form):
-    #     response_data = {
-    #         "success": False,
-    #         "errors": form.errors.as_json(),  # form.errors.as_data,
-    #     }
-    #     return JsonResponse(response_data)
     def form_invalid(self, form):
         return JsonResponse({'success': False, 'errors': form.errors.as_json()})
+
 
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'common/login_modal.html'

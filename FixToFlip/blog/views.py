@@ -1,15 +1,11 @@
-import requests
-from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
 from rest_framework import generics
 from django.views.generic import View
-
-from FixToFlip.accounts.models import BaseAccount
 from FixToFlip.blog.forms import BlogCommentForm, AddBlogPostForm, BlogPostDeleteForm
 from FixToFlip.blog.models import BlogPost, Category
 from FixToFlip.blog.serializers import BlogPostSerializer, CategorySerializer
@@ -84,6 +80,7 @@ class BlogPostView(View):
         }
         return render(request, self.template_name, context)
 
+
 class BlogPostsView(LoginRequiredMixin, TemplateView):
     if login_required:
         login_url = 'index'
@@ -93,7 +90,11 @@ class BlogPostsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['posts'] = BlogPost.objects.all()
+        blog_posts = BlogPost.objects.all()
+        paginator = Paginator(blog_posts, 5)
+        page_number = self.request.GET.get('page')
+        posts = paginator.get_page(page_number)
+        context['posts'] = posts
         return context
 
 

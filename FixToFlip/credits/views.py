@@ -4,7 +4,6 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView
-
 from FixToFlip.credits.forms import CreditAddForm
 from FixToFlip.credits.models import Credit
 from FixToFlip.money_operations import credit_reminder_calculation
@@ -40,8 +39,6 @@ class CreditAddView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.credit_owner = self.request.user
         return super().form_valid(form)
-
-
 
 
 def EditCreditView(request, pk):

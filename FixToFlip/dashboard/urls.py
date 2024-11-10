@@ -1,12 +1,8 @@
-from urllib import request
-
-from django.shortcuts import render
 from django.urls import path, include
-
+from FixToFlip.accounts.views import ProfileEditView
 from FixToFlip.blog.views import BlogPostsView, EditBlogPostView, AddBlogPostView, DeleteBlogPostView
 from FixToFlip.credits.views import DashboardCreditsView, CreditAddView
-from FixToFlip.dashboard.views import DashboardView, DashboardTasksView, \
-    ProfileEditTemplate
+from FixToFlip.dashboard.views import DashboardView, DashboardTasksView
 from FixToFlip.properties.views import DashboardPropertiesView, PropertyDetailsView, property_add_view, \
     DashboardExpensesView, PropertyEditView, PropertyDeleteView
 
@@ -30,7 +26,7 @@ urlpatterns = [
 
     path('expenses/', DashboardExpensesView.as_view(), name='dashboard_expenses'),
 
-    path('profile/', ProfileEditTemplate.as_view(), name='profile_edit'),
+    path('<int:pk>/profile/', ProfileEditView.as_view(), name='profile_edit'),
 
     path('blogposts/', include([
         path('', BlogPostsView.as_view(), name='dashboard_blogposts'),

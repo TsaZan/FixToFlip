@@ -1,7 +1,5 @@
 from cloudinary.forms import CloudinaryJsFileField
 from django import forms
-
-from FixToFlip.blog.models import BlogPost
 from FixToFlip.properties.models import Property
 from FixToFlip.validators import get_current_date, get_current_year
 

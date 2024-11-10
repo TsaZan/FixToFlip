@@ -1,13 +1,10 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView
-
 from rest_framework import generics
 from django.shortcuts import render
 from django.core.paginator import Paginator
-
 from FixToFlip.money_operations import sum_current_expenses
 from FixToFlip.properties.forms import PropertyAddForm, PropertyExpenseForm, PropertyFinancialInformationForm, \
     PropertyEditForm, PropertyDeleteForm

@@ -8,6 +8,7 @@ import cloudinary
 from cloudinary import CloudinaryImage
 import cloudinary.uploader
 import cloudinary.api
+import mimetypes
 import json
 
 config = cloudinary.config(secure=True)
@@ -18,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 AUTH_USER_MODEL = 'accounts.BaseAccount'
-# SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = False
 
 CSRF_COOKIE_SECURE = False
@@ -59,16 +60,15 @@ THIRD_PARTY_APPS = [
 ]
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
+
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  # За токен базирано удостоверяване
-        'rest_framework.authentication.SessionAuthentication',  # Ако използвате сесии
-        #     'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication', 
+        'rest_framework.authentication.SessionAuthentication', 
+
     ],
 }
 REST_FRAMEWORK = {
@@ -118,6 +118,7 @@ CSRF_TRUSTED_ORIGINS = ['https://fixtoflip.azurewebsites.net', 'http://127.0.0.1
 ALLOWED_DOMAIN = ['fixtoflip.azurewebsites.net', '127.0.0.1', 'localhost']
 SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_AUTO_SIGN_UP = True
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'  #ONLY IN DEBUG MODE!!
@@ -212,8 +213,6 @@ STATIC_ROOT = BASE_DIR / 'static'
 CURRENCIES = ('EUR',)
 DEFAULT_CURRENCY = 'EUR'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-import mimetypes
 
 mimetypes.add_type("image/svg+xml", ".svg", True)
 mimetypes.add_type("image/svg+xml", ".svgz", True)
