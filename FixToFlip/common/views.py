@@ -35,7 +35,6 @@ class AjaxSignupView(SignupView):
 
     def form_valid(self, form):
         super().form_valid(form)
-        Profile.objects.create(user=self.user)
         login(self.request, self.user)
         return JsonResponse({'success': True})
 
