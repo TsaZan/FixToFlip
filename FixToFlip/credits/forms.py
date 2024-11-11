@@ -1,6 +1,6 @@
 from django import forms
 
-from FixToFlip.credits.models import Credit
+from FixToFlip.credits.models import Credit, CreditPayment
 
 
 class CreditBaseForm(forms.ModelForm):
@@ -25,3 +25,15 @@ class CreditEditForm(CreditBaseForm):
 
 class CreditDeleteForm(CreditBaseForm):
     pass
+
+
+class CreditPaymentForm(forms.ModelForm):
+    class Meta:
+        model = CreditPayment
+        fields = ['payment_date', 'principal_amount', 'interest_amount', 'credit']  # Include relevant fields
+        widgets = {
+            'payment_date': forms.DateInput(attrs={'type': 'date'}),
+            'principal_amount': forms.NumberInput(attrs={'class': 'form-control'}),
+            'interest_amount': forms.NumberInput(attrs={'class': 'form-control'}),
+            'credit': forms.HiddenInput(),
+        }

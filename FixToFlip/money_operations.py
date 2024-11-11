@@ -1,4 +1,7 @@
-from FixToFlip.credits.models import Credit
+from django.db.models import Sum
+from djmoney.money import Money
+
+from FixToFlip.credits.models import Credit, CreditPayment
 from FixToFlip.properties.models import Property, PropertyExpense
 
 
@@ -20,3 +23,28 @@ def credit_reminder_calculation(credit_id):
     return remainder
 
 
+def credit_balance(credit_id):
+    credit = Credit.objects.get(id=credit_id)
+    total_principal_amount = CreditPayment.objects.filter(credit_id=credit_id).aggregate(Sum('principal_amount'))[
+        'principal_amount__sum']
+    if total_principal_amount is None:
+        total_principal_amount = Money(0, credit.credit_amount.currency)
+
+    if not isinstance(total_principal_amount, Money):
+        total_principal_amount = Money(total_principal_amount, credit.credit_amount.currency)
+
+    balance = credit.credit_amount - total_principal_amount
+    return balance
+
+
+def interest_paid(credit_id):
+    credit = Credit.objects.get(id=credit_id)
+    total_principal_amount = CreditPayment.objects.filter(credit_id=credit_id).aggregate(Sum('interest_amount'))[
+        'interest_amount__sum']
+
+    if total_principal_amount is None:
+        total_interest_amount = Money(0, credit.credit_amount.currency)
+
+    if not isinstance(total_principal_amount, Money):
+        total_interest_amount = Money(total_principal_amount, credit.credit_amount.currency)
+    return total_interest_amount

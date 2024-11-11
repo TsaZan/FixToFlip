@@ -1,12 +1,11 @@
-from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, CreateView
-from FixToFlip.credits.forms import CreditAddForm
-from FixToFlip.credits.models import Credit
-from FixToFlip.money_operations import credit_reminder_calculation
+from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
+from FixToFlip.credits.forms import CreditAddForm, CreditPaymentForm
+from FixToFlip.credits.models import Credit, CreditPayment
+from FixToFlip.money_operations import credit_reminder_calculation, credit_balance, interest_paid
 
 
 class DashboardCreditsView(LoginRequiredMixin, TemplateView):
@@ -20,6 +19,10 @@ class DashboardCreditsView(LoginRequiredMixin, TemplateView):
         credits = paginator.get_page(page_number)
         for credit in credits:
             credit.remainder = credit_reminder_calculation(credit.id)
+            credit.balance = credit_balance(credit.id)
+            if CreditPayment.objects.filter(credit_id=credit.id):
+                credit.interest_paid = interest_paid(credit.id)
+                credit.last_payment = CreditPayment.objects.filter(credit_id=credit.id).first().payment_date
         context = super().get_context_data(**kwargs)
         context['credits'] = credits
 
@@ -41,13 +44,14 @@ class CreditAddView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-def EditCreditView(request, pk):
-    pass
+class EditCreditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    def test_func(self):
+        property = self.get_object()
+        return self.request.user == property.owner
 
 
-def DeleteCreditView(request, pk):
-    pass
+class DeleteCreditView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
+    def test_func(self):
+        property = self.get_object()
+        return self.request.user == property.owner
 
-
-def CreditPaymentView(request, pk):
-    pass

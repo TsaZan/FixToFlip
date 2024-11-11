@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView
@@ -66,13 +66,13 @@ def property_add_view(request):
 
 
 class PropertyEditView(LoginRequiredMixin, UpdateView):
-    login_url = 'index'
     template_name = 'dashboard/edit-property.html'
     property_form = PropertyEditForm
     fields = '__all__'
     property_financial_information_form_class = PropertyFinancialInformationForm
     expense_form_class = PropertyExpenseForm
     success_url = reverse_lazy('dashboard_properties')
+    login_url = 'index'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -85,7 +85,7 @@ class PropertyEditView(LoginRequiredMixin, UpdateView):
         return Property.objects.filter(owner=self.request.user)
 
 
-class PropertyDeleteView(LoginRequiredMixin, DeleteView):
+class PropertyDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Property
     success_url = reverse_lazy('dashboard_properties')
     login_url = 'index'
@@ -94,12 +94,20 @@ class PropertyDeleteView(LoginRequiredMixin, DeleteView):
     expense_form_class = PropertyExpenseForm
     template_name = 'dashboard/delete-property.html'
 
+    def test_func(self):
+        property = self.get_object()
+        return self.request.user == property.owner
 
-class PropertyDetailsView(LoginRequiredMixin, DetailView):
+
+class PropertyDetailsView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     login_url = 'index'
 
     model = Property
     template_name = 'dashboard/property-details.html'
+
+    def test_func(self):
+        property = self.get_object()
+        return self.request.user == property.owner
 
 
 class DashboardExpensesView(LoginRequiredMixin, TemplateView):

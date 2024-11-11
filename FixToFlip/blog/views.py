@@ -1,11 +1,13 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
 from rest_framework import generics
 from django.views.generic import View
+
+from FixToFlip.accounts.admin import Profile
 from FixToFlip.blog.forms import BlogCommentForm, AddBlogPostForm, BlogPostDeleteForm
 from FixToFlip.blog.models import BlogPost, Category
 from FixToFlip.blog.serializers import BlogPostSerializer, CategorySerializer
@@ -28,12 +30,6 @@ class BlogPostAPIView(generics.ListAPIView):
         return BlogPost.objects.filter(slug=slug)
 
     serializer_class = BlogPostSerializer
-
-
-def get_extra_context():
-    return {
-
-    }
 
 
 class BlogMainPageView(TemplateView):
@@ -81,12 +77,13 @@ class BlogPostView(View):
         return render(request, self.template_name, context)
 
 
-class BlogPostsView(LoginRequiredMixin, TemplateView):
-    if login_required:
-        login_url = 'index'
-
+class BlogPostsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     model = BlogPost
     template_name = 'dashboard/blogposts-list.html'
+    login_url = 'index'
+
+    def test_func(self):
+        return self.request.user.is_staff
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -98,21 +95,22 @@ class BlogPostsView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class AddBlogPostView(LoginRequiredMixin, CreateView):
-    if login_required:
-        login_url = 'index'
-
+class AddBlogPostView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = BlogPost
     form_class = AddBlogPostForm
     template_name = 'dashboard/add-blogpost.html'
     success_url = reverse_lazy('dashboard_blogposts')
+    login_url = 'index'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+    def test_func(self):
+        return self.request.user.is_staff
 
-class EditBlogPostView(LoginRequiredMixin, UpdateView):
+
+class EditBlogPostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     if login_required:
         login_url = 'index'
 
@@ -127,19 +125,23 @@ class EditBlogPostView(LoginRequiredMixin, UpdateView):
         slug = self.object.slug
         return reverse_lazy('edit_blogpost', kwargs={'slug': slug})
 
+    def test_func(self):
+        return self.request.user.is_staff
 
-class DeleteBlogPostView(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
-    if login_required:
-        login_url = 'index'
 
+class DeleteBlogPostView(PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = BlogPost
     form_class = BlogPostDeleteForm
     template_name = 'dashboard/delete-blogpost.html'
     success_url = reverse_lazy('dashboard_blogposts')
     permission_required = ('dashboard.delete_blogpost',)
+    login_url = 'index'
 
     def get_object(self, queryset=None):
         return BlogPost.objects.get(slug=self.kwargs['slug'])
 
     def post(self, request, *args, **kwargs):
         return self.delete(request, *args, **kwargs)
+
+    def test_func(self):
+        return self.request.user.is_staff

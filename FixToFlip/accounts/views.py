@@ -1,17 +1,21 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, DeleteView
 from FixToFlip.accounts.forms import ProfileEditForm, UserEditForm, UserDeleteForm
-from FixToFlip.accounts.models import BaseAccount
+from FixToFlip.accounts.models import BaseAccount, Profile
 
 
-class ProfileEditView(LoginRequiredMixin, UpdateView):
+class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = BaseAccount
     fields = '__all__'
     profile_edit_form = ProfileEditForm
     user_edit_form = UserEditForm
     template_name = 'dashboard/profile.html'
+
+    def test_func(self):
+        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        return self.request.user == profile.user
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -42,8 +46,11 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('profile_edit', kwargs={'pk': self.object.pk})
 
 
-class AccountDeleteView(LoginRequiredMixin, DeleteView):
+class AccountDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = BaseAccount
     template_name = 'dashboard/delete-account.html'
     success_url = reverse_lazy('index')
 
+    def test_func(self):
+        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        return self.request.user == profile.user
