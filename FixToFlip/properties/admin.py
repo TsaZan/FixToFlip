@@ -1,9 +1,10 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
 from .models import Property, PropertyForSale, PropertyFinancialInformation
 
 
 @admin.register(Property)
-class PropertyAdmin(admin.ModelAdmin):
+class PropertyAdmin(ModelAdmin):
     list_display = (
         'property_name', 'country', 'city', 'property_type',
         'bedrooms', 'bathrooms', 'property_size', 'year_of_built', 'owner', 'created_at'
@@ -29,7 +30,7 @@ class PropertyAdmin(admin.ModelAdmin):
 
 
 @admin.register(PropertyForSale)
-class PropertyForSaleAdmin(admin.ModelAdmin):
+class PropertyForSaleAdmin(ModelAdmin):
     list_display = ('property_name', 'listed_price', 'is_furnished', 'listed_date')
     search_fields = ('property_name', 'list_description')
     list_filter = ('is_furnished', 'listed_date')
@@ -45,6 +46,6 @@ class PropertyForSaleAdmin(admin.ModelAdmin):
 
 
 @admin.register(PropertyFinancialInformation)
-class PropertyFinancialInformationAdmin(admin.ModelAdmin):
+class PropertyFinancialInformationAdmin(ModelAdmin):
     list_display = ('initial_price', 'repair_cost')
     search_fields = ('initial_price',)

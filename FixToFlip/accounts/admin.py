@@ -1,10 +1,10 @@
 from django.contrib import admin
-
+from unfold.admin import ModelAdmin
 from FixToFlip.accounts.models import BaseAccount, Profile
 
 
 @admin.register(BaseAccount)
-class AccountsAdmin(admin.ModelAdmin):
+class AccountsAdmin(ModelAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'is_active')
     search_fields = ('username', 'email', 'first_name', 'last_name',)
     fieldsets = (
@@ -21,7 +21,7 @@ class AccountsAdmin(admin.ModelAdmin):
 
 
 @admin.register(Profile)
-class Profile(admin.ModelAdmin):
+class Profile(ModelAdmin):
     list_display = ('user', 'profile_type', 'preferred_currency', 'user_location')
     search_fields = ('user_location',)
     list_filter = ('profile_type', 'preferred_currency',)

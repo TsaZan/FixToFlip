@@ -1,16 +1,16 @@
 from django.contrib import admin
-
+from unfold.admin import ModelAdmin
 from FixToFlip.credits.models import Credit, CreditPayment
 
 
 # Register your models here.
 @admin.register(Credit)
-class CreditAdmin(admin.ModelAdmin):
+class CreditAdmin(ModelAdmin):
     list_display = ('bank_name', 'credit_amount', 'credit_term', 'credit_interest', 'monthly_payment')
     search_fields = ('bank_name',)
 
 
 @admin.register(CreditPayment)
-class CreditPaymentAdmin(admin.ModelAdmin):
+class CreditPaymentAdmin(ModelAdmin):
     list_display = ('payment_date', 'principal_amount', 'interest_amount', )
     search_fields = ('credit',)

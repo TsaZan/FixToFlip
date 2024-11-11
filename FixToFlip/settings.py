@@ -76,6 +76,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [],
 }
 INSTALLED_APPS = [
+                     'unfold',
+                     'unfold.contrib.filters',
                      'django.contrib.admin',
                      'django.contrib.auth',
                      'django.contrib.sites',
