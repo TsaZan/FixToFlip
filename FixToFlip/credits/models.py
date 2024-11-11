@@ -3,7 +3,6 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from decimal import Decimal
 
-from django.db.models import Sum
 from djmoney.models.fields import MoneyField
 from djmoney.models.validators import MinMoneyValidator
 from djmoney.money import Money
@@ -12,9 +11,10 @@ from FixToFlip.choices import CreditTypeChoices
 
 
 class Credit(models.Model):
-    verbose_name = 'Credit'
-    verbose_name_plural = 'Credits'
-    ordering = ['-credit_term']
+    class Meta:
+        verbose_name = 'Credit'
+        verbose_name_plural = 'Credits'
+        ordering = ['-credit_term']
 
     bank_name = models.CharField(
         max_length=100

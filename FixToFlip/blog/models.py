@@ -8,13 +8,16 @@ from django.utils.text import slugify
 
 class BlogPost(models.Model):
     class Meta:
+        verbose_name = 'Blog Post'
+        verbose_name_plural = 'Blog Posts'
         ordering = ['-created_at']
 
     def get_absolute_url(self):
         return reverse("blog_posts", args=[str(self.slug, 'utf-8')])
 
     title = models.CharField(
-        max_length=200, validators=[
+        max_length=200,
+        validators=[
             MinLengthValidator(10),
         ]
     )
@@ -74,15 +77,28 @@ class BlogPost(models.Model):
 
 
 class Category(models.Model):
+    class Meta:
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
+
     name = models.CharField(
         max_length=30,
     )
+
+    @property
+    def post_count(self):
+        return self.posts.count()
 
     def __str__(self):
         return self.name
 
 
 class Comment(models.Model):
+    class Meta:
+        verbose_name = 'Comment'
+        verbose_name_plural = 'Comments'
+        ordering = ['-created_at']
+
     post = models.ForeignKey(
         BlogPost,
         on_delete=models.CASCADE,
@@ -92,6 +108,7 @@ class Comment(models.Model):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        related_name='comments',
     )
 
     content = models.TextField(
