@@ -47,15 +47,15 @@ Dashboard Body
                             <div class="d-lg-flex align-items-center position-relative">
 
                                 <div class="ps-lg-4 md-pt-10">
-                                    <a href="#"
+                                    <a href="{% url 'add_expense' pk=expense.pk %}"
                                        class="property-name tran3s color-dark fw-500 fs-20 stretched-link">{{ expense.property }}</a>
-                                    <div class="address">Expenses per sqm: {{ expense.expenses_per_sqm }}</div>
+                                    <div class="address">Expenses per sqm: {% if expense.expenses_per_sqm %}{{ expense.expenses_per_sqm }}{% else %}N/A{% endif %}</div>
                                     <strong class="price color-dark">Total
                                         expenses: {{ expense.expense_total }}</strong>
                                 </div>
                             </div>
                         </td>
-                        <td>13 Jan, 2023</td>
+                        <td>{{ expense.last_expense_date }}</td>
                         <td>{{ expense.remaining_expected_expenses }}</td>
                         <td>
                             <div class="property-status">Active</div>
@@ -67,14 +67,11 @@ Dashboard Body
                                     <span></span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
+                                    <li><a class="dropdown-item" href="{% url 'add_expense' pk=expense.pk %}"><img src="{% static '/dash/images/lazy.svg' %}"
                                             data-src="{% static '/dash/images/icon/icon_20.svg' %}"
-                                            alt="" class="lazy-img"> View</a>
+                                            alt="" class="lazy-img">View/Edit</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
-                                            data-src="{% static '/dash/images/icon/icon_21.svg' %}"
-                                            alt="" class="lazy-img">
-                                        Delete</a></li>
+
                                 </ul>
                             </div>
                         </td>

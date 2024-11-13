@@ -6,10 +6,6 @@ from FixToFlip.dashboard.views import DashboardView, DashboardTasksView
 from FixToFlip.properties.views import DashboardPropertiesView, PropertyDetailsView, property_add_view, \
     DashboardExpensesView, PropertyEditView, PropertyDeleteView
 
-
-
-
-
 urlpatterns = [
     path('', DashboardView.as_view(), name='dashboard'),
 
@@ -30,13 +26,13 @@ urlpatterns = [
 
     path('expenses/', DashboardExpensesView.as_view(), name='dashboard_expenses'),
 
-    path('<int:pk>', include([
-        path('profile/', ProfileEditView.as_view(), name='profile_edit'),
-        path('delete/', AccountDeleteView.as_view(), name='delete_account'),
-
-    ]
-
-    )),
+    # path('<int:pk>/', include([
+    #     path('profile/', ProfileEditView.as_view(), name='profile_edit'),
+    #     path('delete/', AccountDeleteView.as_view(), name='delete_account'),
+    #
+    # ]
+    #
+    # )),
 
     path('blogposts/', include([
         path('', BlogPostsView.as_view(), name='dashboard_blogposts'),

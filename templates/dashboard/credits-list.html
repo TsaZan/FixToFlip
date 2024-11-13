@@ -37,8 +37,10 @@ Dashboard Body
                     <th scope="col">Bank</th>
                     <th scope="col">Credit Term</th>
                     <th scope="col">Monthly Payment</th>
-                    <th scope="col">Remainder</th>
+                    <th scope="col">Credit Balance</th>
+                    <th scope="col">Interest Paid</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Last Payment</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
@@ -51,18 +53,26 @@ Dashboard Body
                                 <div class="ps-lg-4 md-pt-10">
                                     <a href="#"
                                        class="property-name tran3s color-dark fw-500 fs-10 stretched-link">{{ credit.bank_name }}</a>
-                                    <div class="address">Interest Rate: {{ credit.credit_interest }}%</div>
-                                    <strong class="price color-dark">Credit Amount: {{ credit.credit_amount }}</strong>
+                                    <div class="address">Interest Rate: {{ credit.credit_interest | default:"0" }}%</div>
+                                    <strong class="price color-dark">
+                                        Credit Amount: {{ credit.credit_amount }}
+                                    </strong>
                                 </div>
                             </div>
                         </td>
                         <td>{{ credit.credit_term }}</td>
                         <td>{{ credit.monthly_payment }}</td>
                         <td>
-                            <div class="property-status">{{ credit.remainder }}</div>
+                            <div class="property-status">{{ credit.balance }}</div>
+                        </td>
+                        <td>
+                            <div class="property-status">{{ credit.interest_paid  | default:"0"}}</div>
                         </td>
                         <td>
                             <div class="property-status">Active</div>
+                        </td>
+                        <td>
+                            <div class="property-status">{{ credit.last_payment|date:"d-m-Y" | default:"None" }}</div>
                         </td>
                         <td>
                             <div class="action-dots float-end">

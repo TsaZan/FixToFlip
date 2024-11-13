@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView
 from rest_framework import generics
@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.core.paginator import Paginator
 from FixToFlip.money_operations import sum_current_expenses
 from FixToFlip.properties.forms import PropertyAddForm, PropertyExpenseForm, PropertyFinancialInformationForm, \
-    PropertyEditForm, PropertyDeleteForm
+    PropertyEditForm, PropertyDeleteForm, AddExpenseForm
 from FixToFlip.properties.models import Property, PropertyExpense
 from FixToFlip.properties.serializers import PropertySerializer, PropertyExpenseSerializer
 
@@ -66,13 +66,13 @@ def property_add_view(request):
 
 
 class PropertyEditView(LoginRequiredMixin, UpdateView):
-    login_url = 'index'
     template_name = 'dashboard/edit-property.html'
     property_form = PropertyEditForm
     fields = '__all__'
     property_financial_information_form_class = PropertyFinancialInformationForm
     expense_form_class = PropertyExpenseForm
     success_url = reverse_lazy('dashboard_properties')
+    login_url = 'index'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -85,7 +85,7 @@ class PropertyEditView(LoginRequiredMixin, UpdateView):
         return Property.objects.filter(owner=self.request.user)
 
 
-class PropertyDeleteView(LoginRequiredMixin, DeleteView):
+class PropertyDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Property
     success_url = reverse_lazy('dashboard_properties')
     login_url = 'index'
@@ -94,12 +94,20 @@ class PropertyDeleteView(LoginRequiredMixin, DeleteView):
     expense_form_class = PropertyExpenseForm
     template_name = 'dashboard/delete-property.html'
 
+    def test_func(self):
+        property = self.get_object()
+        return self.request.user == property.owner
 
-class PropertyDetailsView(LoginRequiredMixin, DetailView):
+
+class PropertyDetailsView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     login_url = 'index'
 
     model = Property
     template_name = 'dashboard/property-details.html'
+
+    def test_func(self):
+        property = self.get_object()
+        return self.request.user == property.owner
 
 
 class DashboardExpensesView(LoginRequiredMixin, TemplateView):
@@ -119,6 +127,30 @@ class DashboardExpensesView(LoginRequiredMixin, TemplateView):
         context['expenses'] = expenses
 
         return context
+
+@login_required
+def add_expense(request, pk):
+    expenses = get_object_or_404(PropertyExpense, pk=pk)
+    property = Property.objects.get(id=expenses.property_id)
+    if request.method == 'POST':
+        form = AddExpenseForm(request.POST)
+        if form.is_valid():
+            field = form.cleaned_data['expense_types']
+            amount = form.cleaned_data['amount']
+            current_value = getattr(expenses, field)
+            setattr(expenses, field, current_value + amount)
+            expenses.save()
+            return redirect('add_expense', pk=pk)
+    else:
+        form = AddExpenseForm()
+
+    context ={
+        'form': form,
+        'expenses': expenses,
+        'property': property,
+    }
+
+    return render(request, 'dashboard/expenses-details.html', context)
 
 
 ''' React Views '''

@@ -14,6 +14,16 @@ class PropertyTypeChoices(models.TextChoices):
     CARAVAN = 'CN', 'Caravan'
 
 
+class ExpenseTypeChoices(models.TextChoices):
+    utilities = 'utilities', 'Utilities'
+    notary_taxes = 'notary_taxes', 'Notary Taxes'
+    Profit_Tax = 'profit_tax', 'Profit Tax'
+    Municipality_Taxes = 'municipality_taxes', 'Municipality Taxes'
+    Advertising = 'advertising', 'Advertising'
+    Administrative_Fees = 'administrative_fees', 'Administrative Fees'
+    Insurance = 'insurance', 'Insurance'
+
+
 class PropertySizeChoices(models.TextChoices):
     sqm = 'm', 'sqm'
     sqft = 'ft', 'sqft'

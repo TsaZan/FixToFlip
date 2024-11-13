@@ -8,8 +8,7 @@ from FixToFlip.properties.models import Property
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/dashboard-index.html'
-    if login_required:
-        login_url = 'index'
+    login_url = 'index'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -21,7 +20,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
 
 class DashboardTasksView(LoginRequiredMixin, TemplateView):
-    if login_required:
-        login_url = 'index'
-
     template_name = 'dashboard/tasks.html'
+    login_url = 'index'
+
+
