@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView
 from rest_framework import generics
@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.core.paginator import Paginator
 from FixToFlip.money_operations import sum_current_expenses
 from FixToFlip.properties.forms import PropertyAddForm, PropertyExpenseForm, PropertyFinancialInformationForm, \
-    PropertyEditForm, PropertyDeleteForm
+    PropertyEditForm, PropertyDeleteForm, AddExpenseForm
 from FixToFlip.properties.models import Property, PropertyExpense
 from FixToFlip.properties.serializers import PropertySerializer, PropertyExpenseSerializer
 
@@ -127,6 +127,30 @@ class DashboardExpensesView(LoginRequiredMixin, TemplateView):
         context['expenses'] = expenses
 
         return context
+
+@login_required
+def add_expense(request, pk):
+    expenses = get_object_or_404(PropertyExpense, pk=pk)
+    property = Property.objects.get(id=expenses.property_id)
+    if request.method == 'POST':
+        form = AddExpenseForm(request.POST)
+        if form.is_valid():
+            field = form.cleaned_data['expense_types']
+            amount = form.cleaned_data['amount']
+            current_value = getattr(expenses, field)
+            setattr(expenses, field, current_value + amount)
+            expenses.save()
+            return redirect('add_expense', pk=pk)
+    else:
+        form = AddExpenseForm()
+
+    context ={
+        'form': form,
+        'expenses': expenses,
+        'property': property,
+    }
+
+    return render(request, 'dashboard/expenses-details.html', context)
 
 
 ''' React Views '''

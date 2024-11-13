@@ -1,0 +1,118 @@
+{% extends 'dashboard/dashboard-base.html' %}
+{% load static %}
+{% block content %}
+    <!--
+=====================================================
+Property Listing Details
+=====================================================
+-->
+    <div class="listing-details-one theme-details-one bg-pink pt-180 lg-pt-150 pb-150 xl-pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="property-titlee">Expenses for {{ property }}</h3><br>
+                </div>
+                <!-- /.media-gallery -->
+                <div class="row">
+                    <div class="col-xl-8">
+                        <div class="bg-white shadow4 border-20">
+                            <div class="property-overview p-40">
+                                <h4 class="mb-20">Overview</h4>
+                                <p class="fs-20 lh-lg">{{ property }} is located
+                                    in {{ property.city | default:"N/A" }}, {{ property.country | default:"N/A" }} and it`s bought
+                                    for {{ property.property_financial_information.values_list.0.2  | default:"N/A" }} {{ property.property_financial_information.values_list.0.1 }} 
+                                    on {{ property.bought_date | date:"d-m-Y" | default:"N/A" }}</p>
+                                <p>
+
+                                <div class="property-feature-list mt-30">
+                                    <ul class="style-none d-flex flex-wrap align-items-center justify-content-center">
+                                        <li style="flex-basis: 30%; margin: 10px;">
+                                            <p><span class="fs-20 color-dark">Expected expenses: </span></p>
+                                            <p><span class="fs-22 color-dark">{{ expenses.expected_expenses }} </span>
+                                            </p>
+                                        </li>
+                                        <li style="flex-basis: 30%; margin: 10px;">
+                                            <p><span class="fs-20 color-dark">Actual Expenses: </span></p>
+
+                                            <p><span class="fs-22 color-dark">{{ expenses.expense_total }}</span></p>
+                                        </li>
+                                        <li style="flex-basis: 30%; margin: 10px;">
+                                            <p><span class="fs-20 color-dark">Expenses per Sqm: </span></p>
+
+                                            <p><span class="fs-22 color-dark">{{ expenses.expenses_per_sqm }}</span></p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- /.property-feature-list -->
+                            </div>
+                            <!-- /.property-overview -->
+                            <div class="property-feature-accordion border-top p-40">
+                                <h4 class="mb-20">Property Expenses</h4>
+                                <p class="fs-20 lh-lg">
+                                <ul>
+                                    <li>The biggest expenses for this
+                                        property: {{ expenses.biggest_expense.0 | capfirst }}
+                                        for {{ expenses.biggest_expense.1 }}</li>
+                                    <li>Last added expense for this property: {{ expenses.last_expense_date }}</li>
+                                </ul>
+                                </p>
+
+                                <h5 class="pt-30 pb-25">Property Details</h5>
+                                <div class="feature-list-two">
+                                    <ul class="style-none d-flex flex-wrap justify-content-between">
+                                        <li><span>Utilities: </span> <span
+                                                class="fw-500 color-dark">{{ expenses.utilities }}</span></li>
+
+                                        <li><span>Notary Taxes: </span> <span
+                                                class="fw-500 color-dark">{{ expenses.notary_taxes }}</span></li>
+
+                                        <li><span>Profit Tax: </span> <span
+                                                class="fw-500 color-dark">{{ expenses.profit_tax }}</span>
+                                        </li>
+                                        <li><span>Municipality Taxes: </span> <span
+                                                class="fw-500 color-dark">{{ expenses.municipality_taxes }}</span></li>
+                                        <li><span>Advertising: </span> <span
+                                                class="fw-500 color-dark">{{ expenses.advertising }}</span></li>
+                                        <li><span>Administrative Fees: </span> <span
+                                                class="fw-500 color-dark">{{ expenses.administrative_fees }}</span></li>
+
+                                        <li><span>Insurance: </span> <span
+                                                class="fw-500 color-dark">{{ expenses.insurance }}</span></li>
+
+                                    </ul>
+                                </div>
+                                <!-- /.feature-list-two -->
+                            </div>
+                            <!-- /.property-feature-accordion -->
+
+
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-8 me-auto ms-auto">
+                        <div class="theme-sidebar-one ms-xl-5 lg-mt-80">
+
+                            <div class="tour-schedule bg-white border-20 p-30 mb-40">
+                                <h5 class="mb-40">Add Expense</h5>
+                                <form action="#" method="post">
+                                    {% csrf_token %}
+                                    {{ form }}
+                                    {{ form.errors }}
+                                    <br>
+                                    <div class="input-box-three mb-25"><!-- /.input-box-three -->
+                                        <button class="btn-nine text-uppercase rounded-3 w-100 mb-10">Add Expense
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.theme-sidebar-one -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /.listing-details-one -->
+
+
+{% endblock %}

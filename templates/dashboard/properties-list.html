@@ -82,10 +82,10 @@ Dashboard Body
                                             data-src="{% static '/dash/images/icon/icon_18.svg' %}"
                                             alt="" class="lazy-img"> View</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="#"><img src="{% static '/dash/images/lazy.svg' %}"
+                                    <li><a class="dropdown-item" href="{% url 'add_expense' pk=property.pk %}"><img src="{% static '/dash/images/lazy.svg' %}"
                                             data-src="{% static '/dash/images/icon/icon_20.svg' %}"
                                             alt="" class="lazy-img">
-                                        Add expense</a></li>
+                                        Property Expenses</a></li>
                                     <li><a class="dropdown-item" href="{% url 'edit_property' pk=property.pk %}"><img src="{% static '/dash/images/lazy.svg' %}"
                                             data-src="{% static '/dash/images/icon/icon_20.svg' %}"
                                             alt="" class="lazy-img"> Edit</a>

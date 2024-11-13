@@ -1,6 +1,8 @@
 from cities_light.admin import Country
 from django import forms
+from djmoney.forms import MoneyField
 
+from FixToFlip.choices import ExpenseTypeChoices
 from FixToFlip.properties.models import Property, PropertyForSale, PropertyExpense, PropertyFinancialInformation
 from FixToFlip.validators import get_current_date
 
@@ -84,3 +86,8 @@ class PropertyExpenseForm(forms.ModelForm):
         model = PropertyExpense
         fields = '__all__'
         exclude = ['property', 'expense_currency']
+
+
+class AddExpenseForm(forms.Form):
+    expense_types = forms.ChoiceField(choices=ExpenseTypeChoices, label='Choose Expense Type')
+    amount = MoneyField(max_digits=14, decimal_places=2, label='Amount')

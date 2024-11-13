@@ -1,6 +1,6 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
-from .models import Property, PropertyForSale, PropertyFinancialInformation
+from .models import Property, PropertyForSale, PropertyFinancialInformation, PropertyExpense
 
 
 @admin.register(Property)
@@ -49,3 +49,8 @@ class PropertyForSaleAdmin(ModelAdmin):
 class PropertyFinancialInformationAdmin(ModelAdmin):
     list_display = ('initial_price', 'repair_cost')
     search_fields = ('initial_price',)
+
+
+@admin.register(PropertyExpense)
+class PropertyExpenseAdmin(ModelAdmin):
+    ordering = ('-last_expense_date',)

@@ -201,6 +201,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        verbose_name='Utilities',
         null=True,
         blank=True,
     )
@@ -209,6 +210,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        verbose_name='Notary Taxes',
         null=True,
         blank=True,
     )
@@ -217,6 +219,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        verbose_name='Profit Tax',
         null=True,
         blank=True,
     )
@@ -225,6 +228,8 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        verbose_name='Municipality Taxes',
+
         null=True,
         blank=True,
     )
@@ -233,6 +238,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        verbose_name='Advertising',
         null=True,
         blank=True,
     )
@@ -241,6 +247,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        verbose_name='Administrative Fees',
         null=True,
         blank=True,
     )
@@ -249,6 +256,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        verbose_name='Insurance',
         null=True,
         blank=True,
     )
@@ -257,6 +265,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        verbose_name='Expected Expenses',
         null=True,
         blank=True,
     )
@@ -280,3 +289,23 @@ class PropertyExpense(models.Model):
 
     def expenses_per_sqm(self):
         return self.expense_total() / self.property.property_size
+
+    def biggest_expense(self):
+        expenses = {
+            'utilities': self.utilities,
+            'notary_taxes': self.notary_taxes,
+            'profit_tax': self.profit_tax,
+            'municipality_taxes': self.municipality_taxes,
+            'advertising': self.advertising,
+            'administrative_fees': self.administrative_fees,
+            'insurance': self.insurance,
+        }
+        biggest_expense_name = max(expenses, key=expenses.get)
+
+        verbose_name = self._meta.get_field(biggest_expense_name).verbose_name
+
+        return verbose_name, expenses[biggest_expense_name]
+
+    def __str__(self):
+        return (f'Property: {str(self.property)} - Added Expenses: {self.expense_total()} '
+                f'- Expected Expenses: {self.expected_expenses}')
