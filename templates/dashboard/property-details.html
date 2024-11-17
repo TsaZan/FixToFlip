@@ -27,11 +27,11 @@ Property Listing Details
                                     <ul class="style-none d-flex flex-wrap align-items-center justify-content-center">
                                         <li style="flex-basis: 30%; margin: 10px;">
                                             <p><span class="fs-20 color-dark">Bought Price: </span></p>
-                                            <p><span class="fs-22 color-dark">{{ property.property_financial_information.values_list.0.7 }} {{ property.property_financial_information.values_list.0.8 }} </span>
+                                            <p><span class="fs-22 color-dark">{{ property.property_financial_information.values_list.0.2 }} {{ property.property_financial_information.values_list.0.1 }} </span>
                                             </p>
                                         </li>
                                         <li style="flex-basis: 30%; margin: 10px;">
-                                            <p><span class="fs-20 color-dark">Actual Expenses: </span></p>
+                                            <p><span class="fs-20 color-dark">Expected Expenses: </span></p>
 
                                             <p><span class="fs-22 color-dark">{{ property.property_expenses.values_list.0.18 }} {{ property.property_expenses.values_list.0.17 }}</span></p>
                                         </li>
@@ -47,84 +47,87 @@ Property Listing Details
                             <!-- /.property-overview -->
                             <div class="property-feature-accordion border-top p-40">
                                 <h3 class="mb-20">Property Expenses</h3>
-{#                                <p class="fs-20 lh-lg">#}
-{#                                <ul>#}
-{#                                    <li>The biggest expenses for this#}
-{#                                        property: {{ expenses.biggest_expense.0 | capfirst }}#}
-{#                                        for {{ expenses.biggest_expense.1 }}</li>#}
-{#                                    <li>Last added expense for this property: {{ expenses.last_expense_date }}</li>#}
-{#                                </ul>#}
-{#                                </p>#}
+                                {#                                <p class="fs-20 lh-lg">#}
+                                {#                                <ul>#}
+                                {#                                    <li>The biggest expenses for this#}
+                                {#                                        property: {{ expenses.biggest_expense.0 | capfirst }}#}
+                                {#                                        for {{ expenses.biggest_expense.1 }}</li>#}
+                                {#                                    <li>Last added expense for this property: {{ expenses.last_expense_date }}</li>#}
+                                {#                                </ul>#}
+                                {#                                </p>#}
+                                {% for expenses in property.property_expenses.all %}
 
-                                <h5 class="pt-30 pb-25">Renovation Expenses:</h5>
-                                <div class="feature-list-two">
-                                    <ul class="style-none d-flex flex-wrap justify-content-between">
-                                        <li><span>Plumbing Repair: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.plumbing_repair_expenses}}</span></li>
-                                        <li><span>Electrical Repair: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.electrical_repair_expenses }}</span></li>
-                                        <li><span>Floors Repair: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.floors_repair_expenses }}</span></li>
+                                    <h5 class="pt-30 pb-25">Renovation Expenses:</h5>
+                                    <h6 class="fw-500">Total renovation expenses: {{ expenses.total_repair_expenses }}</h6><br>
+                                    <div class="feature-list-two">
+                                        <ul class="style-none d-flex flex-wrap justify-content-between">
+                                            <li><span>Plumbing Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.plumbing_repair_expenses}}</span></li>
+                                            <li><span>Electrical Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.electrical_repair_expenses }}</span></li>
+                                            <li><span>Floors Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.floors_repair_expenses }}</span></li>
 
-                                        <li><span>Wall Repair: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.walls_repair_expenses}}</span>
-                                        </li>
-                                        <li><span>Bathroom Repair: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.bathroom_repair_expenses }}</span></li>
+                                            <li><span>Wall Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.walls_repair_expenses}}</span>
+                                            </li>
+                                            <li><span>Bathroom Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.bathroom_repair_expenses }}</span></li>
 
-                                        <li><span>Kitchen Repair: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.kitchen_repair_expenses }}</span></li>
-
-
-                                        <li><span>Windows and Doors Repair: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.windows_doors_repair_expenses }}</span></li>
-
-                                        <li><span>Facade/Balcony Repair: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.facade_repair_expenses }}</span></li>
-                                        <li><span>Roof Repair: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.roof_repair_expenses }}</span></li>
-
-                                        <li><span>Other Repair Expenses: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.other_repair_expenses }}</span></li>
+                                            <li><span>Kitchen Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.kitchen_repair_expenses }}</span></li>
 
 
-                                    </ul>
-                                </div>
-                                <h5 class="pt-30 pb-25">Other Expenses:</h5>
-                                <div class="feature-list-two">
-                                    <ul class="style-none d-flex flex-wrap justify-content-between">
-                                        <li><span>Notary Taxes: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.notary_taxes }}</span></li>
+                                            <li><span>Windows and Doors Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.windows_doors_repair_expenses }}</span></li>
+
+                                            <li><span>Facade/Balcony Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.facade_repair_expenses }}</span></li>
+                                            <li><span>Roof Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.roof_repair_expenses }}</span></li>
+
+                                            <li><span>Other Repair Expenses: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.other_repair_expenses }}</span></li>
 
 
-                                        <li><span>Municipality Taxes: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.municipality_taxes }}</span></li>
+                                        </ul>
+                                    </div>
+                                    <h5 class="pt-30 pb-25">Other Expenses:</h5>
+                                    <h6 class="fw-500">Total Other Expenses: {{ expenses.expense_total }}</h6><br>
+                                    <div class="feature-list-two">
+                                        <ul class="style-none d-flex flex-wrap justify-content-between">
+                                            <li><span>Notary Taxes: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.notary_taxes }}</span></li>
 
-                                        <li><span>Utilities: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.utilities }}</span></li>
+
+                                            <li><span>Municipality Taxes: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.municipality_taxes }}</span></li>
+
+                                            <li><span>Utilities: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.utilities }}</span></li>
 
 
-                                        <li><span>Advertising: </span>
-                                            <span class="fw-500 color-dark">{{ expenses.advertising }}</span></li>
+                                            <li><span>Advertising: </span>
+                                                <span class="fw-500 color-dark">{{ expenses.advertising }}</span></li>
 
-                                        <li><span>Administrative Fees: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.administrative_fees }}</span></li>
+                                            <li><span>Administrative Fees: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.administrative_fees }}</span></li>
 
-                                        <li><span>Insurance: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.insurance }}</span></li>
-                                        <li><span>Other Expenses: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.other_expenses }}</span>
-                                        </li>
-                                        <li><span>Profit Tax: </span> <span
-                                                class="fw-500 color-dark">{{ expenses.profit_tax }}</span>
-                                        </li>
+                                            <li><span>Insurance: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.insurance }}</span></li>
+                                            <li><span>Other Expenses: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.other_expenses }}</span>
+                                            </li>
+                                            <li><span>Profit Tax: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.profit_tax }}</span>
+                                            </li>
 
-                                    </ul>
-                                </div>
-                                <!-- /.feature-list-two -->
-                            </div>
-                            <!-- /.property-feature-accordion -->
-
+                                        </ul>
+                                    </div>
+                                    <!-- /.feature-list-two -->
+                                    </div>
+                                    <!-- /.property-feature-accordion -->
+                                {% endfor %}
 
                         </div>
                     </div>
@@ -132,17 +135,33 @@ Property Listing Details
                         <div class="theme-sidebar-one ms-xl-5 lg-mt-80">
 
                             <div class="tour-schedule bg-white border-20 p-30 mb-40">
-                                <h5 class="mb-40">Add Expense</h5>
-                                <form action="#" method="post">
-                                    {% csrf_token %}
-                                    {{ form }}
-                                    {{ form.errors }}
-                                    <br>
-                                    <div class="input-box-three mb-25"><!-- /.input-box-three -->
-                                        <button class="btn-nine text-uppercase rounded-3 w-100 mb-10">Add Expense
-                                        </button>
-                                    </div>
-                                </form>
+                                {% if not credits %}
+                                    <h5 class="mb-40">Add Credit</h5>
+                                    <form action="#" method="post">
+                                        {% csrf_token %}
+                                        {{ credit_form }}
+                                        {{ form.credit_form.errors }}
+                                        <br>
+                                        <div class="input-box-three mb-25"><!-- /.input-box-three -->
+                                            <button class="btn-nine text-uppercase rounded-3 w-100 mb-10">Add To Credit
+                                            </button>
+                                        </div>
+                                    </form>
+                                {% else %}
+                                    <h5 class="mb-40">Credited Information:</h5>
+                                    {% for credit in credits %}
+                                        <h6>Bank: {{ credit.bank_name }}</h6>
+                                        <p>Credit Amount: {{ credit.credit_amount }}<br>
+                                            {% for credit_financial_information in property_financial_information.all %}
+                                                Credited Amount: {{ credit_financial_information.credited_amount }}<br>
+                                            {% endfor %}
+                                            Credit Type: {{ credit.credit_type }}<br>
+                                            Monthly Payment: {{ credit.monthly_payment }}<br>
+                                            Interest: {{ credit.credit_interest }}%<br>
+                                            Term: {% if credit.credit_term < today %} EXPIRED on {{ credit.credit_term }} {% else %} {{ credit.credit_term }}{% endif %}<br>
+                                        </p>
+                                    {% endfor %}
+                                {% endif %}
                             </div>
                         </div>
                     </div>

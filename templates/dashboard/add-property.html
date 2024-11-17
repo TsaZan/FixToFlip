@@ -61,28 +61,20 @@ Dashboard Body
                 </div>
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
-                        <label for="">Credited Amount*</label>
-                        {{ property_financial_information_form.credited_amount }}
-                        {{ property_financial_information_form.credited_amount.errors }}
+                        <label for="">Expected Expenses</label>
+                        {{ expense_form.expected_expenses }}
+                        {{ expense_form.expected_expenses.errors }}
 
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
+
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
                         <label for="">Bought Date</label>
                         {{ property_form.bought_date }}
                     </div>
 
-                    <!-- /.dash-input-wrapper -->
-                </div>
-                  <div class="col-md-6">
-                    <div class="dash-input-wrapper mb-30">
-                        <label for="">Expected Expenses</label>
-                        {{ expense_form.expected_expenses }}
-                        {{ expense_form.expected_expenses.errors }}
-
-                    </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
 
@@ -92,7 +84,7 @@ Dashboard Body
         </div>
         <!-- /.card-box -->
         <div class="bg-white card-box border-20 mt-40">
-            <h4 class="dash-title-three">Listing Details</h4>
+            <h4 class="dash-title-three">Property Details</h4>
             <div class="row align-items-end">
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
@@ -142,31 +134,6 @@ Dashboard Body
         </div>
         <!-- /.card-box -->
 
-{#        <div class="bg-white card-box border-20 mt-40">#}
-{#            <h4 class="dash-title-three">Photo & Video Attachment</h4>#}
-{#            <div class="dash-input-wrapper mb-20">#}
-{#                <label for="">File Attachment*</label>#}
-{##}
-{#                <div class="attached-file d-flex align-items-center justify-content-between mb-15">#}
-{#                    <span>PorpertyImage_01.jpg</span>#}
-{#                    <a href="#" class="remove-btn"><i class="bi bi-x"></i></a>#}
-{#                </div>#}
-{#                <div class="attached-file d-flex align-items-center justify-content-between mb-15">#}
-{#                    <span>PorpertyImage_02.jpg</span>#}
-{#                    <a href="#" class="remove-btn"><i class="bi bi-x"></i></a>#}
-{#                </div>#}
-{#            </div>#}
-{#            <!-- /.dash-input-wrapper -->#}
-{#            <div class="dash-btn-one d-inline-block position-relative me-3">#}
-{#                <i class="bi bi-plus"></i>#}
-{#                Upload File#}
-{#                <input type="file" id="uploadCV" name="uploadCV" placeholder="">#}
-{#            </div>#}
-{#            <small>Upload file .jpg, .png, .mp4</small>#}
-{#        </div>#}
-{#        <!-- /.card-box -->#}
-{##}
-{##}
         <div class="bg-white card-box border-20 mt-40">
             <h4 class="dash-title-three">Address & Location</h4>
             <div class="row">

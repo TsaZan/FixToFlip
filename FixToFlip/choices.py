@@ -42,9 +42,9 @@ class PropertySizeChoices(models.TextChoices):
 
 
 class CreditTypeChoices(models.TextChoices):
-    CREDIT = 'B', 'Business Credit'
-    DEBIT = 'P', 'Personal Credit'
-    MORTGAGE = 'M', 'Mortgage'
+    CREDIT = 'Business Credit', 'Business Credit'
+    DEBIT = 'Personal Credit', 'Personal Credit'
+    MORTGAGE = 'Mortgage', 'Mortgage'
 
 
 class OfferStatusChoices(models.TextChoices):

@@ -12,9 +12,15 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['properties_count'] = Property.objects.filter(owner=self.request.user).count()
-        context['properties_in_repair'] = Property.objects.filter(owner=self.request.user,
-                                                                  property_condition='Under repair').count()
+        context['all_properties'] = Property.objects.filter(owner=self.request.user)
+        context['properties_in_repair'] = Property.objects.filter(
+            owner=self.request.user, property_condition='Under repair')
+
+        context['properties_for_sale'] = Property.objects.filter(
+            owner=self.request.user, property_condition='For sale')
+
+        context['properties_sold'] = Property.objects.filter(
+            owner=self.request.user, property_condition='Sold')
         context['user'] = self.request.user
         return context
 

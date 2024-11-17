@@ -397,6 +397,10 @@ class PropertyExpense(models.Model):
         return self.expected_expenses - self.expense_total()
 
     def expenses_per_sqm(self):
+        if self.property.property_size == 0 or self.property.property_size is None:
+            return 0
+        elif self.actual_expenses() == 0 or self.actual_expenses() is None:
+            return 0
         return self.actual_expenses() / self.property.property_size
 
     def biggest_expense(self):

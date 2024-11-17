@@ -1,8 +1,10 @@
 from cities_light.admin import Country
 from django import forms
+from django.views.generic import DeleteView
 from djmoney.forms import MoneyField
 
 from FixToFlip.choices import ExpenseTypeChoices
+from FixToFlip.credits.models import Credit
 from FixToFlip.properties.models import Property, PropertyForSale, PropertyExpense, PropertyFinancialInformation
 from FixToFlip.validators import get_current_date
 
@@ -10,7 +12,7 @@ from FixToFlip.validators import get_current_date
 class PropertyBaseForm(forms.ModelForm):
     class Meta:
         model = Property
-        fields = '__all__'
+        exclude = ['owner']
         widgets = {
             'bought_date': forms.DateInput(attrs={
                 'type': 'date',
@@ -41,10 +43,6 @@ class PropertyFinanceInformationForm(forms.ModelForm):
     class Meta:
         model = PropertyFinancialInformation
         fields = '__all__'
-        widgets = {
-            'initial_price': forms.TextInput(attrs={'placeholder': 'Initial Price', }),
-            'credited_amount': forms.TextInput(attrs={'placeholder': 'Credited Amount', 'type': 'input', }),
-        }
 
 
 class PropertyEditForm(PropertyBaseForm):
@@ -73,10 +71,10 @@ class PropertyForSaleForm(forms.ModelForm):
         }
 
 
-class PropertyFinancialInformationForm(forms.ModelForm):
-    class Meta:
-        model = PropertyFinancialInformation
-        fields = '__all__'
+# class PropertyFinancialInformationForm(forms.ModelForm):
+#     class Meta:
+#         model = PropertyFinancialInformation
+#         fields = '__all__'
 
 
 class PropertyExpenseForm(forms.ModelForm):
@@ -91,3 +89,24 @@ class PropertyExpenseForm(forms.ModelForm):
 class AddExpenseForm(forms.Form):
     expense_types = forms.ChoiceField(choices=ExpenseTypeChoices, label='Choose Expense Type')
     amount = MoneyField(max_digits=14, decimal_places=2, label='Amount')
+
+
+class AddCreditToPropertyForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['credit'].choices = [
+                (credit.id, str(credit))
+                for credit in Credit.objects.filter(credit_owner=user)]
+
+    credited_amount = MoneyField(
+        max_digits=14,
+        decimal_places=2,
+        label='Credit Amount',
+    )
+    credit = forms.ChoiceField(
+        choices=[],
+        label='Select a Credit'
+    )

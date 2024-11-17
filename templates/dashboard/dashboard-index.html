@@ -22,7 +22,7 @@ Dashboard Body
                                  class="lazy-img"></div>
                         <div class="order-sm-0">
                             <span>Total Properties</span>
-                            <div class="value fw-500">{{ properties_count | stringformat:"02d" }}</div>
+                            <div class="value fw-500">{{ all_properties.count | stringformat:"02d" }}</div>
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@ Dashboard Body
                                  class="lazy-img"></div>
                         <div class="order-sm-0">
                             <span>Repairing</span>
-                            <div class="value fw-500">{{ properties_in_repair | stringformat:"02d" }}</div>
+                            <div class="value fw-500">{{ properties_in_repair.count | stringformat:"02d" }}</div>
                         </div>
                     </div>
                 </div>
@@ -49,8 +49,8 @@ Dashboard Body
                             <img src="{% static '/images/lazy.svg' %}" data-src="{% static '/dash/images/icon/icon_14.svg' %}" alt=""
                                  class="lazy-img"></div>
                         <div class="order-sm-0">
-                            <span>Sold Properties</span>
-                            <div class="value fw-500">4.8k</div>
+                            <span>Properties For Sale</span>
+                            <div class="value fw-500">{{ properties_for_sale.count | stringformat:"02d" }}</div>
                         </div>
                     </div>
                 </div>
@@ -63,8 +63,8 @@ Dashboard Body
                             <img src="{% static '/images/lazy.svg' %}" data-src="{% static '/dash/images/icon/icon_15.svg' %}" alt=""
                                  class="lazy-img"></div>
                         <div class="order-sm-0">
-                            <span>Total Income</span>
-                            <div class="value fw-500">100k+</div>
+                            <span>Sold Properties</span>
+                            <div class="value fw-500">{{ properties_sold.count | stringformat:"02d" }}</div>
                         </div>
                     </div>
                 </div>

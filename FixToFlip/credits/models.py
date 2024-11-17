@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from decimal import Decimal
 
+from django.db.models import Sum
 from djmoney.models.fields import MoneyField
 from djmoney.models.validators import MinMoneyValidator
 from djmoney.money import Money
@@ -67,8 +68,16 @@ class Credit(models.Model):
         on_delete=models.CASCADE,
     )
 
+    def remaining_credit_amount(self):
+        from FixToFlip.properties.models import PropertyFinancialInformation
+        taken_credit = PropertyFinancialInformation.objects.filter(credit=self).aggregate(total=Sum('credited_amount'))
+        credited_amount = taken_credit['total'] or 0
+        if isinstance(self.credit_amount, Money) and isinstance(credited_amount, (int, float, Decimal)):
+            return self.credit_amount - Money(credited_amount, self.credit_amount.currency)
+        return self.credit_amount
+
     def __str__(self):
-        return f'{self.credit_start_date} - {self.credit_amount}'
+        return f'{self.bank_name} - {self.credit_start_date} - {self.credit_amount}'
 
 
 class CreditPayment(models.Model):
@@ -101,7 +110,6 @@ class CreditPayment(models.Model):
 
     def full_payment(self):
         return self.principal_amount + self.interest_amount
-
 
     def __str__(self):
         return f"{self.payment_date} - {self.full_payment()} - {self.credit.bank_name}"

@@ -51,7 +51,7 @@ Dashboard Body
                         <td>
                             <div class="d-lg-flex align-items-center position-relative">
                                 <div class="ps-lg-4 md-pt-10">
-                                    <a href="#"
+                                    <a href="{% url 'credit_details' credit.id %}"
                                        class="property-name tran3s color-dark fw-500 fs-10 stretched-link">{{ credit.bank_name }}</a>
                                     <div class="address">Interest Rate: {{ credit.credit_interest | default:"0" }}%</div>
                                     <strong class="price color-dark">
@@ -69,7 +69,7 @@ Dashboard Body
                             <div class="property-status">{{ credit.interest_paid  | default:"0"}}</div>
                         </td>
                         <td>
-                            <div class="property-status">Active</div>
+                            <div class="property-status">{{ credit.remaining_credit_amount }}</div>
                         </td>
                         <td>
                             <div class="property-status">{{ credit.last_payment|date:"d-m-Y" | default:"None" }}</div>
@@ -81,7 +81,7 @@ Dashboard Body
                                     <span></span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="{% url 'property_details' pk=1 %}"><img src="{% static '/images/lazy.svg' %}"
+                                    <li><a class="dropdown-item" href="{% url 'credit_details' credit.id %}"><img src="{% static '/images/lazy.svg' %}"
                                             data-src="{% static '/dash/images/icon/icon_18.svg' %}"
                                             alt="" class="lazy-img"> View</a>
                                     </li>
