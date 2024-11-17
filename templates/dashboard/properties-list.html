@@ -64,11 +64,13 @@ Dashboard Body
                             <div class="property-status">{{ property.property_condition }}</div>
                         </td>
                         <td>
-                            <div class="price">{{ property.property_expenses.values_list.0.15 }} {{ property.property_expenses.values_list.0.16 }}</div>
+                            <div class="price">{{ property.property_expenses.values_list.0.17 }} {{ property.property_expenses.values_list.0.18 }}</div>
                         </td>
 
                         <td>
-                            <div class="price"> EUR {{ property.current_expenses }}</div>
+                            {% for expense in property.property_expenses.all %}
+                                <div class="price"> EUR {{ expense.actual_expenses | default:"0" }}</div>
+                            {% endfor %}
                         </td>
 
                         <td>

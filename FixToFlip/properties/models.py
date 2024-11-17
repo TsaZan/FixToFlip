@@ -71,6 +71,8 @@ class Property(models.Model):
     )
 
     year_of_built = models.SmallIntegerField(
+        null=True,
+        blank=True,
     )
 
     property_size = models.PositiveIntegerField(
@@ -261,6 +263,14 @@ class PropertyExpense(models.Model):
         blank=True,
     )
 
+    other_expenses = MoneyField(
+        max_digits=MAX_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        default=Money(0, 'EUR'),
+        verbose_name='Insurance',
+        null=True,
+        blank=True,
+    )
     expected_expenses = MoneyField(
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
@@ -269,6 +279,97 @@ class PropertyExpense(models.Model):
         null=True,
         blank=True,
     )
+
+    bathroom_repair_expenses = MoneyField(
+        max_digits=MAX_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        default=Money(0, 'EUR'),
+        verbose_name='Insurance',
+        null=True,
+        blank=True,
+    )
+
+    kitchen_repair_expenses = MoneyField(
+        max_digits=MAX_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        default=Money(0, 'EUR'),
+        verbose_name='Insurance',
+        null=True,
+        blank=True,
+    )
+
+    floors_repair_expenses = MoneyField(
+        max_digits=MAX_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        default=Money(0, 'EUR'),
+        verbose_name='Insurance',
+        null=True,
+        blank=True,
+    )
+
+    walls_repair_expenses = MoneyField(
+        max_digits=MAX_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        default=Money(0, 'EUR'),
+        verbose_name='Insurance',
+        null=True,
+        blank=True,
+    )
+
+    windows_doors_repair_expenses = MoneyField(
+        max_digits=MAX_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        default=Money(0, 'EUR'),
+        verbose_name='Insurance',
+        null=True,
+        blank=True,
+    )
+
+    plumbing_repair_expenses = MoneyField(
+        max_digits=MAX_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        default=Money(0, 'EUR'),
+        verbose_name='Insurance',
+        null=True,
+        blank=True,
+    )
+
+    electrical_repair_expenses = MoneyField(
+        max_digits=MAX_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        default=Money(0, 'EUR'),
+        verbose_name='Insurance',
+        null=True,
+        blank=True,
+    )
+
+    roof_repair_expenses = MoneyField(
+        max_digits=MAX_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        default=Money(0, 'EUR'),
+        verbose_name='Insurance',
+        null=True,
+        blank=True,
+    )
+
+    facade_repair_expenses = MoneyField(
+        max_digits=MAX_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        default=Money(0, 'EUR'),
+        verbose_name='Insurance',
+        null=True,
+        blank=True,
+    )
+
+    other_repair_expenses = MoneyField(
+        max_digits=MAX_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        default=Money(0, 'EUR'),
+        verbose_name='Other Expenses',
+        null=True,
+        blank=True,
+    )
+
     property = models.ForeignKey(
         to='Property',
         on_delete=models.CASCADE,
@@ -282,13 +383,25 @@ class PropertyExpense(models.Model):
     last_expense_date = models.DateField(blank=True, null=True, auto_now=True)
 
     def expense_total(self):
-        return self.utilities + self.notary_taxes + self.profit_tax + self.municipality_taxes + self.advertising + self.administrative_fees + self.insurance
+        return self.utilities + self.notary_taxes + self.profit_tax + self.municipality_taxes + self.advertising + self.administrative_fees + self.insurance + self.other_expenses
+
+    def total_repair_expenses(self):
+        return (self.plumbing_repair_expenses + self.electrical_repair_expenses + self.windows_doors_repair_expenses
+                + self.roof_repair_expenses + self.facade_repair_expenses + self.walls_repair_expenses
+                + self.floors_repair_expenses + self.kitchen_repair_expenses + self.bathroom_repair_expenses + self.other_repair_expenses)
+
+    def actual_expenses(self):
+        return self.expense_total() + self.total_repair_expenses()
 
     def remaining_expected_expenses(self):
         return self.expected_expenses - self.expense_total()
 
     def expenses_per_sqm(self):
-        return self.expense_total() / self.property.property_size
+        if self.property.property_size == 0 or self.property.property_size is None:
+            return 0
+        elif self.actual_expenses() == 0 or self.actual_expenses() is None:
+            return 0
+        return self.actual_expenses() / self.property.property_size
 
     def biggest_expense(self):
         expenses = {
@@ -299,6 +412,8 @@ class PropertyExpense(models.Model):
             'advertising': self.advertising,
             'administrative_fees': self.administrative_fees,
             'insurance': self.insurance,
+            'other_expenses': self.other_repair_expenses,
+
         }
         biggest_expense_name = max(expenses, key=expenses.get)
 

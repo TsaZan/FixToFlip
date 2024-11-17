@@ -35,7 +35,7 @@ Dashboard Body
                 <tr>
                     <th scope="col">Description</th>
                     <th scope="col">Date</th>
-                    <th scope="col">Category</th>
+                    <th scope="col">Ramaining Expected Expenses</th>
                     <th scope="col">Property</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -48,10 +48,10 @@ Dashboard Body
 
                                 <div class="ps-lg-4 md-pt-10">
                                     <a href="{% url 'add_expense' pk=expense.pk %}"
-                                       class="property-name tran3s color-dark fw-500 fs-20 stretched-link">{{ expense.property }}</a>
+                                       class="property-name tran3s color-dark fw-500 fs-20 stretched-link">Expenses for {{ expense.property }}</a>
                                     <div class="address">Expenses per sqm: {% if expense.expenses_per_sqm %}{{ expense.expenses_per_sqm }}{% else %}N/A{% endif %}</div>
                                     <strong class="price color-dark">Total
-                                        expenses: {{ expense.expense_total }}</strong>
+                                        expenses: {{ expense.actual_expenses }}</strong>
                                 </div>
                             </div>
                         </td>

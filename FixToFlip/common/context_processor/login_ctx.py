@@ -2,20 +2,14 @@ from allauth.account.forms import LoginForm, SignupForm
 
 
 def login_ctx_tag(request):
-    def login(self, *args, **kwargs):
-        form = LoginForm(*args, **kwargs)
+    form = LoginForm()
+    if 'remember' in form.fields:
         del form.fields['remember']
-        return form
-
-    return {
-        'loginctx': login(LoginForm)}
-
+    return {'loginctx': form}
 
 def signup_ctx_tag(request):
-    def signup(self, *args, **kwargs):
-        form = SignupForm(*args, **kwargs)
+    form = SignupForm()
+    if 'password1' in form.fields:
         form.fields['password1'].help_text = None
 
-        return form
-
-    return {'signupctx': signup(SignupForm)}
+    return {'signupctx': form}

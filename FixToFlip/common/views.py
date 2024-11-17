@@ -2,8 +2,6 @@ from allauth.account.views import login, LoginView, SignupView, PasswordResetVie
 from django.http import JsonResponse
 from django.shortcuts import render
 
-from FixToFlip.accounts.models import Profile
-
 
 # Create your views here.
 def index(request):
@@ -39,7 +37,7 @@ class AjaxSignupView(SignupView):
         return JsonResponse({'success': True})
 
     def form_invalid(self, form):
-        return JsonResponse({'success': False, 'errors': form.errors.as_json()})
+        return JsonResponse({'success': False, 'errors': form.errors})
 
 
 class CustomPasswordResetView(PasswordResetView):

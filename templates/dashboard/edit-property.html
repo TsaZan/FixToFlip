@@ -53,17 +53,17 @@ Dashboard Body
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
                         <label for="">Initial Price*</label>
-                        {{ property_financial_information_form.initial_price}}
+                        {{ property_financial_information_form.initial_price }}
                         {{ property_financial_information_form.initial_price.errors }}
 
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
-                <div class="col-md-6">
+             <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
-                        <label for="">Credited Amount*</label>
-                        {{ property_financial_information_form.credited_amount }}
-                        {{ property_financial_information_form.credited_amount.errors }}
+                        <label for="">Expected Expenses</label>
+                        {{ expense_form.expected_expenses }}
+                        {{ expense_form.expected_expenses.errors }}
 
                     </div>
                     <!-- /.dash-input-wrapper -->
@@ -76,19 +76,11 @@ Dashboard Body
 
                     <!-- /.dash-input-wrapper -->
                 </div>
-                  <div class="col-md-6">
-                    <div class="dash-input-wrapper mb-30">
-                        <label for="">Expected Expenses</label>
-                        {{ expense_form.expected_expenses }}
-                        {{ expense_form.expected_expenses.errors }}
 
-                    </div>
-                    <!-- /.dash-input-wrapper -->
-                </div>
 
-                    <!-- /.dash-input-wrapper -->
-                </div>
+                <!-- /.dash-input-wrapper -->
             </div>
+        </div>
         </div>
         <!-- /.card-box -->
         <div class="bg-white card-box border-20 mt-40">
@@ -119,7 +111,6 @@ Dashboard Body
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
                         <label for="">Building Year*</label>
-                        {{ property_form.owner }}
                         {{ property_form.year_of_built }}
                     </div>
                     <!-- /.dash-input-wrapper -->

@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect, get_object_or_404
@@ -6,10 +8,12 @@ from django.views.generic import TemplateView, DetailView, UpdateView, DeleteVie
 from rest_framework import generics
 from django.shortcuts import render
 from django.core.paginator import Paginator
+
+from FixToFlip.credits.models import Credit
 from FixToFlip.money_operations import sum_current_expenses
-from FixToFlip.properties.forms import PropertyAddForm, PropertyExpenseForm, PropertyFinancialInformationForm, \
-    PropertyEditForm, PropertyDeleteForm, AddExpenseForm
-from FixToFlip.properties.models import Property, PropertyExpense
+from FixToFlip.properties.forms import PropertyAddForm, PropertyExpenseForm, \
+    PropertyEditForm, PropertyDeleteForm, AddExpenseForm, AddCreditToPropertyForm, PropertyFinanceInformationForm
+from FixToFlip.properties.models import Property, PropertyExpense, PropertyFinancialInformation
 from FixToFlip.properties.serializers import PropertySerializer, PropertyExpenseSerializer
 
 
@@ -34,26 +38,24 @@ class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
 def property_add_view(request):
     if request.method == 'POST':
         property_form = PropertyAddForm(request.POST)
-        property_financial_information_form = PropertyFinancialInformationForm(request.POST)
+        property_financial_information_form = PropertyFinanceInformationForm(request.POST)
         expense_form = PropertyExpenseForm(request.POST)
 
         if property_form.is_valid() and property_financial_information_form.is_valid() and expense_form.is_valid():
             property_form.instance.owner = request.user
             property = property_form.save()
-            property_financial_information = property_financial_information_form.save(commit=False)
             expense = expense_form.save(commit=False)
             expense.property = property
             expense.save()
-            if property_financial_information.credited_amount:
-                property_financial_information.is_credited = True
-                property_financial_information.property = property
-                property_financial_information.save()
+            financial_information = property_financial_information_form.save(commit=False)
+            financial_information.property = property
+            financial_information.save()
 
             return redirect('dashboard_properties')
 
     else:
         property_form = PropertyAddForm()
-        property_financial_information_form = PropertyFinancialInformationForm()
+        property_financial_information_form = PropertyFinanceInformationForm()
         expense_form = PropertyExpenseForm()
 
     context = {
@@ -65,24 +67,65 @@ def property_add_view(request):
     return render(request, 'dashboard/add-property.html', context)
 
 
-class PropertyEditView(LoginRequiredMixin, UpdateView):
+class PropertyEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = 'dashboard/edit-property.html'
-    property_form = PropertyEditForm
+    model = Property
     fields = '__all__'
-    property_financial_information_form_class = PropertyFinancialInformationForm
-    expense_form_class = PropertyExpenseForm
+
+    property_form_class = PropertyEditForm()
+    property_financial_information_form_class = PropertyFinanceInformationForm()
+    expense_form_class = PropertyExpenseForm()
     success_url = reverse_lazy('dashboard_properties')
     login_url = 'index'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['property_form'] = PropertyEditForm(instance=self.object)
-        context['property_financial_information_form'] = PropertyFinancialInformationForm(instance=self.object)
-        context['expense_form'] = PropertyExpenseForm(instance=self.object)
+        context['property_financial_information_form'] = PropertyFinanceInformationForm(
+            instance=self.object.property_financial_information.first() if self.object.property_financial_information.exists() else None
+        )
+        context['expense_form'] = PropertyExpenseForm(
+            instance=self.object.property_expenses.first() if self.object.property_expenses.exists() else None
+        )
         return context
 
-    def get_queryset(self):
-        return Property.objects.filter(owner=self.request.user)
+    def test_func(self):
+        property = self.get_object()
+        return self.request.user == property.owner
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        property_form = PropertyEditForm(request.POST, instance=self.object)
+        property_financial_information_form = PropertyFinanceInformationForm(
+            request.POST,
+            instance=self.object.property_financial_information.first() if self.object.property_financial_information.exists() else None
+        )
+        expense_form = PropertyExpenseForm(
+            request.POST,
+            instance=self.object.property_expenses.first() if self.object.property_expenses.exists() else None
+        )
+
+        if property_form.is_valid() and property_financial_information_form.is_valid() and expense_form.is_valid():
+            property_form.instance.owner = request.user
+            property_form.save()
+
+            # Save the expenses form
+            expense = expense_form.save(commit=False)
+            expense.property = self.object
+            expense.save()
+
+            # Save the financial information form
+            financial_information = property_financial_information_form.save(commit=False)
+            financial_information.property = self.object
+            financial_information.save()
+
+            return redirect('dashboard_properties')
+
+        context = self.get_context_data()
+        context['property_form'] = property_form
+        context['property_financial_information_form'] = property_financial_information_form
+        context['expense_form'] = expense_form
+        return self.render_to_response(context)
 
 
 class PropertyDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -90,7 +133,7 @@ class PropertyDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = reverse_lazy('dashboard_properties')
     login_url = 'index'
     form_class = PropertyDeleteForm
-    property_financial_information_form_class = PropertyFinancialInformationForm
+    property_financial_information_form_class = PropertyFinanceInformationForm
     expense_form_class = PropertyExpenseForm
     template_name = 'dashboard/delete-property.html'
 
@@ -101,9 +144,37 @@ class PropertyDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 class PropertyDetailsView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     login_url = 'index'
-
     model = Property
     template_name = 'dashboard/property-details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['credit_form'] = AddCreditToPropertyForm(user=self.request.user)
+        context['expenses'] = PropertyExpense.objects.filter(property=self.object)
+        context['property_financial_information'] = PropertyFinancialInformation.objects.filter(property=self.object)
+        context['credits'] = Credit.objects.filter(credit_owner_id=self.request.user.id,
+                                                   credit_financial_information__property_id=self.object.id,
+                                                   )
+        context['today'] = date.today()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        property = self.get_object()
+        form = AddCreditToPropertyForm(request.POST, user=self.request.user)
+        if form.is_valid():
+            finance_information = PropertyFinancialInformation.objects.filter(pk=property.pk)
+            finance_information.update(
+                property=property,
+                is_credited=True,
+                credited_amount=form.cleaned_data['credited_amount'],
+                credit=form.cleaned_data['credit']
+
+            )
+            return redirect('property_details', pk=property.id)
+
+        context = self.get_context_data()
+        context['credit_form'] = form
+        return self.render_to_response(context)
 
     def test_func(self):
         property = self.get_object()
@@ -128,6 +199,7 @@ class DashboardExpensesView(LoginRequiredMixin, TemplateView):
 
         return context
 
+
 @login_required
 def add_expense(request, pk):
     expenses = get_object_or_404(PropertyExpense, pk=pk)
@@ -144,7 +216,7 @@ def add_expense(request, pk):
     else:
         form = AddExpenseForm()
 
-    context ={
+    context = {
         'form': form,
         'expenses': expenses,
         'property': property,

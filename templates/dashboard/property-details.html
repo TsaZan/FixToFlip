@@ -1,154 +1,177 @@
 {% extends 'dashboard/dashboard-base.html' %}
 {% load static %}
 {% block content %}
-
-<!--
-=============================================
-Dashboard Body
-==============================================
+    <!--
+=====================================================
+Property Listing Details
+=====================================================
 -->
-    <div class="dashboard-body">
-        <div class="position-relative">
-            <!-- ************************ Header **************************** -->
-            <header class="dashboard-header">
-                <div class="d-flex align-items-center justify-content-end">
-                    <h4 class="m0 d-none d-lg-block">Property Details</h4>
-                    <button class="dash-mobile-nav-toggler d-block d-md-none me-auto">
-                        <span></span>
-                    </button>
-                    <form action="#" class="search-form ms-auto">
-                        <input type="text" placeholder="Search here..">
-                        <button><img src="{% static '/dash/images/lazy.svg' %}" data-src="{% static '/dash/images/icon/icon_43.svg' %}" alt=""
-                                     class="lazy-img m-auto"></button>
-                    </form>
-                    <div class="profile-notification position-relative dropdown-center ms-3 ms-md-5 me-4">
-                        <button class="noti-btn dropdown-toggle" type="button" id="notification-dropdown"
-                                data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                            <img src="{% static '/dash/images/lazy.svg' %}" data-src="{% static '/dash/images/icon/icon_11.svg' %}" alt=""
-                                 class="lazy-img">
-                            <div class="badge-pill"></div>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="notification-dropdown">
-                            <li>
-                                <h4>Notification</h4>
-                                <ul class="style-none notify-list">
-                                    <li class="d-flex align-items-center unread">
-                                        <img src="{% static '/dash/images/lazy.svg' %}" data-src="{% static '/dash/images/icon/icon_36.svg' %}" alt=""
-                                             class="lazy-img icon">
-                                        <div class="flex-fill ps-2">
-                                            <h6>You have 3 new mails</h6>
-                                            <span class="time">3 hours ago</span>
-                                        </div>
-                                    </li>
-                                    <li class="d-flex align-items-center">
-                                        <img src="{% static '/dash/images/lazy.svg' %}" data-src="{% static '/dash/images/icon/icon_37.svg' %}" alt=""
-                                             class="lazy-img icon">
-                                        <div class="flex-fill ps-2">
-                                            <h6>Your listing post has been approved</h6>
-                                            <span class="time">1 day ago</span>
-                                        </div>
-                                    </li>
-                                    <li class="d-flex align-items-center unread">
-                                        <img src="{% static '/dash/images/lazy.svg' %}" data-src="{% static '/dash/images/icon/icon_38.svg' %}" alt=""
-                                             class="lazy-img icon">
-                                        <div class="flex-fill ps-2">
-                                            <h6>Your meeting is cancelled</h6>
-                                            <span class="time">3 days ago</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="d-none d-md-block me-3">
-                        <a href="add-property.html" class="btn-two"><span>Add Listing</span> <i
-                                class="fa-thin fa-arrow-up-right"></i></a>
-                    </div>
-                    <div class="user-data position-relative">
-                        <button class="user-avatar online position-relative rounded-circle dropdown-toggle"
-                                type="button" id="profile-dropdown" data-bs-toggle="dropdown"
-                                data-bs-auto-close="outside" aria-expanded="false">
-                            <img src="{% static '/dash/images/lazy.svg' %}" data-src="{% static '/dash/images/avatar_01.jpg' %}" alt="" class="lazy-img">
-                        </button>
-                        <!-- /.user-avatar -->
-                        <div class="user-name-data">
-                            <ul class="dropdown-menu" aria-labelledby="profile-dropdown">
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center" href="profile.html"><img
-                                            src="{% static '/dash/images/lazy.svg' %}" data-src="{% static '/dash/images/icon/icon_23.svg' %}" alt=""
-                                            class="lazy-img"><span class="ms-2 ps-1">Profile</span></a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center" href="account-settings.html"><img
-                                            src="{% static '/dash/images/lazy.svg' %}" data-src="{% static '/dash/images/icon/icon_24.svg' %}" alt=""
-                                            class="lazy-img"><span class="ms-2 ps-1">Account Settings</span></a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center" href="#"
-                                       data-bs-toggle="modal" data-bs-target="#deleteModal"><img
-                                            src="{% static '/dash/images/lazy.svg' %}" data-src="{% static '/dash/images/icon/icon_25.svg' %}" alt=""
-                                            class="lazy-img"><span class="ms-2 ps-1">Delete Account</span></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- /.user-data -->
+    <div class="listing-details-one theme-details-one bg-pink pt-180 lg-pt-150 pb-150 xl-pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="property-titlee">{{ property }} Details</h3><br>
                 </div>
-            </header>
-            <!-- End Header -->
+                <!-- /.media-gallery -->
+                <div class="row">
+                    <div class="col-xl-8">
+                        <div class="bg-white shadow4 border-20">
+                            <div class="property-overview p-40">
+                                <h3 class="mb-20">Overview</h3>
+                                <p class="fs-20 lh-lg">{{ property }} is located
+                                    on {{ property.address | default:"N/A" }}, {{ property.city | default:"N/A" }},
+                                    {{ property.country | default:"N/A" }}
+                                <p>
 
-
-            <div class="project-details-one table-responsive pt-25 pb-25 pe-4 ps-4">
-                <div class="row gx-xxl-5">
-
-                    <div class="col-lg-6">
-                        <div class="details-text ps-xxl-5 md-mt-40">
-                            <h3>{{ property.property_name }}</h3>
-                            <p class="fs-24 pt-45 xl-pt-30 pb-45 xl-pb-30">Your leading real estate advocate, transforming houses into dreams. Trust </p>
-                            <h4 class="mb30">Project Details</h4>
-                            <div class="project-info-outline">
-                                <div class="main-bg">
-                                    <ul class="style-none">
-                                        <li class="position-relative z-1">
-                                            <div class="num fw-light">01</div>
-                                            <img src="images/icon/icon_43.svg" alt="" class="lazy-img icon" style="">
-                                            <strong>Date</strong>
-                                            <span>Sunday, 23 July, 2021</span>
+                                <div class="property-feature-list mt-30">
+                                    <ul class="style-none d-flex flex-wrap align-items-center justify-content-center">
+                                        <li style="flex-basis: 30%; margin: 10px;">
+                                            <p><span class="fs-20 color-dark">Bought Price: </span></p>
+                                            <p><span class="fs-22 color-dark">{{ property.property_financial_information.values_list.0.2 }} {{ property.property_financial_information.values_list.0.1 }} </span>
+                                            </p>
                                         </li>
-                                        <li class="position-relative z-1">
-                                            <div class="num fw-light">02</div>
-                                            <img src="images/icon/icon_44.svg" alt="" class="lazy-img icon" style="">
-                                            <strong>Client Name</strong>
-                                            <span>Mariona Adisson, California</span>
+                                        <li style="flex-basis: 30%; margin: 10px;">
+                                            <p><span class="fs-20 color-dark">Expected Expenses: </span></p>
+
+                                            <p><span class="fs-22 color-dark">{{ property.property_expenses.values_list.0.18 }} {{ property.property_expenses.values_list.0.17 }}</span></p>
                                         </li>
-                                        <li class="position-relative z-1">
-                                            <div class="num fw-light">03</div>
-                                            <img src="images/icon/icon_45.svg" alt="" class="lazy-img icon" style="">
-                                            <strong>Project Type</strong>
-                                            <span>Business Consulting</span>
+                                        <li style="flex-basis: 30%; margin: 10px;">
+                                            <p><span class="fs-20 color-dark">Bought Date: </span></p>
+
+                                            <p><span class="fs-22 color-dark">{{ property.bought_date | date:"d-m-Y" | default:"N/A" }}</span></p>
                                         </li>
                                     </ul>
                                 </div>
-                                <!-- /.main-bg -->
+                                <!-- /.property-feature-list -->
                             </div>
-                            <!-- /.project-info-outline -->
-                            <p class="fs-20 pt-50 pb-35">Your leading real estate advocate, transforming houses into dreams. Trust us to expertly guide you home.  745,000 apartments &amp; home for sell, rent &amp; mortgage.</p>
+                            <!-- /.property-overview -->
+                            <div class="property-feature-accordion border-top p-40">
+                                <h3 class="mb-20">Property Expenses</h3>
+                                {#                                <p class="fs-20 lh-lg">#}
+                                {#                                <ul>#}
+                                {#                                    <li>The biggest expenses for this#}
+                                {#                                        property: {{ expenses.biggest_expense.0 | capfirst }}#}
+                                {#                                        for {{ expenses.biggest_expense.1 }}</li>#}
+                                {#                                    <li>Last added expense for this property: {{ expenses.last_expense_date }}</li>#}
+                                {#                                </ul>#}
+                                {#                                </p>#}
+                                {% for expenses in property.property_expenses.all %}
+
+                                    <h5 class="pt-30 pb-25">Renovation Expenses:</h5>
+                                    <h6 class="fw-500">Total renovation expenses: {{ expenses.total_repair_expenses }}</h6><br>
+                                    <div class="feature-list-two">
+                                        <ul class="style-none d-flex flex-wrap justify-content-between">
+                                            <li><span>Plumbing Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.plumbing_repair_expenses}}</span></li>
+                                            <li><span>Electrical Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.electrical_repair_expenses }}</span></li>
+                                            <li><span>Floors Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.floors_repair_expenses }}</span></li>
+
+                                            <li><span>Wall Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.walls_repair_expenses}}</span>
+                                            </li>
+                                            <li><span>Bathroom Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.bathroom_repair_expenses }}</span></li>
+
+                                            <li><span>Kitchen Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.kitchen_repair_expenses }}</span></li>
+
+
+                                            <li><span>Windows and Doors Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.windows_doors_repair_expenses }}</span></li>
+
+                                            <li><span>Facade/Balcony Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.facade_repair_expenses }}</span></li>
+                                            <li><span>Roof Repair: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.roof_repair_expenses }}</span></li>
+
+                                            <li><span>Other Repair Expenses: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.other_repair_expenses }}</span></li>
+
+
+                                        </ul>
+                                    </div>
+                                    <h5 class="pt-30 pb-25">Other Expenses:</h5>
+                                    <h6 class="fw-500">Total Other Expenses: {{ expenses.expense_total }}</h6><br>
+                                    <div class="feature-list-two">
+                                        <ul class="style-none d-flex flex-wrap justify-content-between">
+                                            <li><span>Notary Taxes: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.notary_taxes }}</span></li>
+
+
+                                            <li><span>Municipality Taxes: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.municipality_taxes }}</span></li>
+
+                                            <li><span>Utilities: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.utilities }}</span></li>
+
+
+                                            <li><span>Advertising: </span>
+                                                <span class="fw-500 color-dark">{{ expenses.advertising }}</span></li>
+
+                                            <li><span>Administrative Fees: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.administrative_fees }}</span></li>
+
+                                            <li><span>Insurance: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.insurance }}</span></li>
+                                            <li><span>Other Expenses: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.other_expenses }}</span>
+                                            </li>
+                                            <li><span>Profit Tax: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.profit_tax }}</span>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                    <!-- /.feature-list-two -->
+                                    </div>
+                                    <!-- /.property-feature-accordion -->
+                                {% endfor %}
 
                         </div>
-
-
-                        <!-- /.details-text -->
                     </div>
+                    <div class="col-xl-4 col-lg-8 me-auto ms-auto">
+                        <div class="theme-sidebar-one ms-xl-5 lg-mt-80">
+
+                            <div class="tour-schedule bg-white border-20 p-30 mb-40">
+                                {% if not credits %}
+                                    <h5 class="mb-40">Add Credit</h5>
+                                    <form action="#" method="post">
+                                        {% csrf_token %}
+                                        {{ credit_form }}
+                                        {{ form.credit_form.errors }}
+                                        <br>
+                                        <div class="input-box-three mb-25"><!-- /.input-box-three -->
+                                            <button class="btn-nine text-uppercase rounded-3 w-100 mb-10">Add To Credit
+                                            </button>
+                                        </div>
+                                    </form>
+                                {% else %}
+                                    <h5 class="mb-40">Credited Information:</h5>
+                                    {% for credit in credits %}
+                                        <h6>Bank: {{ credit.bank_name }}</h6>
+                                        <p>Credit Amount: {{ credit.credit_amount }}<br>
+                                            {% for credit_financial_information in property_financial_information.all %}
+                                                Credited Amount: {{ credit_financial_information.credited_amount }}<br>
+                                            {% endfor %}
+                                            Credit Type: {{ credit.credit_type }}<br>
+                                            Monthly Payment: {{ credit.monthly_payment }}<br>
+                                            Interest: {{ credit.credit_interest }}%<br>
+                                            Term: {% if credit.credit_term < today %} EXPIRED on {{ credit.credit_term }} {% else %} {{ credit.credit_term }}{% endif %}<br>
+                                        </p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.theme-sidebar-one -->
                 </div>
             </div>
-
-            
-            
-
         </div>
     </div>
-    <!-- /.dashboard-body -->
 
+    <!-- /.listing-details-one -->
 
 
 {% endblock %}
