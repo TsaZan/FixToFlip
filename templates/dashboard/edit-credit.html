@@ -1,6 +1,5 @@
 {% extends 'dashboard/dashboard-base.html' %}
 {% load static %}
-{% load template_tags %}
 {% block content %}
 
     <!-- 
@@ -31,8 +30,8 @@ Dashboard Body
             <div class="row align-items-end">
                 <div class="col-md-3">
                     <div class="dash-input-wrapper mb-30">
-                        <label for="">Credit Amount*</label>
-                        {{ form.credit_amount | add_class:'form-control' }}
+                        <label for="">Credit Amount</label>
+                        {{ form.credit_amount }}
                         {{ form.credit_amount.errors }}
                     </div>
                     <!-- /.dash-input-wrapper -->
@@ -48,12 +47,12 @@ Dashboard Body
                 <div class="col-md-3">
                     <div class="dash-input-wrapper mb-30">
                         <label for="">Monthly Payment</label>
-                        {{ form.monthly_payment  | add_class:'form-control' }}
+                        {{ form.monthly_payment }}
                         {{ form.monthly_payment.errors }}
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
-                                <div class="col-md-3">
+                <div class="col-md-3">
                     <div class="dash-input-wrapper mb-60">
                         <label for="">Credit Type</label>
                         {{ form.credit_type }}

@@ -1,9 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
+from django.db.models import Sum
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
-from FixToFlip.credits.forms import CreditAddForm, CreditPaymentForm
+from djmoney.money import Money
+
+from FixToFlip.credits.forms import CreditAddForm, CreditPaymentForm, CreditEditForm
 from FixToFlip.credits.models import Credit, CreditPayment
 from FixToFlip.money_operations import credit_reminder_calculation, credit_balance, interest_paid
 
@@ -25,33 +28,86 @@ class DashboardCreditsView(LoginRequiredMixin, TemplateView):
                 credit.last_payment = CreditPayment.objects.filter(credit_id=credit.id).first().payment_date
         context = super().get_context_data(**kwargs)
         context['credits'] = credits
+        context['header_title'] = 'Credits Dashboard'
 
         return context
-
-
-def CreditDetailsView(request, pk):
-    pass
 
 
 class CreditAddView(LoginRequiredMixin, CreateView):
     model = Credit
     form_class = CreditAddForm
     template_name = 'dashboard/add-credit.html'
-    success_url = reverse_lazy('credits')
+    success_url = reverse_lazy('dashboard_credits')
 
     def form_valid(self, form):
         form.instance.credit_owner = self.request.user
         return super().form_valid(form)
 
 
+class CreditDetailsView(LoginRequiredMixin, TemplateView):
+    template_name = 'dashboard/credit-details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        credit = Credit.objects.get(id=self.kwargs['pk'])
+        credit_payments = CreditPayment.objects.filter(credit_id=credit.id)
+        total = credit_payments.aggregate(total_interest=Sum('interest_amount'),
+                                          total_principal=Sum('principal_amount'))
+        if total['total_interest'] is None:
+            total['total_interest'] = 0
+        if total['total_principal'] is None:
+            total['total_principal'] = 0
+        full_payment = total['total_interest'] + total['total_principal']
+        if credit_payments.exists():
+            currency = credit_payments.first().interest_amount.currency
+        else:
+            currency = 'EUR'
+
+        total_interest = Money(total['total_interest'] or 0, currency)
+        total_principal = Money(total['total_principal'] or 0, currency)
+        full_payment = Money(full_payment, currency)
+
+        form = CreditPaymentForm()
+        context['credit'] = credit
+        context['form'] = form
+        context['credit_payments'] = credit_payments
+        context['full_payment'] = full_payment
+
+        context['total_interest'] = total_interest
+        context['total_principal'] = total_principal
+        return context
+
+    def post(self, request, *args, **kwargs):
+        credit = Credit.objects.get(id=self.kwargs['pk'])
+        form = CreditPaymentForm(request.POST or None, credit=credit)
+        if form.is_valid():
+            payment = form.save(commit=False)
+            payment.credit = credit
+            payment.save()
+            return redirect('credit_details', pk=credit.id)
+        return render(request, 'dashboard/credit-details.html', {'credit': credit, 'form': form})
+
+
 class EditCreditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Credit
+    form_class = CreditEditForm
+    template_name = 'dashboard/edit-credit.html'
+    success_url = reverse_lazy('dashboard_credits')
+
     def test_func(self):
-        property = self.get_object()
-        return self.request.user == property.owner
+        credit = self.get_object()
+        return self.request.user == credit.credit_owner
+
+    def form_valid(self, form):
+        form.instance.credit_owner = self.request.user
+        return super().form_valid(form)
 
 
-class DeleteCreditView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
+class DeleteCreditView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Credit
+    template_name = 'dashboard/delete-credit.html'
+    success_url = reverse_lazy('dashboard_credits')
+
     def test_func(self):
-        property = self.get_object()
-        return self.request.user == property.owner
-
+        credit = self.get_object()
+        return self.request.user == credit.credit_owner

@@ -1,5 +1,7 @@
 {% extends 'dashboard/dashboard-base.html' %}
 {% load static %}
+{% load template_tags %}
+
 {% block content %}
     <!--
 =====================================================
@@ -34,7 +36,7 @@ Property Listing Details
                                         <li style="flex-basis: 30%; margin: 10px;">
                                             <p><span class="fs-20 color-dark">Actual Expenses: </span></p>
 
-                                            <p><span class="fs-22 color-dark">{{ expenses.actual_expenses}}</span></p>
+                                            <p><span class="fs-22 color-dark">{{ expenses.actual_expenses }}</span></p>
                                         </li>
                                         <li style="flex-basis: 30%; margin: 10px;">
                                             <p><span class="fs-20 color-dark">Expenses per Sqm: </span></p>
@@ -48,15 +50,6 @@ Property Listing Details
                             <!-- /.property-overview -->
                             <div class="property-feature-accordion border-top p-40">
                                 <h3 class="mb-20">Property Expenses</h3>
-{#                                <p class="fs-20 lh-lg">#}
-{#                                <ul>#}
-{#                                    <li>The biggest expenses for this#}
-{#                                        property: {{ expenses.biggest_expense.0 | capfirst }}#}
-{#                                        for {{ expenses.biggest_expense.1 }}</li>#}
-{#                                    <li>Last added expense for this property: {{ expenses.last_expense_date }}</li>#}
-{#                                </ul>#}
-{#                                </p>#}
-
                                 <h5 class="pt-30 pb-25">Renovation Expenses:</h5>
                                 <div class="feature-list-two">
                                     <ul class="style-none d-flex flex-wrap justify-content-between">

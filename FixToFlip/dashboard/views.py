@@ -22,6 +22,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context['properties_sold'] = Property.objects.filter(
             owner=self.request.user, property_condition='Sold')
         context['user'] = self.request.user
+        context['header_title'] = 'Dashboard'
         return context
 
 

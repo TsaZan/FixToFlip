@@ -30,6 +30,7 @@ class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
         for property in properties:
             property.current_expenses = sum_current_expenses(property.id)
         context['properties'] = properties
+        context['header_title'] = 'Properties Dashboard'
 
         return context
 
@@ -156,6 +157,7 @@ class PropertyDetailsView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
                                                    credit_financial_information__property_id=self.object.id,
                                                    )
         context['today'] = date.today()
+        context['head_title'] = 'Property Details'
         return context
 
     def post(self, request, *args, **kwargs):
@@ -194,6 +196,7 @@ class DashboardExpensesView(LoginRequiredMixin, TemplateView):
         paginator = Paginator(expenses_list, 5)
         page_number = self.request.GET.get('page')
         expenses = paginator.get_page(page_number)
+        context['header_title'] = 'Expenses Dashboard'
 
         context['expenses'] = expenses
 

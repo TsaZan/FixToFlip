@@ -19,20 +19,7 @@ urlpatterns = [
 
     path('tasks/', DashboardTasksView.as_view(), name='dashboard_tasks'),
 
-    path('credits/', include([
-        path('', DashboardCreditsView.as_view(), name='dashboard_credits'),
-        path('add-credit/', CreditAddView.as_view(), name='add_credit'),
-    ])),
-
     path('expenses/', DashboardExpensesView.as_view(), name='dashboard_expenses'),
-
-    # path('<int:pk>/', include([
-    #     path('profile/', ProfileEditView.as_view(), name='profile_edit'),
-    #     path('delete/', AccountDeleteView.as_view(), name='delete_account'),
-    #
-    # ]
-    #
-    # )),
 
     path('blogposts/', include([
         path('', BlogPostsView.as_view(), name='dashboard_blogposts'),

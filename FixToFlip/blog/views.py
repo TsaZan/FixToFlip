@@ -6,8 +6,6 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
 from rest_framework import generics
 from django.views.generic import View
-
-from FixToFlip.accounts.admin import Profile
 from FixToFlip.blog.forms import BlogCommentForm, AddBlogPostForm, BlogPostDeleteForm
 from FixToFlip.blog.models import BlogPost, Category
 from FixToFlip.blog.serializers import BlogPostSerializer, CategorySerializer
@@ -92,6 +90,7 @@ class BlogPostsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         page_number = self.request.GET.get('page')
         posts = paginator.get_page(page_number)
         context['posts'] = posts
+        context['header_title'] = 'Blog Dashboard'
         return context
 
 

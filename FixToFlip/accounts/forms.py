@@ -23,7 +23,7 @@ class UserEditForm(forms.ModelForm):
                    'password']
 
         widgets = {
-            'email': forms.TextInput(attrs={'disabled': 'disabled'}),
+            'email': forms.TextInput(attrs={'readonly': 'readonly'}),
             'first_name': forms.TextInput(attrs={'placeholder': 'First Name'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Last Name'}),
 
