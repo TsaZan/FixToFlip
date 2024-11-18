@@ -83,19 +83,15 @@ Dashboard Body
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li><a class="dropdown-item" href="{% url 'credit_details' credit.id %}"><img src="{% static '/images/lazy.svg' %}"
                                             data-src="{% static '/dash/images/icon/icon_18.svg' %}"
-                                            alt="" class="lazy-img"> View</a>
+                                            alt="" class="lazy-img">Details / Add Payment</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="#"><img src="{% static '/images/lazy.svg' %}"
-                                                                               data-src="{% static '/dash/images/icon/icon_20.svg' %}"
-                                                                               alt="" class="lazy-img">
-                                        Add payment</a></li>
-                                    <li><a class="dropdown-item" href="#"><img src="{% static '/images/lazy.svg' %}"
-                                                                               data-src="{% static '/dash/images/icon/icon_20.svg' %}"
-                                                                               alt="" class="lazy-img"> Edit</a>
+                                    <li><a class="dropdown-item" href="{% url 'edit_credit' credit.id %}"><img src="{% static '/images/lazy.svg' %}"
+                                            data-src="{% static '/dash/images/icon/icon_20.svg' %}"
+                                            alt="" class="lazy-img"> Edit</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="#"><img src="{% static '/images/lazy.svg' %}"
-                                                                               data-src="{% static '/dash/images/icon/icon_21.svg' %}"
-                                                                               alt="" class="lazy-img">
+                                    <li><a class="dropdown-item" href="{% url 'delete_credit' credit.id %}"><img src="{% static '/images/lazy.svg' %}"
+                                            data-src="{% static '/dash/images/icon/icon_21.svg' %}"
+                                            alt="" class="lazy-img">
                                         Delete</a></li>
                                 </ul>
                             </div>

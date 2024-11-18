@@ -6,7 +6,6 @@ from djmoney.forms import MoneyField
 from FixToFlip.choices import ExpenseTypeChoices
 from FixToFlip.credits.models import Credit
 from FixToFlip.properties.models import Property, PropertyForSale, PropertyExpense, PropertyFinancialInformation
-from FixToFlip.validators import get_current_date
 
 
 class PropertyBaseForm(forms.ModelForm):
@@ -15,9 +14,7 @@ class PropertyBaseForm(forms.ModelForm):
         exclude = ['owner']
         widgets = {
             'bought_date': forms.DateInput(attrs={
-                'type': 'date',
-                'max': get_current_date(),
-                'min': '1900-01-01'}),
+                'type': 'date', 'min': '1900-01-01', 'placeholder': 'YYYY-MM-DD'}),
             'property_name': forms.TextInput(attrs={'placeholder': 'Property Name'}),
             'country': forms.TextInput(attrs={'placeholder': 'Country'}),
             'town': forms.TextInput(attrs={'placeholder': 'Town'}),
@@ -34,9 +31,7 @@ class PropertyBaseForm(forms.ModelForm):
 
 
 class PropertyAddForm(PropertyBaseForm):
-    class Meta:
-        model = Property
-        exclude = ['owner']
+    pass
 
 
 class PropertyFinanceInformationForm(forms.ModelForm):
@@ -69,12 +64,6 @@ class PropertyForSaleForm(forms.ModelForm):
             'list_description': '',
 
         }
-
-
-# class PropertyFinancialInformationForm(forms.ModelForm):
-#     class Meta:
-#         model = PropertyFinancialInformation
-#         fields = '__all__'
 
 
 class PropertyExpenseForm(forms.ModelForm):

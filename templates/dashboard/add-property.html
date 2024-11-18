@@ -1,5 +1,6 @@
 {% extends 'dashboard/dashboard-base.html' %}
 {% load static %}
+{% load template_tags %}
 {% block content %}
 
     <!-- 
@@ -21,7 +22,7 @@ Dashboard Body
             </div>
             <!-- /.dash-input-wrapper -->
             <div class="dash-input-wrapper mb-30">
-                <label for="">Description*</label>
+                <label for="">Description</label>
                 {{ property_form.property_description }}
                 {{ property_form.description.errors }}
 
@@ -30,7 +31,7 @@ Dashboard Body
             <div class="row align-items-end">
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
-                        <label for="">Category*</label>
+                        <label for="">Category</label>
                         <select name="property_type" class="nice-select">
                             {% for type in  property_form.property_type %}
                                 <option value="{{ type.id }}">{{ type }}</option>
@@ -41,7 +42,7 @@ Dashboard Body
                 </div>
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
-                        <label for="">Property Condition*</label>
+                        <label for="">Property Condition</label>
                         <select name="property_condition" class="nice-select">
                             {% for condition in  property_form.property_condition %}
                                 <option>{{ condition }}</option>
@@ -52,8 +53,8 @@ Dashboard Body
                 </div>
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
-                        <label for="">Initial Price*</label>
-                        {{ property_financial_information_form.initial_price}}
+                        <label for="">Initial Price</label>
+                        {{ property_financial_information_form.initial_price | add_class:'form-control' }}
                         {{ property_financial_information_form.initial_price.errors }}
 
                     </div>
@@ -62,7 +63,7 @@ Dashboard Body
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
                         <label for="">Expected Expenses</label>
-                        {{ expense_form.expected_expenses }}
+                        {{ expense_form.expected_expenses  | add_class:'form-control' }}
                         {{ expense_form.expected_expenses.errors }}
 
                     </div>
@@ -95,14 +96,14 @@ Dashboard Body
                 </div>
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
-                        <label for="">Bedrooms*</label>
+                        <label for="">Bedrooms</label>
                         {{ property_form.bedrooms}}
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
-                        <label for="">Bathrooms*</label>
+                        <label for="">Bathrooms</label>
                         {{ property_form.bathrooms }}
                     </div>
                     <!-- /.dash-input-wrapper -->
@@ -110,7 +111,7 @@ Dashboard Body
 
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
-                        <label for="">Building Year*</label>
+                        <label for="">Building Year</label>
                         {{ property_form.owner }}
                         {{ property_form.year_of_built }}
                     </div>
@@ -118,7 +119,7 @@ Dashboard Body
                 </div>
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
-                        <label for="">Floor*</label>
+                        <label for="">Floor</label>
                         {{ property_form.floor }}
                     </div>
                     <!-- /.dash-input-wrapper -->
@@ -139,14 +140,14 @@ Dashboard Body
             <div class="row">
                 <div class="col-12">
                     <div class="dash-input-wrapper mb-25">
-                        <label for="">Address*</label>
+                        <label for="">Address</label>
                         {{ property_form.address }}
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
                 <div class="col-lg-6">
                     <div class="dash-input-wrapper mb-25">
-                        <label for="">Country*</label>
+                        <label for="">Country</label>
                         {{ property_form.country }}
                         
                     </div>
@@ -154,10 +155,10 @@ Dashboard Body
                 </div>
                 <div class="col-lg-6">
                     <div class="dash-input-wrapper mb-25">
-                        <label for="">City*</label>
+                        <label for="">City</label>
                         {{ property_form.city }}
 
-                        </select>
+                 
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>

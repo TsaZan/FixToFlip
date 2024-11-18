@@ -84,7 +84,7 @@ class CreditPayment(models.Model):
     class Meta:
         verbose_name = 'Credit Payment'
         verbose_name_plural = 'Credit Payments'
-        ordering = ['-payment_date']
+        ordering = ['payment_date']
 
     payment_date = models.DateField()
 
@@ -104,7 +104,7 @@ class CreditPayment(models.Model):
 
     credit = models.ForeignKey(
         to=Credit,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name='credit_payments',
     )
 
