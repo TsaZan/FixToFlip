@@ -115,6 +115,39 @@ Property Listing Details
 
                                     </ul>
                                 </div>
+                                <div class="property-feature-accordion border-top mt-40 mb-40">
+                                    <h3 class="mt-40 mb-20">Expenses Notes:</h3>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Amount</th>
+                                            <th scope="col">Expense Type</th>
+                                            <th scope="col">Note</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for note in expenses_notes %}
+                                            <tr>
+                                                <th scope="row" class="fw-500">{{forloop.counter}}</th>
+                                                <td>{{ note.expanse_date }}</td>
+                                                <td>{{ note.expense_amount }}</td>
+                                                <td>{{ note.expense_type }}</td>
+                                                <td>{{ note.notes }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr>
+                                            <th scope="row" class="fw-500"></th>
+                                            <td scope="row" class="fw-500">Total:</td>
+                                            <td>{{ expenses.actual_expenses }}</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <!-- /.feature-list-two -->
                             </div>
                             <!-- /.property-feature-accordion -->
@@ -127,10 +160,12 @@ Property Listing Details
 
                             <div class="tour-schedule bg-white border-20 p-30 mb-40">
                                 <h5 class="mb-40">Add Expense</h5>
-                                <form action="#" method="post">
+                                <form class='form-multiline' action="#" method="post">
                                     {% csrf_token %}
                                     {{ form }}
                                     {{ form.errors }}
+                                    {{ notes_form }}
+                                    {{ notes_form.errors }}
                                     <br>
                                     <div class="input-box-three mb-25"><!-- /.input-box-three -->
                                         <button class="btn-nine text-uppercase rounded-3 w-100 mb-10">Add Expense

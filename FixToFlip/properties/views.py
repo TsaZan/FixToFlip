@@ -9,11 +9,13 @@ from rest_framework import generics
 from django.shortcuts import render
 from django.core.paginator import Paginator
 
+from FixToFlip.choices import ExpenseTypeChoices
 from FixToFlip.credits.models import Credit
 from FixToFlip.money_operations import sum_current_expenses
-from FixToFlip.properties.forms import PropertyAddForm, PropertyExpenseForm, \
-    PropertyEditForm, PropertyDeleteForm, AddExpenseForm, AddCreditToPropertyForm, PropertyFinanceInformationForm
-from FixToFlip.properties.models import Property, PropertyExpense, PropertyFinancialInformation
+from FixToFlip.properties.forms import PropertyAddForm, \
+    PropertyEditForm, PropertyDeleteForm, AddExpenseForm, AddCreditToPropertyForm, PropertyFinanceInformationForm, \
+    PropertyExpenseForm, ExpenseNotesForm
+from FixToFlip.properties.models import Property, PropertyExpense, PropertyFinancialInformation, PropertyExpenseNotes
 from FixToFlip.properties.serializers import PropertySerializer, PropertyExpenseSerializer
 
 
@@ -206,21 +208,37 @@ class DashboardExpensesView(LoginRequiredMixin, TemplateView):
 @login_required
 def add_expense(request, pk):
     expenses = get_object_or_404(PropertyExpense, pk=pk)
+    expenses_notes = PropertyExpenseNotes.objects.all().filter(relates_expenses=expenses)
     property = Property.objects.get(id=expenses.property_id)
+
     if request.method == 'POST':
+        notes_form = ExpenseNotesForm(request.POST)
         form = AddExpenseForm(request.POST)
-        if form.is_valid():
+        if form.is_valid() and notes_form.is_valid():
+            notes_instance = notes_form.save(commit=False)
             field = form.cleaned_data['expense_types']
             amount = form.cleaned_data['amount']
+            description = ExpenseTypeChoices(field).label
+            notes_instance.expense_type = description
+            notes_instance.expense_amount = amount
+            notes_instance.relates_expenses = expenses
+            notes_instance.save()
+
             current_value = getattr(expenses, field)
             setattr(expenses, field, current_value + amount)
+
+            notes_form.save()
             expenses.save()
             return redirect('add_expense', pk=pk)
     else:
         form = AddExpenseForm()
+        notes_form = ExpenseNotesForm()
 
     context = {
+        'header_title': 'Add Expenses',
         'form': form,
+        'notes_form': notes_form,
+        'expenses_notes': expenses_notes,
         'expenses': expenses,
         'property': property,
     }

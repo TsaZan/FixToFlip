@@ -5,7 +5,8 @@ from djmoney.forms import MoneyField
 
 from FixToFlip.choices import ExpenseTypeChoices
 from FixToFlip.credits.models import Credit
-from FixToFlip.properties.models import Property, PropertyForSale, PropertyExpense, PropertyFinancialInformation
+from FixToFlip.properties.models import Property, PropertyForSale, PropertyExpense, PropertyFinancialInformation, \
+    PropertyExpenseNotes
 
 
 class PropertyBaseForm(forms.ModelForm):
@@ -78,6 +79,12 @@ class PropertyExpenseForm(forms.ModelForm):
 class AddExpenseForm(forms.Form):
     expense_types = forms.ChoiceField(choices=ExpenseTypeChoices, label='Choose Expense Type')
     amount = MoneyField(max_digits=14, decimal_places=2, label='Amount')
+
+
+class ExpenseNotesForm(forms.ModelForm):
+    class Meta:
+        model = PropertyExpenseNotes
+        fields = ('notes', 'expense_date')
 
 
 class AddCreditToPropertyForm(forms.Form):
