@@ -1,4 +1,8 @@
-from allauth.account.views import login, LoginView, SignupView, PasswordResetView
+from allauth.account.forms import SignupForm
+from django.contrib.auth import login
+
+from django.contrib.auth import authenticate
+
 from django.http import JsonResponse
 from django.shortcuts import render
 
@@ -20,25 +24,3 @@ def faq(request):
     return render(request, 'common/faq.html')
 
 
-class AjaxLoginView(LoginView):
-    def form_valid(self, form):
-        login(self.request, form.user)
-        return JsonResponse({'success': True, 'location': '#'})
-
-    def form_invalid(self, form):
-        return JsonResponse({'success': False, 'errors': form.errors})
-
-
-class AjaxSignupView(SignupView):
-
-    def form_valid(self, form):
-        super().form_valid(form)
-        login(self.request, self.user)
-        return JsonResponse({'success': True})
-
-    def form_invalid(self, form):
-        return JsonResponse({'success': False, 'errors': form.errors})
-
-
-class CustomPasswordResetView(PasswordResetView):
-    template_name = 'common/login_modal.html'

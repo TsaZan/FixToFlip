@@ -34,11 +34,16 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="input-group-meta position-relative mb-25">
-
+                                            {% if login_errors %}
+                                                <div class="error-messages">
+                                                    {% for error in login_errors %}
+                                                        <p class="text-danger">{{ error }}</p>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
 
                                             {% csrf_token %}
                                             {{ loginctx.as_p }}
-
                                         </div>
                                     </div>
 
@@ -47,8 +52,6 @@
                                             <div>
                                                 {{ loginctx.remember.as_hidden }}
 
-{#                                                <input type="checkbox" id="remember" name="remember">#}
-{#                                                <label for="remember">Keep me logged in</label>#}
                                             </div>
                                         </div> <!-- /.agreement-checkbox -->
                                     </div>
@@ -73,17 +76,8 @@
 
                                             {% csrf_token %}
                                             {{ signupctx.as_p }}
+
                                         </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="agreement-checkbox d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <input type="checkbox" id="remember2">
-                                                <label for="remember2">By hitting the "Register" button, you
-                                                    agree to the <a href="#">Terms conditions</a> & <a href="#">Privacy
-                                                        Policy</a></label>
-                                            </div>
-                                        </div> <!-- /.agreement-checkbox -->
                                     </div>
                                     <div class="col-12">
                                         <button id="signup-btn" type="submit"

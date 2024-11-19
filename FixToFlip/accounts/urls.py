@@ -1,13 +1,11 @@
 from django.urls import path, include
 
-from FixToFlip.accounts.views import ProfileEditView, AccountDeleteView
-from FixToFlip.common.views import AjaxLoginView, AjaxSignupView, CustomPasswordResetView
+from FixToFlip.accounts.views import ProfileEditView, AccountDeleteView, ajax_login, ajax_signup
 
 urlpatterns = [
     path('', include([
-        path('login/', AjaxLoginView.as_view(), name='ajax_login'),
-        path("signup/", AjaxSignupView.as_view(), name="ajax_signup"),
-        path('password/reset/', CustomPasswordResetView.as_view(), name='account_reset_password'),
+        path('login/', ajax_login, name='ajax_login'),
+        path("signup/", ajax_signup, name="ajax_signup"),
 
     ])),
     path('<int:pk>/', include([
