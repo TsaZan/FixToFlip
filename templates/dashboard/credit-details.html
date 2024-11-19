@@ -81,12 +81,43 @@ Property Listing Details
 
                                     </tbody>
                                 </table>
-
-                                
                                 <!-- /.feature-list-two -->
                             </div>
                             <!-- /.property-feature-accordion -->
+                            <div class="property-feature-accordion border-top p-40">
+                                <h5 class="mt-40 mb-20">Credited Properties:</h5>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Property Name</th>
+                                        <th scope="col">Credited Amount</th>
+                                        <th scope="col">Property Initial Price</th>
+                                        <th scope="col">Property Status</th>
 
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for property in properties %}
+                                        <tr>
+                                            <th scope="row" class="fw-500">{{forloop.counter}}</th>
+                                            <td>{{ property.property.property_name }}</td>
+                                            <td> {{ property.credited_amount }}</td>
+                                            <td>{{ property.initial_price }}</td>
+                                            <td>{{ property.property.property_condition }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <th scope="row" class="fw-500"></th>
+                                        <td scope="row" class="fw-500">Total:</td>
+                                        <td>{{ expenses.actual_expenses }}</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
 
                         </div>
                     </div>

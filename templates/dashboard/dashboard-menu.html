@@ -11,7 +11,7 @@ Dashboard Aside Menu
 <aside class="dash-aside-navbar">
     <div class="position-relative">
         <div class="logo d-md-block d-flex align-items-center justify-content-between plr bottom-line pb-30">
-            <a href="{% url 'blog_main_page' %}" class="d-flex">
+            <a href="{% url 'index' %}" class="d-flex">
                 <img src="{% static 'images/logo/logo_01.svg' %}" alt="">
             </a>
             <button class="close-btn d-block d-md-none"><i class="fa-light fa-circle-xmark"></i></button>
@@ -21,10 +21,11 @@ Dashboard Aside Menu
                 <li class="plr"><a href="{% url 'dashboard' %}" class="d-flex w-100 align-items-center {% active_url request 'dashboard' %}">
                     <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_1' 'dashboard' %}" alt="">
                     <span>Dashboard</span>
-                </a></li>
-                <li class="plr"><a href="{% url 'dashboard_tasks' %}" class="d-flex w-100 align-items-center {% active_url request 'dashboard_tasks' %}">
-                    <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_2' 'dashboard_tasks' %}" alt="">
-                    <span>Tasks</span>
+                    <li class="plr"><a href="{% url 'blog_main_page' %}" class="d-flex w-100 align-items-center">
+                        <img src="{% static 'dash/images/icon/icon_6.svg' %}" alt="">
+                        <span>Blog</span>
+                    </a></li>
+
                 </a></li>
                 {% if user.is_staff %}
                     <li class="bottom-line pt-30 lg-pt-20 mb-40 lg-mb-30"></li>
@@ -41,7 +42,7 @@ Dashboard Aside Menu
                     </a></li>
                 {% endif %}
                 <li class="bottom-line pt-30 lg-pt-20 mb-40 lg-mb-30"></li>
-                
+
                 <li>
                     <div class="nav-title">Property Management</div>
                 </li>
@@ -49,10 +50,18 @@ Dashboard Aside Menu
                     <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_6' 'dashboard_properties' %}" alt="">
                     <span>Properties</span>
                 </a></li>
+                <li class="plr"><a href="{% url 'add_property' %}" class="d-flex w-100 align-items-center {% active_url request 'add_property' %}">
+                    <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_7' 'add_property' %}" alt="">
+                    <span>Add Property</span>
+                </a></li>
 
                 <li class="plr"><a href="{% url 'dashboard_credits' %}" class="d-flex w-100 align-items-center {% active_url request 'dashboard_credits' %}">
                     <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_6' 'dashboard_credits' %}" alt="">
                     <span>Credits</span>
+                </a></li>
+                <li class="plr"><a href="{% url 'add_credit' %}" class="d-flex w-100 align-items-center {% active_url request 'add_credit' %}">
+                    <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_7' 'add_credit' %}" alt="">
+                    <span>Add Credit</span>
                 </a></li>
                 <li class="plr"><a href="{% url 'dashboard_expenses' %}" class="d-flex w-100 align-items-center {% active_url request 'dashboard_expenses' %}">
                     <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_6' 'dashboard_expenses' %}" alt="">
@@ -63,9 +72,6 @@ Dashboard Aside Menu
                 <li>
                     <div class="nav-title">Calculators</div>
                 </li>
-
-
-
             </ul>
         </nav>
         <!-- /.dasboard-main-nav -->

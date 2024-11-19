@@ -14,7 +14,7 @@ sitemaps = {
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('FixToFlip.api_urls'), name='url_api'),
-    path('accounts/', include('allauth.urls'), name='accounts_main_page'),
+    path('accounts/', include('allauth.urls'), name='account'),
     path('account/', include('FixToFlip.accounts.urls'), name='account_main_page'),
     path('blog/', include('FixToFlip.blog.urls'), name='blog_main_page'),
     path('calculators/', include('FixToFlip.calculator.urls'), name='calculator_main_page'),

@@ -9,6 +9,7 @@ from djmoney.money import Money
 from FixToFlip.credits.forms import CreditAddForm, CreditPaymentForm, CreditEditForm
 from FixToFlip.credits.models import Credit, CreditPayment
 from FixToFlip.money_operations import credit_reminder_calculation, credit_balance, interest_paid
+from FixToFlip.properties.models import PropertyFinancialInformation
 
 
 class DashboardCreditsView(LoginRequiredMixin, TemplateView):
@@ -50,6 +51,7 @@ class CreditDetailsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         credit = Credit.objects.get(id=self.kwargs['pk'])
+        properties = PropertyFinancialInformation.objects.all().filter(credit=credit)
         credit_payments = CreditPayment.objects.filter(credit_id=credit.id)
         total = credit_payments.aggregate(total_interest=Sum('interest_amount'),
                                           total_principal=Sum('principal_amount'))
@@ -75,6 +77,7 @@ class CreditDetailsView(LoginRequiredMixin, TemplateView):
 
         context['total_interest'] = total_interest
         context['total_principal'] = total_principal
+        context['properties'] = properties
         return context
 
     def post(self, request, *args, **kwargs):

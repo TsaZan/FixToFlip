@@ -1,13 +1,6 @@
 {% load static %}
 
-
-<div id="preloader">
-    <div id="ctn-preloader" class="ctn-preloader">
-        <div class="icon"><img src="{% static 'images/loader.gif' %}" alt="" class="m-auto d-block" width="64">
-        </div>
-    </div>
-</div>
-
+{{ preloader_html|safe }}
 
 <header class="theme-main-menu menu-overlay menu-style-one sticky-menu">
 
@@ -15,8 +8,9 @@
     <div class="inner-content gap-one">
         <div class="top-header position-relative">
             <div class="d-flex align-items-center justify-content-between">
+
                 <div class="logo order-lg-0">
-                    <a href="/" class="d-flex align-items-center">
+                    <a href="{% url 'index' %}" class="d-flex align-items-center">
                         <img src="{% static 'images/logo/logo_01.svg' %}" alt="">
                     </a>
                 </div>
@@ -29,12 +23,12 @@
                                         class="fa-regular fa-lock"></i> <span>Login / Register</span></a>
                             </li>
                         {% else %}
-                            <li class="d-none d-md-inline-block ms-3">
-                                <a href="{% url 'dashboard' %}" class="btn-two" target=""><span>Dashboard</span>
+                            <li class="me-3">
+                                <a href="{% url 'dashboard' %}" class="btn-two"><span>Dashboard</span>
                                     <i class="fa-thin fa-arrow-up-right"></i></a>
                             </li>
-                            <li class="d-none d-md-inline-block ms-3">
-                                <a href="{% url 'account_logout' %}" class="btn-two" target=""><span>Logout</span>
+                            <li class="me-3">
+                                <a href="{% url 'account_logout' %}" class="btn-two"><span>Logout</span>
                                     <i class="fa-thin fa-arrow-up-right"></i></a>
                             </li>
                         {% endif %}
@@ -56,25 +50,21 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'index' %}">Home</a>
                                 </li>
+
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'about-us' %}">About Us</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'faq' %}">FAQ</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
-                                </li>
                             {% endif %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'faq' %}">FAQ</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                            </li>
+
                             <li class="nav-item dashboard-menu">
                                 <a class="nav-link" href="/blog">Blog</a>
                             </li>
-
-                            {#                                    <li class="d-md-none ps-2 pe-2 mt-20">#}
-                            {#                                        <a href="dashboard/add-property.html" class="btn-two w-100"#}
-                            {#                                           target="_blank"><span>Add Listing</span> <i#}
-                            {#                                                class="fa-thin fa-arrow-up-right"></i></a>#}
-                            {#                                    </li>#}
 
                         </ul>
                     </div>

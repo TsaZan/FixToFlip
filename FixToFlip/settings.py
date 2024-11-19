@@ -164,6 +164,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'FixToFlip.common.context_processor.login_ctx.login_ctx_tag',
                 'FixToFlip.common.context_processor.login_ctx.signup_ctx_tag',
+                'FixToFlip.common.context_processor.login_ctx.preloader_context',
                 'django.template.context_processors.debug',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',

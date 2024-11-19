@@ -81,7 +81,6 @@ class Property(models.Model):
     )
 
     bought_date = models.DateField(
-        validators=[MaxValueValidator(get_current_date())],
         blank=True,
         null=True,
     )
@@ -284,7 +283,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
-        verbose_name='Insurance',
+        verbose_name='Bathroom Repair Expenses',
         null=True,
         blank=True,
     )
@@ -293,7 +292,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
-        verbose_name='Insurance',
+        verbose_name='Kitchen Repair Expenses',
         null=True,
         blank=True,
     )
@@ -302,7 +301,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
-        verbose_name='Insurance',
+        verbose_name='Floors Repair Expenses',
         null=True,
         blank=True,
     )
@@ -311,7 +310,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
-        verbose_name='Insurance',
+        verbose_name='Walls Repair Expenses',
         null=True,
         blank=True,
     )
@@ -320,7 +319,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
-        verbose_name='Insurance',
+        verbose_name='Windows and Doors Repair Expenses',
         null=True,
         blank=True,
     )
@@ -329,7 +328,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
-        verbose_name='Insurance',
+        verbose_name='Plumbing Repair Expenses',
         null=True,
         blank=True,
     )
@@ -338,7 +337,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
-        verbose_name='Insurance',
+        verbose_name='Electrical Repair Expenses',
         null=True,
         blank=True,
     )
@@ -356,7 +355,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
-        verbose_name='Insurance',
+        verbose_name='Facade Repair Expenses',
         null=True,
         blank=True,
     )
@@ -365,7 +364,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
-        verbose_name='Other Expenses',
+        verbose_name='Other Repair Expenses',
         null=True,
         blank=True,
     )
@@ -377,8 +376,6 @@ class PropertyExpense(models.Model):
         blank=False,
         null=False,
     )
-
-    expense_details = models.TextField(blank=True, null=True)
 
     last_expense_date = models.DateField(blank=True, null=True, auto_now=True)
 
@@ -424,3 +421,29 @@ class PropertyExpense(models.Model):
     def __str__(self):
         return (f'Property: {str(self.property)} - Added Expenses: {self.expense_total()} '
                 f'- Expected Expenses: {self.expected_expenses}')
+
+
+class PropertyExpenseNotes(models.Model):
+    notes = models.TextField(
+        blank=True,
+        null=True,
+    )
+
+    expense_amount = MoneyField(
+        max_digits=PropertyExpense.MAX_DIGITS,
+        decimal_places=PropertyExpense.MAX_DECIMAL_PLACES,
+
+    )
+
+    expense_type = models.CharField()
+
+    expense_date = models.DateField(
+        blank=True,
+        null=True
+
+    )
+    relates_expenses = models.OneToOneField(
+        to='PropertyExpense',
+        related_name='expenses_notes',
+        on_delete=models.CASCADE
+    )
