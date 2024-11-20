@@ -6,28 +6,11 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
 from rest_framework import generics
 from django.views.generic import View
+from rest_framework.permissions import AllowAny
+
 from FixToFlip.blog.forms import BlogCommentForm, AddBlogPostForm, BlogPostDeleteForm
 from FixToFlip.blog.models import BlogPost, Category
 from FixToFlip.blog.serializers import BlogPostSerializer, CategorySerializer
-
-
-class BlogIndexView(generics.ListAPIView):
-    queryset = BlogPost.objects.all()
-    serializer_class = BlogPostSerializer
-
-
-class CategoryView(generics.ListAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-
-
-class BlogPostAPIView(generics.ListAPIView):
-
-    def get_queryset(self):
-        slug = self.kwargs.get('slug')
-        return BlogPost.objects.filter(slug=slug)
-
-    serializer_class = BlogPostSerializer
 
 
 class BlogMainPageView(TemplateView):
@@ -144,3 +127,36 @@ class DeleteBlogPostView(PermissionRequiredMixin, LoginRequiredMixin, UserPasses
 
     def test_func(self):
         return self.request.user.is_staff
+
+
+''' API Views '''
+
+
+class BlogIndexView(generics.ListAPIView):
+    queryset = BlogPost.objects.all()
+    serializer_class = BlogPostSerializer
+    permission_classes = [AllowAny]
+
+
+class CategoryView(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [AllowAny]
+
+
+class PostsByCategoryAPIView(generics.ListAPIView):
+    serializer_class = BlogPostSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        category_id = self.kwargs['category_id']
+        return BlogPost.objects.filter(category_id=category_id)
+
+
+class BlogPostAPIView(generics.ListAPIView):
+    serializer_class = BlogPostSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        slug = self.kwargs.get('slug')
+        return BlogPost.objects.filter(slug=slug)
