@@ -8,6 +8,8 @@ from django.views.generic import TemplateView, DetailView, UpdateView, DeleteVie
 from rest_framework import generics
 from django.shortcuts import render
 from django.core.paginator import Paginator
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from FixToFlip.choices import ExpenseTypeChoices
 from FixToFlip.credits.models import Credit
@@ -246,12 +248,14 @@ def add_expense(request, pk):
     return render(request, 'dashboard/expenses-details.html', context)
 
 
-''' React Views '''
+''' API Views '''
 
 
 class PropertyListApiView(generics.ListAPIView):
     queryset = Property.objects.all()
     serializer_class = PropertySerializer
+    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [TokenAuthentication]
 
 
 class PropertyApiView(generics.ListAPIView):
@@ -259,6 +263,8 @@ class PropertyApiView(generics.ListAPIView):
         pk = self.kwargs.get('pk')
         return Property.objects.filter(pk=pk)
 
+    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [TokenAuthentication]
     serializer_class = PropertySerializer
 
 
@@ -267,4 +273,6 @@ class PropertyExpensesApiView(generics.ListAPIView):
         pk = self.kwargs.get('pk')
         return PropertyExpense.objects.filter(property_id=pk)
 
+    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [TokenAuthentication]
     serializer_class = PropertyExpenseSerializer

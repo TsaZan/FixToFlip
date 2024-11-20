@@ -25,4 +25,4 @@ class PropertyFinancialInformationSerializer(serializers.ModelSerializer):
 class PropertyExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyExpense
-        fields = ['utilities', 'notary_taxes', 'profit_tax', 'municipality_taxes', 'advertising', 'administrative_fees', 'insurance']
+        exclude = ['property',]
