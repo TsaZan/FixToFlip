@@ -61,9 +61,13 @@ class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         user_form = UserEditForm(request.POST, instance=self.object)
-        profile_form = ProfileEditForm(request.POST, instance=self.object.profile)
+        profile_form = ProfileEditForm(request.POST, request.FILES, instance=self.object.profile)
 
         if user_form.is_valid() and profile_form.is_valid():
+            if 'delete_picture' in request.POST and request.POST['delete_picture'] == 'on':
+                self.object.profile.profile_picture = None
+                self.object.profile.save()
+
             user_form.save()
             profile_form.save()
             return redirect(self.success_url())

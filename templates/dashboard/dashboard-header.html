@@ -36,42 +36,48 @@
 {#                        </li>#}
 {#                    </ul>#}
                 </div>
-                            <div class="d-flex align-items-center mt-3 justify-content-between justify-content-xxl-start order-2">
-                                <div class="d-none d-md-block me-3 order-3">
-                    <a href="{% url 'add_property' %}" class="btn-two"><span>Add Property</span> <i
-                            class="fa-thin fa-arrow-up-right"></i></a>
-                </div>
-                <div class="d-none d-md-block me-3 order-4">
-                    <a href="{% url 'add_credit' %}" class="btn-two"><span>Add Credit</span> <i
-                            class="fa-thin fa-arrow-up-right"></i></a>
-         </div>
-{##}
-                <div class="user-data position-relative order-5">
-                    <button class="user-avatar online position-relative rounded-circle dropdown-toggle" type="button"
-                            id="profile-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside"
-                            aria-expanded="false">
-                        <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/avatar_01.jpg' %}" alt="" class="lazy-img">
-                    </button>
-                    <!-- /.user-avatar -->
-                    <div class="user-name-data">
-                        <ul class="dropdown-menu" aria-labelledby="profile-dropdown">
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center" href="{% url 'profile_edit' request.user.pk %}"><img
-                                        src="{% static 'images/lazy.svg' %}"
-                                        data-src="{% static 'images/icon/icon_23.svg' %}" alt=""
-                                        class="lazy-img"><span class="ms-2 ps-1">Profile</span></a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center" href="{% url 'delete_account' request.user.pk %}" data-bs-toggle="modal"
-                                   data-bs-target="#deleteModal"><img src="{% static 'images/lazy.svg' %}"
-                                                                      data-src="{% static 'images/icon/icon_25.svg' %}" alt=""
-                                                                      class="lazy-img"><span class="ms-2 ps-1">Delete Account</span></a>
-                            </li>
-                        </ul>
+                <div class="d-flex align-items-center mt-3 justify-content-between justify-content-xxl-start order-2">
+                    <div class="d-none d-md-block me-3 order-3">
+                        <a href="{% url 'add_property' %}" class="btn-two"><span>Add Property</span> <i
+                                class="fa-thin fa-arrow-up-right"></i></a>
                     </div>
+                    <div class="d-none d-md-block me-3 order-4">
+                        <a href="{% url 'add_credit' %}" class="btn-two"><span>Add Credit</span> <i
+                                class="fa-thin fa-arrow-up-right"></i></a>
+                    </div>
+                    {##}
+                    <div class="user-data position-relative order-5">
+                        <button class="user-avatar online position-relative rounded-circle dropdown-toggle" type="button"
+                                id="profile-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                                aria-expanded="false">
+                            {% if user.profile.profile_picture %}
+                                <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.profile.profile_picture }}"  alt="" class="lazy-img"  />
+                            {% elif user.socialaccount_set.all.0.get_avatar_url %}
+                                <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.socialaccount_set.all.0.get_avatar_url }}"  alt="" class="lazy-img" />
+                            {% else %}
+                                <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/avatar_01.jpg' %}" alt="" class="lazy-img">
+                            {% endif %}
+                        </button>
+                        <!-- /.user-avatar -->
+                        <div class="user-name-data">
+                            <ul class="dropdown-menu" aria-labelledby="profile-dropdown">
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" href="{% url 'profile_edit' request.user.pk %}"><img
+                                            src="{% static 'images/lazy.svg' %}"
+                                            data-src="{% static 'images/icon/icon_23.svg' %}" alt=""
+                                            class="lazy-img"><span class="ms-2 ps-1">Profile</span></a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" href="{% url 'delete_account' request.user.pk %}" data-bs-toggle="modal"
+                                       data-bs-target="#deleteModal"><img src="{% static 'images/lazy.svg' %}"
+                                                                          data-src="{% static 'images/icon/icon_25.svg' %}" alt=""
+                                                                          class="lazy-img"><span class="ms-2 ps-1">Delete Account</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /.user-data -->
                 </div>
-                <!-- /.user-data -->
-            </div>
 
             </div>
         </header>

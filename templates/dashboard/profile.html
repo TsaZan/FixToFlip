@@ -1,4 +1,5 @@
 {% extends 'dashboard/dashboard-base.html' %}
+{% load template_tags %}
 {% load static %}
 {% block content %}
 
@@ -11,17 +12,38 @@ Dashboard Body
 
 
     <h2 class="main-title d-block d-lg-none">Profile</h2>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {{ form.errors }}
-        <div class="bg-white card-box border-20">
-            <div class="user-avatar-setting d-flex align-items-center mb-30">
-                <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/avatar_02.jpg' %}" alt="" class="lazy-img user-img">
-                <div class="upload-btn position-relative tran3s ms-4 me-3">
-                    Upload new photo
-                    <input type="file" id="uploadImg" name="uploadImg" placeholder="">
-                </div>
-                <button class="delete-btn tran3s">Delete</button>
+        <div class="bg-white card-box border-20 p-4">
+            <h2 class="mb-4">Edit Profile</h2>
+            <div class="user-avatar-setting d-flex flex-column align-items-start mb-4">
+                {% if user.profile.profile_picture %}
+                    <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.profile.profile_picture }}" class="lazy-img user-img mb-3" alt="Profile Picture" />
+                {% elif user.socialaccount_set.all.0.get_avatar_url %}
+                    <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="lazy-img user-img mb-3" alt="Profile Picture" />
+                {% else %}
+                    <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/avatar_01.jpg' %}" class="lazy-img user-img mb-3" alt="Default Avatar" />
+                {% endif %}
+
+                <form method="post" enctype="multipart/form-data" class="w-100">
+                    {% csrf_token %}
+
+                    <div class="mb-3 w-100">
+                        <label for="profile_picture" class="form-label">Upload New Picture:</label><br>
+                        {{ profile_form.profile_picture|add_class:"form-control-md" }}
+                    </div>
+
+                    <div class="mb-3 w-100">
+                        <input type="checkbox" id="delete_picture" name="delete_picture" class="form-check-input">
+                        <label for="delete_picture" class="form-check-label">Delete current picture</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-sm btn-primary">Save Changes</button>
+                </form>
             </div>
+        </div><br>
+        <form method="post">
+
             <!-- /.user-avatar-setting -->
             {% csrf_token %}
             <div class="row">
@@ -85,58 +107,42 @@ Dashboard Body
             </div>
 
 
-        </div>
-        <!-- /.card-box -->
-
-        <div class="bg-white card-box border-20 mt-40">
-            <h4 class="dash-title-three">Social Media</h4>
-
-            <div class="dash-input-wrapper mb-20">
-                <label for="">LinkedIn</label>
-                {{ profile_form.linkedin_url }}
             </div>
-            <!-- /.dash-input-wrapper -->
-            <div class="dash-input-wrapper mb-20">
-                <label for="">Facebook</label>
-                {{ profile_form.facebook_url }}
-            </div>
-            <!-- /.dash-input-wrapper -->
-            <a href="#" class="dash-btn-one"><i class="bi bi-plus"></i> Add more link</a>
-        </div>
-        <!-- /.card-box -->
+            <!-- /.card-box -->
 
-        <div class="bg-white card-box border-20 mt-40">
-            <h4 class="dash-title-three">Company</h4>
-            <div class="row">
 
-                <div class="col-lg-3">
-                    <div class="dash-input-wrapper mb-25">
-                        <label for="">Company</label>
-                        {{ profile_form.company_name }}
+            <div class="bg-white card-box border-20 mt-40">
+                <h4 class="dash-title-three">Company</h4>
+                <div class="row">
 
+                    <div class="col-lg-3">
+                        <div class="dash-input-wrapper mb-20">
+                            <label for="">Company</label>
+                            {{ profile_form.company_name }}
+
+                        </div>
+
+                        <div class="dash-input-wrapper mb-20">
+                            <label for="">Location</label>
+                            <select name="person_location" class="nice-select">
+                                {% for location in  profile_form.user_location %}
+                                    <option>{{ location }}</option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+                        <!-- /.dash-input-wrapper -->
                     </div>
 
-                    <div class="dash-input-wrapper mb-25">
-                        <label for="">Location</label>
-                        <select name="person_location" class="nice-select">
-                            {% for location in  profile_form.user_location %}
-                                <option>{{ location }}</option>
-                            {% endfor %}
-                        </select>
-
-                    </div>
-                    <!-- /.dash-input-wrapper -->
                 </div>
+            </div>
+            <!-- /.card-box -->
+
+            <div class="button-group d-inline-flex align-items-center mt-30">
+                <button type="submit" class="dash-btn-two tran3s me-3">Save</button>
+                <a href="{% url 'dashboard' %}" class="dash-cancel-btn tran3s">Cancel</a>
+                <!-- /.dashboard-body -->
 
             </div>
-        </div>
-        <!-- /.card-box -->
-
-        <div class="button-group d-inline-flex align-items-center mt-30">
-            <button type="submit" class="dash-btn-two tran3s me-3">Save</button>
-            <a href="{% url 'dashboard' %}" class="dash-cancel-btn tran3s">Cancel</a>
-            <!-- /.dashboard-body -->
-
-        </div>
-    </form>
+        </form>
 {% endblock %}
