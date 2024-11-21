@@ -4,7 +4,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import JsonResponse
 from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views import View
 from django.views.generic import UpdateView, DeleteView
 from FixToFlip.accounts.forms import ProfileEditForm, UserEditForm
 from FixToFlip.accounts.models import BaseAccount, Profile

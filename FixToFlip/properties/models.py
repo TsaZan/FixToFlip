@@ -1,4 +1,3 @@
-from django.core.validators import MaxValueValidator
 from django.db import models
 from djmoney.models.fields import MoneyField
 from djmoney.money import Money
@@ -6,7 +5,6 @@ from django.conf import settings
 
 from FixToFlip.choices import PropertyTypeChoices, PropertyConditionChoices
 from FixToFlip.credits.models import Credit
-from FixToFlip.validators import get_current_date
 
 
 class Property(models.Model):

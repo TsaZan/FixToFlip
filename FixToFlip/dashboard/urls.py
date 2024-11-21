@@ -1,7 +1,5 @@
 from django.urls import path, include
-from FixToFlip.accounts.views import ProfileEditView, AccountDeleteView
 from FixToFlip.blog.views import BlogPostsView, EditBlogPostView, AddBlogPostView, DeleteBlogPostView, BlogCommentsView
-from FixToFlip.credits.views import DashboardCreditsView, CreditAddView
 from FixToFlip.dashboard.views import DashboardView, DashboardTasksView
 from FixToFlip.properties.views import DashboardPropertiesView, PropertyDetailsView, property_add_view, \
     DashboardExpensesView, PropertyEditView, PropertyDeleteView

@@ -3,7 +3,6 @@ from unfold.admin import ModelAdmin
 from FixToFlip.credits.models import Credit, CreditPayment
 
 
-# Register your models here.
 @admin.register(Credit)
 class CreditAdmin(ModelAdmin):
     list_display = ('bank_name', 'credit_amount', 'credit_term', 'credit_interest', 'monthly_payment')
