@@ -12,137 +12,94 @@ Dashboard Body
 
 
     <h2 class="main-title d-block d-lg-none">Profile</h2>
-    <form method="post" enctype="multipart/form-data">
-        {{ form.errors }}
-        <div class="bg-white card-box border-20 p-4">
-            <h2 class="mb-4">Edit Profile</h2>
-            <div class="user-avatar-setting d-flex flex-column align-items-start mb-4">
-                {% if user.profile.profile_picture %}
-                    <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.profile.profile_picture }}" class="lazy-img user-img mb-3" alt="Profile Picture" />
-                {% elif user.socialaccount_set.all.0.get_avatar_url %}
-                    <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="lazy-img user-img mb-3" alt="Profile Picture" />
-                {% else %}
-                    <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/avatar_01.jpg' %}" class="lazy-img user-img mb-3" alt="Default Avatar" />
-                {% endif %}
+    <div class="bg-white card-box border-20 p-4">
+        <h2 class="mb-4">Edit Profile</h2>
+        <div class="user-avatar-setting d-flex flex-column align-items-start mb-4">
+            {% if user.profile.profile_picture %}
+                <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.profile.profile_picture }}" class="lazy-img user-img mb-3" alt="Profile Picture" />
+            {% elif user.socialaccount_set.all.0.get_avatar_url %}
+                <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="lazy-img user-img mb-3" alt="Profile Picture" />
+            {% else %}
+                <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/avatar_01.jpg' %}" class="lazy-img user-img mb-3" alt="Default Avatar" />
+            {% endif %}
 
-                <form method="post" enctype="multipart/form-data" class="w-100">
-                    {% csrf_token %}
+            <form method="post" enctype="multipart/form-data" class="w-100">
 
-                    <div class="mb-3 w-100">
-                        <label for="profile_picture" class="form-label">Upload New Picture:</label><br>
-                        {{ profile_form.profile_picture|add_class:"form-control-md" }}
-                    </div>
-
-                    <div class="mb-3 w-100">
-                        <input type="checkbox" id="delete_picture" name="delete_picture" class="form-check-input">
-                        <label for="delete_picture" class="form-check-label">Delete current picture</label>
-                    </div>
-
-                    <button type="submit" class="btn btn-sm btn-primary">Save Changes</button>
-                </form>
-            </div>
-        </div><br>
-        <form method="post">
-
-            <!-- /.user-avatar-setting -->
-            {% csrf_token %}
-            <div class="row">
-                <div class="col-12">
-
+                <div class="mb-3 w-100">
+                    <label for="profile_picture" class="form-label">Upload New Picture:</label><br>
+                    {{ profile_form.profile_picture }}
+                    <button type="submit" class="btn btn-primary mt-2">Update</button>
                 </div>
-                <div class="col-sm-6">
-                    <div class="dash-input-wrapper mb-30">
-                        <label for="">First Name</label>
-                        {{ user_form.first_name }}
-                    </div>
-                    <!-- /.dash-input-wrapper -->
-                </div>
-                <div class="col-sm-6">
-                    <div class="dash-input-wrapper mb-30">
-                        <label for="">Last Name</label>
-                        {{ user_form.last_name }}
 
-
-                    </div>
-                    <!-- /.dash-input-wrapper -->
-                </div>
-                <div class="col-sm-6">
-                    <div class="dash-input-wrapper mb-30">
-                        <label for="">Email*</label>
-                        <b>{{ user_form.email }}</b>
-                    </div>
-                    <!-- /.dash-input-wrapper -->
-                </div>
-                <div class="col-sm-6">
-                    <div class="dash-input-wrapper mb-30">
-                        <label for="">Profile Type</label>
-                        <select name="profile_type" class="nice-select">
-                            {% for profile_type in  profile_form.profile_type %}
-                                <option>{{ profile_type }}</option>
-                            {% endfor %}
-                        </select>
-
-                    </div>
-                    <!-- /.dash-input-wrapper -->
-                </div>
-                <div class="col-sm-6">
-                    <div class="dash-input-wrapper mb-30">
-                        <label for="">Preferred Currency*</label>
-                        <select name="preferred_currency" class="nice-select">
-                            {% for currency in  profile_form.preferred_currency %}
-                                <option>{{ currency }}</option>
-                            {% endfor %}
-                        </select>
-
-                    </div>
-                    <!-- /.dash-input-wrapper -->
-                </div>
-                <div class="col-sm-6">
-                    <div class="dash-input-wrapper mb-30">
-                        <label for="">Website</label>
-                        {{ profile_form.url }}
-                    </div>
-                    <!-- /.dash-input-wrapper -->
-                </div>
-            </div>
-
-
-            </div>
-            <!-- /.card-box -->
-
-
-            <div class="bg-white card-box border-20 mt-40">
-                <h4 class="dash-title-three">Company</h4>
+                <!-- /.user-avatar-setting -->
+                {% csrf_token %}
                 <div class="row">
+                    <div class="col-12">
 
-                    <div class="col-lg-3">
-                        <div class="dash-input-wrapper mb-20">
-                            <label for="">Company</label>
-                            {{ profile_form.company_name }}
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dash-input-wrapper mb-30">
+                            <label for="">First Name</label>
+                            {{ user_form.first_name }}
+                        </div>
+                        <!-- /.dash-input-wrapper -->
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dash-input-wrapper mb-30">
+                            <label for="">Last Name</label>
+                            {{ user_form.last_name }}
+
 
                         </div>
-
-                        <div class="dash-input-wrapper mb-20">
-                            <label for="">Location</label>
-                            <select name="person_location" class="nice-select">
-                                {% for location in  profile_form.user_location %}
-                                    <option>{{ location }}</option>
+                        <!-- /.dash-input-wrapper -->
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dash-input-wrapper mb-30">
+                            <label for="">Email*</label>
+                            <b>{{ user_form.email }}</b>
+                        </div>
+                        <!-- /.dash-input-wrapper -->
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dash-input-wrapper mb-30">
+                            <label for="">Profile Type</label>
+                            <select name="profile_type" class="nice-select">
+                                {% for profile_type in  profile_form.profile_type %}
+                                    <option>{{ profile_type }}</option>
                                 {% endfor %}
                             </select>
 
                         </div>
                         <!-- /.dash-input-wrapper -->
                     </div>
+                    <div class="col-sm-6">
+                        <div class="dash-input-wrapper mb-30">
+                            <label for="">Preferred Currency*</label>
+                            <select name="preferred_currency" class="nice-select">
+                                {% for currency in  profile_form.preferred_currency %}
+                                    <option>{{ currency }}</option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+                        <!-- /.dash-input-wrapper -->
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dash-input-wrapper mb-30">
+                            <label for="">Website</label>
+                            {{ profile_form.url }}
+                        </div>
+                        <!-- /.dash-input-wrapper -->
+                    </div>
+                </div>
+
+                <!-- /.card-box -->
+
+                <div class="button-group d-inline-flex align-items-center mt-30">
+                    <button type="submit" class="dash-btn-two tran3s me-3">Save</button>
+                    <a href="{% url 'dashboard' %}" class="dash-cancel-btn tran3s">Cancel</a>
+                    <!-- /.dashboard-body -->
 
                 </div>
-            </div>
-            <!-- /.card-box -->
-
-            <div class="button-group d-inline-flex align-items-center mt-30">
-                <button type="submit" class="dash-btn-two tran3s me-3">Save</button>
-                <a href="{% url 'dashboard' %}" class="dash-cancel-btn tran3s">Cancel</a>
-                <!-- /.dashboard-body -->
-
-            </div>
-        </form>
+            </form>
 {% endblock %}
