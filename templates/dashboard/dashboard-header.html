@@ -47,15 +47,18 @@
                     </div>
                     {##}
                     <div class="user-data position-relative order-5">
-                        <button class="user-avatar online position-relative rounded-circle dropdown-toggle" type="button"
+                        <button class="online position-relative rounded-circle" type="button"
                                 id="profile-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside"
                                 aria-expanded="false">
                             {% if user.profile.profile_picture %}
-                                <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.profile.profile_picture }}"  alt="" class="lazy-img"  />
+                                <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.profile.profile_picture.url }}"  alt="" class="lazy-img"
+                                style="width: 65px; height: 65px; object-fit: cover; border-radius: 50%;"/>
                             {% elif user.socialaccount_set.all.0.get_avatar_url %}
-                                <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.socialaccount_set.all.0.get_avatar_url }}"  alt="" class="lazy-img" />
+                                <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.socialaccount_set.all.0.get_avatar_url }}"  alt="" class="lazy-img"
+                                style="width: 65px; height: 65px; object-fit: cover; border-radius: 50%;"/>
                             {% else %}
-                                <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/avatar_01.jpg' %}" alt="" class="lazy-img">
+                                <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/avatar_01.jpg' %}" alt="" class="lazy-img"
+                                style="width: 65px; height: 65px; object-fit: cover; border-radius: 50%;">
                             {% endif %}
                         </button>
                         <!-- /.user-avatar -->

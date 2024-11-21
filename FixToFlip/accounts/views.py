@@ -2,10 +2,11 @@ from allauth.account.forms import SignupForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import JsonResponse
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import UpdateView, DeleteView
-from FixToFlip.accounts.forms import ProfileEditForm, UserEditForm, UserDeleteForm
+from FixToFlip.accounts.forms import ProfileEditForm, UserEditForm
 from FixToFlip.accounts.models import BaseAccount, Profile
 
 
@@ -35,10 +36,6 @@ def ajax_signup(request):
 
 
 class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = BaseAccount
-    fields = '__all__'
-    profile_edit_form = ProfileEditForm
-    user_edit_form = UserEditForm
     template_name = 'dashboard/profile.html'
 
     def test_func(self):
@@ -46,36 +43,33 @@ class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return self.request.user == profile.user
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user = self.object
+        user = self.request.user
+        profile = user.profile
+        return {
+            'user_form': UserEditForm(instance=user),
+            'profile_form': ProfileEditForm(instance=profile),
+        }
 
-        if self.request.POST:
-            context['user_form'] = UserEditForm(self.request.POST, instance=user)
-            context['profile_form'] = ProfileEditForm(self.request.POST, instance=user.profile)
-        else:
-            context['user_form'] = UserEditForm(instance=user)
-            context['profile_form'] = ProfileEditForm(instance=user.profile)
-
-        return context
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        user_form = UserEditForm(request.POST, instance=self.object)
-        profile_form = ProfileEditForm(request.POST, request.FILES, instance=self.object.profile)
+        user = request.user
+        profile = user.profile
+
+        user_form = UserEditForm(request.POST, instance=user)
+        profile_form = ProfileEditForm(request.POST, request.FILES, instance=profile)
 
         if user_form.is_valid() and profile_form.is_valid():
-            if 'delete_picture' in request.POST and request.POST['delete_picture'] == 'on':
-                self.object.profile.profile_picture = None
-                self.object.profile.save()
-
             user_form.save()
             profile_form.save()
-            return redirect(self.success_url())
-        else:
-            return self.render_to_response(self.get_context_data(user_form=user_form, profile_form=profile_form))
+            return redirect('profile_edit', pk=self.kwargs['pk'])
 
-    def success_url(self):
-        return reverse_lazy('profile_edit', kwargs={'pk': self.object.pk})
+        return render(request, self.template_name, {
+            'user_form': user_form,
+            'profile_form': profile_form,
+        })
 
 
 class AccountDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
