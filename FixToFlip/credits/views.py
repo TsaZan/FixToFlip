@@ -21,6 +21,10 @@ class DashboardCreditsView(LoginRequiredMixin, TemplateView):
         paginator = Paginator(credits_list, 5)
         page_number = self.request.GET.get('page')
         credits = paginator.get_page(page_number)
+        if 'q' in self.request.GET:
+            q = self.request.GET.get('q', '')
+            credits = Credit.objects.filter(bank_name__icontains=q)
+
         for credit in credits:
             credit.remainder = credit_reminder_calculation(credit.id)
             credit.balance = credit_balance(credit.id)
@@ -29,17 +33,25 @@ class DashboardCreditsView(LoginRequiredMixin, TemplateView):
                 credit.last_payment = CreditPayment.objects.filter(credit_id=credit.id).first().payment_date
         context = super().get_context_data(**kwargs)
         context['credits'] = credits
+        context['search_placeholder'] = 'Search credit by bank name...'
         context['header_title'] = 'Credits Dashboard'
 
         return context
 
 
-class CreditAddView(LoginRequiredMixin, CreateView):
+class CreditAddView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Credit
     form_class = CreditAddForm
     template_name = 'dashboard/add-credit.html'
     success_url = reverse_lazy('dashboard_credits')
 
+    def test_func(self):
+        return self.request.user.is_authenticated
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['header_title'] = 'Add Credit'
+        return context
     def form_valid(self, form):
         form.instance.credit_owner = self.request.user
         return super().form_valid(form)

@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
+from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
@@ -8,8 +9,9 @@ from rest_framework import generics
 from django.views.generic import View
 from rest_framework.permissions import AllowAny
 
+from FixToFlip.blog.filters import BlogPostsFilter
 from FixToFlip.blog.forms import BlogCommentForm, AddBlogPostForm, BlogPostDeleteForm
-from FixToFlip.blog.models import BlogPost, Category
+from FixToFlip.blog.models import BlogPost, Category, Comment
 from FixToFlip.blog.serializers import BlogPostSerializer, CategorySerializer
 
 
@@ -18,8 +20,20 @@ class BlogMainPageView(TemplateView):
     template_name = 'blog/blog.html'
 
     def get(self, *args, **kwargs):
+
+        if 'q' in self.request.GET:
+            q = self.request.GET.get('q', '')
+            posts = BlogPost.objects.filter(title__icontains=q)
+        else:
+            posts = BlogPost.objects.all()
+
+        blog_posts_list = posts
+        paginator = Paginator(blog_posts_list, 6)
+        page_number = self.request.GET.get('page')
+        posts = paginator.get_page(page_number)
+
         context = {
-            'posts': BlogPost.objects.all(),
+            'posts': posts,
             'categories': Category.objects.all(), }
 
         return render(self.request, self.template_name, context)
@@ -54,6 +68,7 @@ class BlogPostView(View):
             'form': form,
             'posts': BlogPost.objects.all()[:5],
             'categories': Category.objects.all(),
+
         }
         return render(request, self.template_name, context)
 
@@ -61,6 +76,7 @@ class BlogPostView(View):
 class BlogPostsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     model = BlogPost
     template_name = 'dashboard/blogposts-list.html'
+    filterset_class = BlogPostsFilter
     login_url = 'index'
 
     def test_func(self):
@@ -69,11 +85,23 @@ class BlogPostsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         blog_posts = BlogPost.objects.all()
-        paginator = Paginator(blog_posts, 5)
+        blog_posts = blog_posts.annotate(comments_count=Count('comments'))
+
+        blog_post_filter = BlogPostsFilter(self.request.GET, queryset=blog_posts)
+
+        sorted_posts = blog_post_filter.qs.distinct()
+
+        paginator = Paginator(sorted_posts, 5)
         page_number = self.request.GET.get('page')
         posts = paginator.get_page(page_number)
+        if 'q' in self.request.GET:
+            q = self.request.GET.get('q', '')
+            posts = BlogPost.objects.filter(title__icontains=q)
+
         context['posts'] = posts
+        context['filter'] = blog_post_filter
         context['header_title'] = 'Blog Dashboard'
+        context['search_placeholder'] = 'Search post by title...'
         return context
 
 
@@ -83,6 +111,11 @@ class AddBlogPostView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     template_name = 'dashboard/add-blogpost.html'
     success_url = reverse_lazy('dashboard_blogposts')
     login_url = 'index'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['header_title'] = 'Add Blog Post'
+        return context
 
     def test_func(self):
         return self.request.user.is_staff
@@ -127,6 +160,20 @@ class DeleteBlogPostView(PermissionRequiredMixin, LoginRequiredMixin, UserPasses
 
     def test_func(self):
         return self.request.user.is_staff
+
+
+class BlogCommentsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+    model = Comment
+    template_name = 'dashboard/comments-list.html'
+    login_url = 'index'
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = Comment.objects.all()
+        return context
 
 
 ''' API Views '''

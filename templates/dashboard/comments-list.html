@@ -30,30 +30,25 @@ Dashboard Body
             <table class="table property-list-table">
                 <thead>
                 <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">Views</th>
-                    <th scope="col">Comments</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Comment</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Post</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
                 <tbody class="border-0">
-                {% for post in posts %}
+                {% for comment in comments %}
                     <tr>
                         <td>
                             <div class="d-lg-flex align-items-center position-relative">
-                                <img src="{{ post.image.url }}" alt="" class="p-img">
-                                <div class="ps-lg-4 md-pt-10">
-                                    <a href="{% url 'blog_post_page' slug=post.slug %}"
-                                       class="property-name tran3s color-dark fw-500 fs-20 stretched-link">{{ post.title }}</a>
-                                    <div class="address">Created at: {{ post.created_at|date:"d-m-Y" }}</div>
-                                </div>
+                                {{ comment.created_at|date:"d-m-Y" }}
                             </div>
                         </td>
-                        <td>{{ post.created_at|date:"d-m-Y" }}</td>
-                        <td>{{ post.comments.count }}</td>
+                        <td>{{ comment.content }}</td>
+                        <td>{{ comment.author }}</td>
                         <td>
-                            <div class="property-status">Active</div>
+                            <div class="property-status"><a href="{{ comment.post.get_absolute_url }}">{{ comment.post | truncatewords:5 }}</a></div>
                         </td>
                         <td>
                             <div class="action-dots float-end">
@@ -62,18 +57,18 @@ Dashboard Body
                                     <span></span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="{% url 'blog_post_page' slug=post.slug %}"><img src="{% static '/images/lazy.svg' %}"
+                                    <li><a class="dropdown-item" href="{{ comment.post.get_absolute_url }}"><img src="{% static '/images/lazy.svg' %}"
                                             data-src="{% static '/dash/images/icon/icon_18.svg' %}"
-                                            alt="" class="lazy-img"> View</a>
+                                            alt="" class="lazy-img"> View Post</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="{% url 'edit_blogpost' slug=post.slug %}"><img src="{% static '/images/lazy.svg' %}"
-                                            data-src="{% static '/dash/images/icon/icon_20.svg' %}"
-                                            alt="" class="lazy-img">
+                                    <li><a class="dropdown-item" href="#"><img src="{% static '/images/lazy.svg' %}"
+                                                                               data-src="{% static '/dash/images/icon/icon_20.svg' %}"
+                                                                               alt="" class="lazy-img">
                                         Edit</a></li>
                                     {% if request.user.is_superuser %}
-                                        <li><a class="dropdown-item" href="{% url 'delete_blogpost' slug=post.slug %}" target="_self"><img src="{% static '/images/lazy.svg' %}"
-                                                                   data-src="{% static '/dash/images/icon/icon_21.svg' %}"
-                                                                   alt="" class="lazy-img">
+                                        <li><a class="dropdown-item" href="#" target="_self"><img src="{% static '/images/lazy.svg' %}"
+                                                data-src="{% static '/dash/images/icon/icon_21.svg' %}"
+                                                alt="" class="lazy-img">
                                             Delete</a></li>
                                     {% endif %}
                                 </ul>

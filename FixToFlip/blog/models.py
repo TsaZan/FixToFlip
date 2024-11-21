@@ -13,7 +13,7 @@ class BlogPost(models.Model):
         ordering = ['-created_at']
 
     def get_absolute_url(self):
-        return reverse("blog_posts", args=[str(self.slug, 'utf-8')])
+        return reverse("blog_post_page", args=[str(self.slug)])
 
     title = models.CharField(
         max_length=200,
@@ -70,7 +70,9 @@ class BlogPost(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title, allow_unicode=True)
+            if not self.pk:
+                super().save(*args, **kwargs)
+            self.slug = slugify(f'{self.pk}-{self.title}', allow_unicode=True)
         super().save(*args, **kwargs)
 
     @property
@@ -121,3 +123,4 @@ class Comment(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True,
     )
+
