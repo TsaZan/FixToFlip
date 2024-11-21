@@ -10,8 +10,8 @@ Dashboard Body
 
     <h2 class="main-title d-block d-lg-none">My Properties</h2>
     <div class="d-sm-flex align-items-center justify-content-between mb-25">
-        <div class="fs-16">Showing <span class="color-dark fw-500">{{ posts.start_index }}–{{ posts.end_index }}</span> of <span
-                    class="color-dark fw-500">{{ posts.paginator.count }}</span> results
+        <div class="fs-16">Showing <span class="color-dark fw-500">{{ comments.start_index }}–{{ comments.end_index }}</span> of <span
+                class="color-dark fw-500">{{ comments.paginator.count }}</span> results
         </div>
     </div>
 
@@ -27,7 +27,7 @@ Dashboard Body
 
     <div class="bg-white card-box p0 border-20">
         <div class="table-responsive pt-25 pb-25 pe-4 ps-4">
-            <table class="table property-list-table">
+            <table class="table table-striped table-hover">
                 <thead>
                 <tr>
                     <th scope="col">Date</th>
@@ -61,16 +61,12 @@ Dashboard Body
                                             data-src="{% static '/dash/images/icon/icon_18.svg' %}"
                                             alt="" class="lazy-img"> View Post</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="#"><img src="{% static '/images/lazy.svg' %}"
-                                                                               data-src="{% static '/dash/images/icon/icon_20.svg' %}"
-                                                                               alt="" class="lazy-img">
-                                        Edit</a></li>
-                                    {% if request.user.is_superuser %}
-                                        <li><a class="dropdown-item" href="#" target="_self"><img src="{% static '/images/lazy.svg' %}"
-                                                data-src="{% static '/dash/images/icon/icon_21.svg' %}"
-                                                alt="" class="lazy-img">
-                                            Delete</a></li>
-                                    {% endif %}
+
+                                    <li><a class="dropdown-item" href="{% url 'delete_comment' pk=comment.pk %}"><img src="{% static '/images/lazy.svg' %}"
+                                            data-src="{% static '/dash/images/icon/icon_21.svg' %}"
+                                            alt="" class="lazy-img">
+                                        Delete</a></li>
+
                                 </ul>
                             </div>
                         </td>
@@ -85,31 +81,30 @@ Dashboard Body
 
 
     <ul class="pagination-one d-flex align-items-center justify-content-center style-none pt-40">
-        {% if posts.has_previous %}
+        {% if comments.has_previous %}
             <li class="ms-2"><a href="?page=1" class="d-flex align-items-center">First</a></li>
 
-            <li class="me-4 ms-2"><a href="?page={{ posts.previous_page_number }}" class="d-flex align-items-center">Previous</a>
+            <li class="me-4 ms-2"><a href="?page={{ comments.previous_page_number }}" class="d-flex align-items-center">Previous</a>
             </li>
         {% endif %}
 
-        {% for num in posts.paginator.page_range %}
-            {% if num == posts.number %}
+        {% for num in comments.paginator.page_range %}
+            {% if num == comments.number %}
                 <li class="active"><a href="?page={{ num }}">{{ num }}</a></li>
-            {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+            {% elif num > comments.number|add:'-3' and num < comments.number|add:'3' %}
                 <li><a href="?page={{ num }}">{{ num }}</a></li>
 
             {% endif %}
         {% endfor %}
 
-        {% if posts.has_next %}
-            <li class="ms-2"><a href="?page={{ posts.next_page_number }}" class="d-flex align-items-center">Next</a></li>
-            <li class="ms-2"><a href="?page={{ posts.paginator.num_pages }}" class="d-flex align-items-center">Last</a></li>
+        {% if comments.has_next %}
+            <li class="ms-2"><a href="?page={{ comments.next_page_number }}" class="d-flex align-items-center">Next</a></li>
+            <li class="ms-2"><a href="?page={{ comments.paginator.num_pages }}" class="d-flex align-items-center">Last</a></li>
 
         {% endif %}
 
     </ul>
     <!-- /.dashboard-body -->
-
 
 
 {% endblock %}

@@ -1,7 +1,8 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
@@ -172,8 +173,31 @@ class BlogCommentsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['comments'] = Comment.objects.all()
+        comments = Comment.objects.all()
+
+        if 'q' in self.request.GET:
+            q = self.request.GET.get('q', '')
+            comments = Comment.objects.filter(
+                Q(content__icontains=q) |
+                Q(post__title__icontains=q)
+            )
+
+        paginator = Paginator(comments, 5)
+        page_number = self.request.GET.get('page')
+        comments = paginator.get_page(page_number)
+
+        context['comments'] = comments
+        context['header_title'] = 'Comments Dashboard'
+        context['search_placeholder'] = 'Search by content or post title...'
         return context
+
+
+@login_required(login_url='index')
+@staff_member_required
+def delete_comment(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.delete()
+    return redirect('blog_comments')
 
 
 ''' API Views '''
