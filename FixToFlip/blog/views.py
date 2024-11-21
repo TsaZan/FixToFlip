@@ -84,12 +84,12 @@ class AddBlogPostView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     success_url = reverse_lazy('dashboard_blogposts')
     login_url = 'index'
 
+    def test_func(self):
+        return self.request.user.is_staff
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
-
-    def test_func(self):
-        return self.request.user.is_staff
 
 
 class EditBlogPostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):

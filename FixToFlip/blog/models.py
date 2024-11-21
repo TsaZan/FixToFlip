@@ -53,6 +53,8 @@ class BlogPost(models.Model):
         'blog.Category',
         on_delete=models.CASCADE,
         related_name='posts',
+        null=False,
+        blank=False,
     )
 
     created_at = models.DateTimeField(
