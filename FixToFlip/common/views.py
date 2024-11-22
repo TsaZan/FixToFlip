@@ -1,9 +1,3 @@
-from allauth.account.forms import SignupForm
-from django.contrib.auth import login
-
-from django.contrib.auth import authenticate
-
-from django.http import JsonResponse
 from django.shortcuts import render
 
 

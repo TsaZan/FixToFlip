@@ -11,21 +11,19 @@ Dashboard Body
     <h2 class="main-title d-block d-lg-none">My Properties</h2>
     <div class="d-sm-flex align-items-center justify-content-between mb-25">
         <div class="fs-16">Showing <span class="color-dark fw-500">{{ posts.start_index }}–{{ posts.end_index }}</span> of <span
-                class="color-dark fw-500">{{ posts.paginator.count }}</span> results
-        </div>
-        <div class="d-flex ms-auto xs-mt-30">
-            <div class="short-filter d-flex align-items-center ms-sm-auto">
-                <div class="fs-16 me-2">Short by:</div>
-                <select class="nice-select">
-                    <option value="0">Newest</option>
-                    <option value="1">Best Seller</option>
-                    <option value="2">Best Match</option>
-                    <option value="3">Price Low</option>
-                    <option value="4">Price High</option>
-                </select>
-            </div>
+                    class="color-dark fw-500">{{ posts.paginator.count }}</span> results
         </div>
     </div>
+
+    <form method="get">
+        <div class="d-flex ms-auto xs-mt-30">
+            <div class="short-filter d-flex align-items-center ms-sm-auto">
+                <div class="fs-16 me-2">Sort by:</div>
+                {{ filter.form.sort }}
+                <button type="submit" class="btn btn-primary ms-2">Apply</button>
+            </div>
+        </div>
+    </form>
 
     <div class="bg-white card-box p0 border-20">
         <div class="table-responsive pt-25 pb-25 pe-4 ps-4">
@@ -46,7 +44,7 @@ Dashboard Body
                             <div class="d-lg-flex align-items-center position-relative">
                                 <img src="{{ post.image.url }}" alt="" class="p-img">
                                 <div class="ps-lg-4 md-pt-10">
-                                    <a href="#"
+                                    <a href="{% url 'blog_post_page' slug=post.slug %}"
                                        class="property-name tran3s color-dark fw-500 fs-20 stretched-link">{{ post.title }}</a>
                                     <div class="address">Created at: {{ post.created_at|date:"d-m-Y" }}</div>
                                 </div>

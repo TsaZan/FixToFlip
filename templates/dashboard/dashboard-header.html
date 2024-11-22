@@ -9,11 +9,15 @@
                 <button class="dash-mobile-nav-toggler d-block d-md-none me-auto">
                     <span></span>
                 </button>
-{#                <form action="#" class="search-form ms-auto">#}
-{#                    <input type="text" placeholder="Search here..">#}
-{#                    <button><img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/icon/icon_43.svg' %}" alt=""#}
-{#                                 class="lazy-img m-auto"></button>#}
-{#                </form>#}
+                {% if search_placeholder %}
+                <form class="search-form ms-auto" method="get">
+                    <input type="text" name="q" placeholder="{{ search_placeholder | default:"Search here.." }}">
+                    <button type="submit">
+                        <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/icon/icon_43.svg' %}" alt=""
+                             class="lazy-img m-auto">
+                    </button>
+                </form>
+            {% endif %}
                 <div class="profile-notification position-relative dropdown-center ms-3 ms-md-10 me-4">
 {#                    <button class="noti-btn dropdown-toggle" type="button" id="notification-dropdown"#}
 {#                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">#}

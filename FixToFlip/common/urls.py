@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from FixToFlip.common.views import index, about_us, contact, faq
 
 urlpatterns = [

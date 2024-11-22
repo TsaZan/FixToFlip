@@ -40,6 +40,10 @@ Dashboard Aside Menu
                         <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_7' 'add_blogpost' %}" alt="">
                         <span>Add Post</span>
                     </a></li>
+                    <li class="plr"><a href="{% url 'blog_comments' %}" class="d-flex w-100 align-items-center {% active_url request 'blog_comments' %}">
+                        <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_10' 'blog_comments' %}" alt="">
+                        <span>Comments</span>
+                    </a></li>
                 {% endif %}
                 <li class="bottom-line pt-30 lg-pt-20 mb-40 lg-mb-30"></li>
 

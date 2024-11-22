@@ -1,6 +1,4 @@
-from cities_light.admin import Country
 from django import forms
-from django.views.generic import DeleteView
 from djmoney.forms import MoneyField
 
 from FixToFlip.choices import ExpenseTypeChoices

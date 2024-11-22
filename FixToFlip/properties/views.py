@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect, get_object_or_404
@@ -14,6 +15,7 @@ from rest_framework.permissions import IsAuthenticated
 from FixToFlip.choices import ExpenseTypeChoices
 from FixToFlip.credits.models import Credit
 from FixToFlip.money_operations import sum_current_expenses
+from FixToFlip.properties.filters import PropertiesFilter
 from FixToFlip.properties.forms import PropertyAddForm, \
     PropertyEditForm, PropertyDeleteForm, AddExpenseForm, AddCreditToPropertyForm, PropertyFinanceInformationForm, \
     PropertyExpenseForm, ExpenseNotesForm
@@ -23,23 +25,33 @@ from FixToFlip.properties.serializers import PropertySerializer, PropertyExpense
 
 class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/properties-list.html'
+    filterset_class = PropertiesFilter
     login_url = 'index'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         properties = Property.objects.filter(owner=self.request.user)
+        sorted_properties = PropertiesFilter(self.request.GET, queryset=properties)
+        properties = sorted_properties.qs.distinct()
         paginator = Paginator(properties, 5)
         page_number = self.request.GET.get('page')
         properties = paginator.get_page(page_number)
+        if 'q' in self.request.GET:
+            q = self.request.GET.get('q', '')
+            properties = Property.objects.filter(property_name__icontains=q)
+
         for property in properties:
             property.current_expenses = sum_current_expenses(property.id)
+
+        context['search_placeholder'] = 'Search property by title...'
         context['properties'] = properties
+        context['filter'] = sorted_properties
         context['header_title'] = 'Properties Dashboard'
 
         return context
 
 
-@login_required
+@login_required(login_url='index')
 def property_add_view(request):
     if request.method == 'POST':
         property_form = PropertyAddForm(request.POST)
@@ -66,7 +78,8 @@ def property_add_view(request):
     context = {
         'property_form': property_form,
         'property_financial_information_form': property_financial_information_form,
-        'expense_form': expense_form
+        'expense_form': expense_form,
+        'header_title': 'Add Property',
     }
 
     return render(request, 'dashboard/add-property.html', context)
@@ -92,6 +105,7 @@ class PropertyEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         context['expense_form'] = PropertyExpenseForm(
             instance=self.object.property_expenses.first() if self.object.property_expenses.exists() else None
         )
+        context['header_title'] = 'Edit Property'
         return context
 
     def test_func(self):
@@ -130,6 +144,7 @@ class PropertyEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         context['property_form'] = property_form
         context['property_financial_information_form'] = property_financial_information_form
         context['expense_form'] = expense_form
+
         return self.render_to_response(context)
 
 
@@ -196,18 +211,24 @@ class DashboardExpensesView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         properties = Property.objects.filter(owner=self.request.user)
+
         expenses_list = PropertyExpense.objects.filter(property__in=properties)
+        if 'q' in self.request.GET:
+            q = self.request.GET.get('q', '')
+            expenses_list = PropertyExpense.objects.filter(property__property_name__icontains=q,
+                                                           property__in=properties)
         paginator = Paginator(expenses_list, 5)
         page_number = self.request.GET.get('page')
         expenses = paginator.get_page(page_number)
-        context['header_title'] = 'Expenses Dashboard'
 
+        context['header_title'] = 'Expenses Dashboard'
+        context['search_placeholder'] = 'Search expenses by property...'
         context['expenses'] = expenses
 
         return context
 
 
-@login_required
+@login_required(login_url='index')
 def add_expense(request, pk):
     expenses = get_object_or_404(PropertyExpense, pk=pk)
     expenses_notes = PropertyExpenseNotes.objects.all().filter(relates_expenses=expenses)
@@ -237,7 +258,7 @@ def add_expense(request, pk):
         notes_form = ExpenseNotesForm()
 
     context = {
-        'header_title': 'Add Expenses',
+        'header_title': 'Expenses Details',
         'form': form,
         'notes_form': notes_form,
         'expenses_notes': expenses_notes,

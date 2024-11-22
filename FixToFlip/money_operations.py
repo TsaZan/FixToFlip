@@ -2,7 +2,7 @@ from django.db.models import Sum
 from djmoney.money import Money
 
 from FixToFlip.credits.models import Credit, CreditPayment
-from FixToFlip.properties.models import Property, PropertyExpense
+from FixToFlip.properties.models import PropertyExpense
 
 
 def sum_current_expenses(property_id):

@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
 from djmoney.money import Money
 
+from FixToFlip.credits.filters import CreditsFilter
 from FixToFlip.credits.forms import CreditAddForm, CreditPaymentForm, CreditEditForm
 from FixToFlip.credits.models import Credit, CreditPayment
 from FixToFlip.money_operations import credit_reminder_calculation, credit_balance, interest_paid
@@ -14,13 +15,21 @@ from FixToFlip.properties.models import PropertyFinancialInformation
 
 class DashboardCreditsView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/credits-list.html'
+    filterset_class = CreditsFilter
     login_url = 'index'
 
     def get_context_data(self, **kwargs):
         credits_list = Credit.objects.filter(credit_owner=self.request.user)
-        paginator = Paginator(credits_list, 5)
+        credits_filter = CreditsFilter(self.request.GET, queryset=credits_list)
+        sorted_credits = credits_filter.qs.distinct()
+        paginator = Paginator(sorted_credits, 5)
         page_number = self.request.GET.get('page')
         credits = paginator.get_page(page_number)
+
+        if 'q' in self.request.GET:
+            q = self.request.GET.get('q', '')
+            credits = Credit.objects.filter(bank_name__icontains=q)
+
         for credit in credits:
             credit.remainder = credit_reminder_calculation(credit.id)
             credit.balance = credit_balance(credit.id)
@@ -29,16 +38,26 @@ class DashboardCreditsView(LoginRequiredMixin, TemplateView):
                 credit.last_payment = CreditPayment.objects.filter(credit_id=credit.id).first().payment_date
         context = super().get_context_data(**kwargs)
         context['credits'] = credits
+        context['filter'] = credits_filter
+        context['search_placeholder'] = 'Search credit by bank name...'
         context['header_title'] = 'Credits Dashboard'
 
         return context
 
 
-class CreditAddView(LoginRequiredMixin, CreateView):
+class CreditAddView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Credit
     form_class = CreditAddForm
     template_name = 'dashboard/add-credit.html'
     success_url = reverse_lazy('dashboard_credits')
+
+    def test_func(self):
+        return self.request.user.is_authenticated
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['header_title'] = 'Add Credit'
+        return context
 
     def form_valid(self, form):
         form.instance.credit_owner = self.request.user

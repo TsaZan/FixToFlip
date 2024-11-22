@@ -16,7 +16,7 @@ Dashboard Body
         <h2 class="mb-4">Edit Profile</h2>
         <div class="user-avatar-setting d-flex flex-column align-items-start mb-4">
             {% if user.profile.profile_picture %}
-                <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.profile.profile_picture }}" class="lazy-img user-img mb-3" alt="Profile Picture" />
+                <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.profile.profile_picture.url }}" class="lazy-img user-img mb-3" alt="Profile Picture" />
             {% elif user.socialaccount_set.all.0.get_avatar_url %}
                 <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="lazy-img user-img mb-3" alt="Profile Picture" />
             {% else %}

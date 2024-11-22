@@ -26,8 +26,22 @@ class AddBlogPostForm(forms.ModelForm):
                 'id': 'customFile'
             }),
             'category': forms.Select(attrs={
-                'class': 'dash-input-wrapper mb-20 nice-select'
+                'class': 'form-control mb-20'
             }),
+            'keywords': forms.TextInput(attrs={'required': 'required'}),
+        }
+
+        error_messages = {
+            'title': {
+                'unique': 'Title must be unique.'
+            },
+            'content': {
+                'max_length': 'Content is too long.'
+            },
+            'category': {
+                'required': 'Category is required.',
+                'blank': 'Category is required.'
+            }
         }
 
 
