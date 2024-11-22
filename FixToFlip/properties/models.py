@@ -378,12 +378,14 @@ class PropertyExpense(models.Model):
     last_expense_date = models.DateField(blank=True, null=True, auto_now=True)
 
     def expense_total(self):
-        return self.utilities + self.notary_taxes + self.profit_tax + self.municipality_taxes + self.advertising + self.administrative_fees + self.insurance + self.other_expenses
+        return (self.utilities + self.notary_taxes + self.profit_tax + self.municipality_taxes +
+                self.advertising + self.administrative_fees + self.insurance + self.other_expenses)
 
     def total_repair_expenses(self):
         return (self.plumbing_repair_expenses + self.electrical_repair_expenses + self.windows_doors_repair_expenses
                 + self.roof_repair_expenses + self.facade_repair_expenses + self.walls_repair_expenses
-                + self.floors_repair_expenses + self.kitchen_repair_expenses + self.bathroom_repair_expenses + self.other_repair_expenses)
+                + self.floors_repair_expenses + self.kitchen_repair_expenses +
+                self.bathroom_repair_expenses + self.other_repair_expenses)
 
     def actual_expenses(self):
         return self.expense_total() + self.total_repair_expenses()
