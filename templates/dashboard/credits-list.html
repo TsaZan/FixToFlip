@@ -18,13 +18,15 @@ Dashboard Body
         <div class="d-flex ms-auto xs-mt-30">
             <div class="short-filter d-flex align-items-center ms-sm-auto">
                 <div class="fs-16 me-2">Short by:</div>
-                <select class="nice-select">
-                    <option value="0">Newest</option>
-                    <option value="1">Best Seller</option>
-                    <option value="2">Best Match</option>
-                    <option value="3">Price Low</option>
-                    <option value="4">Price High</option>
-                </select>
+                <form method="get">
+                    <div class="d-flex ms-auto xs-mt-30">
+                        <div class="short-filter d-flex align-items-center ms-sm-auto">
+                            <div class="fs-16 me-2">Sort by:</div>
+                            {{ filter.form.sort }}
+                            <button type="submit" class="btn btn-primary ms-2">Apply</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect, get_object_or_404
@@ -14,6 +15,7 @@ from rest_framework.permissions import IsAuthenticated
 from FixToFlip.choices import ExpenseTypeChoices
 from FixToFlip.credits.models import Credit
 from FixToFlip.money_operations import sum_current_expenses
+from FixToFlip.properties.filters import PropertiesFilter
 from FixToFlip.properties.forms import PropertyAddForm, \
     PropertyEditForm, PropertyDeleteForm, AddExpenseForm, AddCreditToPropertyForm, PropertyFinanceInformationForm, \
     PropertyExpenseForm, ExpenseNotesForm
@@ -23,11 +25,14 @@ from FixToFlip.properties.serializers import PropertySerializer, PropertyExpense
 
 class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/properties-list.html'
+    filterset_class = PropertiesFilter
     login_url = 'index'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         properties = Property.objects.filter(owner=self.request.user)
+        sorted_properties = PropertiesFilter(self.request.GET, queryset=properties)
+        properties = sorted_properties.qs.distinct()
         paginator = Paginator(properties, 5)
         page_number = self.request.GET.get('page')
         properties = paginator.get_page(page_number)
@@ -40,12 +45,13 @@ class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
 
         context['search_placeholder'] = 'Search property by title...'
         context['properties'] = properties
+        context['filter'] = sorted_properties
         context['header_title'] = 'Properties Dashboard'
 
         return context
 
 
-@login_required
+@login_required(login_url='index')
 def property_add_view(request):
     if request.method == 'POST':
         property_form = PropertyAddForm(request.POST)
@@ -205,6 +211,7 @@ class DashboardExpensesView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         properties = Property.objects.filter(owner=self.request.user)
+
         expenses_list = PropertyExpense.objects.filter(property__in=properties)
         if 'q' in self.request.GET:
             q = self.request.GET.get('q', '')
@@ -221,7 +228,7 @@ class DashboardExpensesView(LoginRequiredMixin, TemplateView):
         return context
 
 
-@login_required
+@login_required(login_url='index')
 def add_expense(request, pk):
     expenses = get_object_or_404(PropertyExpense, pk=pk)
     expenses_notes = PropertyExpenseNotes.objects.all().filter(relates_expenses=expenses)
