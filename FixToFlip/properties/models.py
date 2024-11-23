@@ -442,7 +442,7 @@ class PropertyExpenseNotes(models.Model):
         null=True
 
     )
-    relates_expenses = models.OneToOneField(
+    relates_expenses = models.ForeignKey(
         to='PropertyExpense',
         related_name='expenses_notes',
         on_delete=models.CASCADE
