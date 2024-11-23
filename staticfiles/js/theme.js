@@ -628,7 +628,7 @@ $(window).on ('load', function (){ // makes sure the whole site is loaded
             }
         });
 
-        fetch('http://127.0.0.1:8888/properties/api-expenses/')  // Full path to the API
+        fetch('/properties/api-expenses/')  // Full path to the API
             .then(response => response.json())
             .then(data => {
                 console.log(data);  // Check the data in the console
