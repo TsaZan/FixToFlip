@@ -20,16 +20,16 @@ Inner Banner
                     <li> Contact Us</li>
                 </ul>
             </div>
-            <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/assets/ils_07.svg' %}" alt=""
+            <img src="{% static 'images/assets/ils_07.svg' %}" data-src="{% static 'images/assets/ils_07.svg' %}" alt=""
                  class="lazy-img shapes w-100 illustration">
         </div>
         <!-- /.inner-banner-one -->
 
         <!--
-		=====================================================
-			Contact Us
-		=====================================================
-		-->
+=====================================================
+Contact Us
+=====================================================
+-->
         <div class="contact-us mt-130 xl-mt-100 pt-80 lg-pt-60">
             <div class="container">
                 <div class="row">
@@ -47,12 +47,11 @@ Inner Banner
                         <div class="block position-relative z-1 mt-25">
                             <div class="d-xl-flex align-items-center">
                                 <div class="icon rounded-circle d-flex align-items-center justify-content-center"><img
-                                        src="{% static 'images/lazy.svg' %}"
-                                        data-src="{% static 'images/icon/icon_39.svg' %}" alt="" class="lazy-img">
+                                        src="{% static 'images/icon/icon_39.svg' %}">
                                 </div>
                                 <div class="text">
                                     <p class="fs-22">We’r always happy to help.</p>
-                                    <a href="#" class="tran3s">ask@homy.com</a>
+                                    <a href="#" class="tran3s">fixtoflips@gmail.com</a>
                                 </div>
                                 <!-- /.text -->
                             </div>
@@ -61,13 +60,12 @@ Inner Banner
                         <div class="block position-relative skew-line z-1 mt-25">
                             <div class="d-xl-flex align-items-center">
                                 <div class="icon rounded-circle d-flex align-items-center justify-content-center"><img
-                                        src="{% static 'images/lazy.svg' %}"
-                                        data-src="{% static 'images/icon/icon_39.svg' %}" alt="" class="lazy-img">
+                                        src="{% static 'images/icon/icon_39.svg' %}">
                                 </div>
                                 <div class="text">
                                     <p class="fs-22">Our hotline number</p>
-                                    <a href="#" class="tran3s">+757 699 4478,</a>
-                                    <a href="#" class="tran3s">&nbsp; +991 377 9731</a>
+                                    <a href="#" class="tran3s">+359 888 888,</a>
+                                    <a href="#" class="tran3s">&nbsp; +359 000 000</a>
                                 </div>
                                 <!-- /.text -->
                             </div>
@@ -76,12 +74,11 @@ Inner Banner
                         <div class="block position-relative z-1 mt-25">
                             <div class="d-xl-flex align-items-center">
                                 <div class="icon rounded-circle d-flex align-items-center justify-content-center"><img
-                                        src="{% static 'images/lazy.svg' %}"
-                                        data-src="{% static 'images/icon/icon_39.svg' %}" alt="" class="lazy-img">
+                                        src="{% static 'images/icon/icon_39.svg' %}">
                                 </div>
                                 <div class="text">
-                                    <p class="fs-22">Live chat</p>
-                                    <a href="#" class="tran3s">www.homylivechat.com</a>
+                                    <p class="fs-22">Viber</p>
+                                    <a href="#" class="tran3s"> +359 000 000</a>
                                 </div>
                                 <!-- /.text -->
                             </div>
@@ -95,47 +92,59 @@ Inner Banner
             <div class="bg-pink mt-150 xl-mt-120 md-mt-80">
                 <div class="row">
                     <div class="col-xl-7 col-lg-6">
-                        <div class="form-style-one wow fadeInUp">
-                            <form action="inc/contact.php" id="contact-form" data-toggle="validator">
-                                <h3>Send Message</h3>
-                                <div class="messages"></div>
-                                <div class="row controls">
-                                    <div class="col-12">
-                                        <div class="input-group-meta form-group mb-30">
-                                            <label for="">Name*</label>
-                                            <input type="text" placeholder="Your Name*" name="name" required="required"
-                                                   data-error="Name is required.">
-                                            <div class="help-block with-errors"></div>
+                        {% if success %}
+
+                            <h5>Your message was sent successfully!</h5>
+                        {% else %}
+                            <div class="form-style-one wow fadeInUp">
+                                <form method="post" data-toggle="validator">
+                                    <h3>Send Message</h3>
+                                    {% csrf_token %}
+                                    <div class="messages"></div>
+                                    <div class="row controls">
+                                        <div class="col-12">
+                                            <div class="input-group-meta form-group mb-30">
+                                                <label for="">Name*</label>
+                                                {{ form.name }}
+                                                {{ form.name.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="input-group-meta form-group mb-40">
+                                                <label for="">Email*</label>
+                                                {{ form.email }}
+                                                {{ form.email.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="input-group-meta form-group mb-35">
+                                                <label for="">Message*</label>
+
+                                                {{ form.message }}
+                                                {{ form.message.errors }}
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="input-group-meta form-group mb-35">
+                                                {{ form.captcha }}
+                                                {{ form.captcha.errors }}
+                                                <div class="help-block with-errors"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button class="btn-nine text-uppercase rounded-3 fw-normal w-100">Send Message
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <div class="input-group-meta form-group mb-40">
-                                            <label for="">Email*</label>
-                                            <input type="email" placeholder="Email Address*" name="email"
-                                                   required="required" data-error="Valid email is required.">
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="input-group-meta form-group mb-35">
-                                        <textarea placeholder="Your message*" name="message" required="required"
-                                                  data-error="Please,leave us a message."></textarea>
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <button class="btn-nine text-uppercase rounded-3 fw-normal w-100">Send Message
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div> <!-- /.form-style-one -->
+                                </form>
+                            </div> <!-- /.form-style-one -->
+                        {% endif %}
                     </div>
                     <div class="col-xl-5 col-lg-6 d-flex order-lg-first justify-content-center align-items-center">
                         <div class="contact-map-banner w-100">
                             <div class="gmap_canvas h-100 w-100">
                                 <iframe class="gmap_iframe h-100 w-100" loading="lazy"
-                                        src="https://maps.google.com/maps?width=400&amp;height=300&amp;hl=en&amp;q=dhaka collage&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe>
+                                        src="https://maps.google.com/maps?width=400&amp;height=300&amp;hl=en&amp;q=sofia&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe>
                             </div>
                         </div>
                     </div>

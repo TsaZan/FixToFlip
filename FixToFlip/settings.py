@@ -19,10 +19,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 AUTH_USER_MODEL = 'accounts.BaseAccount'
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 CSRF_COOKIE_SECURE = False
+RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
 ALLOWED_HOSTS = ('fixtoflip.azurewebsites.net', '127.0.0.1', 'localhost')
 
 PROJECT_APPS = [
@@ -55,8 +56,8 @@ THIRD_PARTY_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'cities_light',
+    'django_recaptcha',
     'whitenoise.runserver_nostatic',
-
 
 ]
 
@@ -71,7 +72,6 @@ REST_FRAMEWORK = {
 
     ],
 }
-
 
 INSTALLED_APPS = [
                      'unfold',
@@ -124,7 +124,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'  #ONLY IN DEBUG MODE!!
 ACCOUNT_EMAIL_REQUIRED = False
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
 ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
@@ -218,3 +218,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 mimetypes.add_type("image/svg+xml", ".svg", True)
 mimetypes.add_type("image/svg+xml", ".svgz", True)
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.getenv('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+ADMIN_EMAIL = os.getenv('ADMIN_EMAIL')
+
+
+
