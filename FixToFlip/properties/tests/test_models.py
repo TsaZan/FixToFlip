@@ -35,27 +35,27 @@ class PropertyModelTest(TestCase):
             owner=self.user,
         )
 
-    def property_name_max_length_test(self):
+    def test_property_name_max_length(self):
         property = Property.objects.get(id=self.property.id)
         max_length = property._meta.get_field("property_name").max_length
         self.assertEqual(max_length, 100)
 
-    def bought_date_test(self):
+    def test_bought_date(self):
         self.assertEqual(self.property.bought_date, "2023-01-01")
 
-    def property_str_test(self):
+    def test_property_str(self):
         self.assertEqual(str(self.property), "Test Property")
 
-    def property_owner_test(self):
+    def test_property_owner(self):
         self.assertEqual(self.property.owner, self.user)
 
-    def properties_filter_test(self):
+    def test_properties_filter(self):
         properties = Property.objects.filter(property_condition="Sold")
         self.assertIn(self.property, properties)
 
-    def dates_test(self):
+    def test_dates(self):
         self.assertIsNotNone(self.property.created_at)
         self.assertIsNotNone(self.property.updated_at)
 
-    def property_size_test(self):
+    def test_property_size(self):
         self.assertEqual(self.property.property_size, 120)

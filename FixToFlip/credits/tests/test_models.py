@@ -24,13 +24,13 @@ class CreditModelTests(TestCase):
             credit_owner=self.user,
         )
 
-    def credit_str_test(self):
+    def test_credit_str(self):
         self.assertEqual(
             str(self.credit),
             f'{self.credit.bank_name} - {self.credit.credit_start_date} - {self.credit.credit_amount}'
         )
 
-    def remaining_credit_amount_test(self):
+    def test_remaining_credit_amount(self):
         self.assertEqual(self.credit.remaining_credit_amount(), self.credit.credit_amount)
 
 
@@ -55,13 +55,13 @@ class CreditPaymentModelTests(TestCase):
             credit=self.credit,
         )
 
-    def full_payment_test(self):
+    def test_full_payment(self):
         self.assertEqual(
             self.payment.full_payment(),
             Money(2100, 'EUR')
         )
 
-    def payment_str_test(self):
+    def test_payment_str(self):
         self.assertEqual(
             str(self.payment),
             f"{self.payment.payment_date} - {self.payment.full_payment()} - {self.credit.bank_name}"
@@ -84,7 +84,7 @@ class CreditViewTests(TestCase):
             credit_owner=self.user,
         )
 
-    def dashboard_credits_test(self):
+    def test_dashboard_credits(self):
         response = self.client.get(reverse('dashboard_credits'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.credit.bank_name)
@@ -105,12 +105,12 @@ class CreditViewTests(TestCase):
         self.assertEqual(response.status_code, 302)  # Redirect on success
         self.assertTrue(Credit.objects.filter(bank_name="New Bank").exists())
 
-    def credit_details_test(self):
+    def test_credit_details(self):
         response = self.client.get(reverse('credit_details', args=[self.credit.id]))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.credit.bank_name)
 
-    def credit_edit_test(self):
+    def test_credit_edit(self):
         data = {
             "bank_name": "Edited Bank",
             "credit_amount_0": "8000",
@@ -123,12 +123,12 @@ class CreditViewTests(TestCase):
             "credit_type": "Mortgage",
         }
         response = self.client.post(reverse('edit_credit', args=[self.credit.id]), data)
-        self.assertEqual(response.status_code, 302)  # Redirect on success
+        self.assertEqual(response.status_code, 302)
         self.credit.refresh_from_db()
         self.assertEqual(self.credit.bank_name, "Edited Bank")
         self.assertEqual(self.credit.credit_amount, Money(8000, 'EUR'))
 
-    def credit_delete_test(self):
+    def test_credit_delete(self):
         response = self.client.post(reverse('delete_credit', args=[self.credit.id]))
-        self.assertEqual(response.status_code, 302)  # Redirect on success
+        self.assertEqual(response.status_code, 302)
         self.assertFalse(Credit.objects.filter(id=self.credit.id).exists())

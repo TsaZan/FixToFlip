@@ -22,44 +22,44 @@ class BlogPostTestCase(TestCase):
                 category=cls.category
             )
 
-    def create_blogpost_test(self):
+    def test_create_blogpost(self):
         posts = BlogPost.objects.all()
         self.assertEqual(posts.count(), 10)
 
-    def blogpost_slug_test(self):
+    def test_blogpost_slug(self):
         slugs = BlogPost.objects.values_list('slug', flat=True)
         self.assertEqual(len(slugs), len(set(slugs)))
 
-    def blogpost_content_test(self):
+    def test_blogpost_content_(self):
         post = BlogPost.objects.get(slug="test-post-0")
         self.assertEqual(post.content, "Test content")
 
-    def blogpost_author_test(self):
+    def test_blogpost_author(self):
         post = BlogPost.objects.get(slug="test-post-0")
         self.assertEqual(post.author.username, "testuser")
 
-    def blogpost_category_test(self):
+    def test_blogpost_category(self):
         post = BlogPost.objects.get(slug="test-post-0")
         self.assertEqual(post.category.name, "Test Category")
 
-    def blogpost_update_test(self):
+    def test_blogpost_update(self):
         post = BlogPost.objects.get(slug="test-post-0")
         post.content = "Updated content"
         post.save()
         updated_post = BlogPost.objects.get(slug="test-post-0")
         self.assertEqual(updated_post.content, "Updated content")
 
-    def blogpost_delete_test(self):
+    def test_blogpost_delete(self):
         post = BlogPost.objects.get(slug="test-post-0")
         post.delete()
         with self.assertRaises(BlogPost.DoesNotExist):
             BlogPost.objects.get(slug="test-post-0")
 
-    def blogpost_created_at_test(self):
+    def test_blogpost_created_at(self):
         post = BlogPost.objects.get(slug="test-post-0")
         self.assertTrue(post.created_at <= timezone.now())
 
-    def blogpost_filter_test(self):
+    def test_blogpost_filter(self):
         post = BlogPost.objects.get(slug="test-post-0")
         result = BlogPost.objects.filter(slug="test-post-0")
         self.assertIn(post, result)
