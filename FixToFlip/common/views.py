@@ -37,10 +37,19 @@ def contact(request):
             return render(request, 'common/contact.html', {'success': True})
     else:
         form = ContactUsForm()
+        if request.user.is_authenticated:
+            if request.user.first_name or request.user.last_name:
+                form.fields[
+                    'name'].initial = request.user.first_name + ' ' + request.user.last_name + ' - Registered User'
+            else:
+                form.fields['name'].initial = request.user.username + ' - Registered User'
+            form.fields['name'].widget.attrs['readonly'] = True
+
+            form.fields['email'].initial = request.user.email
+            form.fields['email'].widget.attrs['readonly'] = True
+
     return render(request, 'common/contact.html', {'form': form})
 
 
 def faq(request):
     return render(request, 'common/faq.html')
-
-

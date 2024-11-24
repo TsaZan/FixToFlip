@@ -1,7 +1,6 @@
 from django.urls import path, include
 
-from FixToFlip.properties.serializers import PropertyConditionChartData, PropertyExpenseData
-from FixToFlip.properties.views import add_expense
+from FixToFlip.properties.views import add_expense, PropertyConditionChartData, PropertyExpenseData
 
 urlpatterns = [
     path('', include([

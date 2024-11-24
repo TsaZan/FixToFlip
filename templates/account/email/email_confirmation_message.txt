@@ -1,0 +1,7 @@
+Hello {{ user.username }},
+
+Please click the link below to confirm your registration:
+{{ activate_url }}
+
+Best regards,
+FixToFlip Team

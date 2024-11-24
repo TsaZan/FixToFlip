@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import JsonResponse
 from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy
+from allauth.account.utils import send_email_confirmation
 from django.views.generic import UpdateView, DeleteView
 from FixToFlip.accounts.forms import ProfileEditForm, UserEditForm
 from FixToFlip.accounts.models import BaseAccount, Profile
@@ -26,6 +27,7 @@ def ajax_signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             user = form.save(request)
+            send_email_confirmation(request, user)
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
             return JsonResponse({'success': True, 'refresh': True})
