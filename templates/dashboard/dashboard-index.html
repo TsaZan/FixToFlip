@@ -1,7 +1,6 @@
 {% extends 'dashboard/dashboard-base.html' %}
 {% load static %}
 {% block content %}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 
@@ -94,7 +93,22 @@ Dashboard Body
                 <div class="d-flex align-items-center justify-content-between plr">
                     <h5 class="dash-title-two">Expenses Chart</h5>
                     <div class="short-filter d-flex align-items-center">
+                       <script src="{% static 'js/expenses-chart.js' %}"></script>
                     </div>
+                
+                    <form id="date-filter-form" class="mb-3 row gx-3 align-items-center">
+                        <div class="col-auto">
+                            <label for="start-date" class="form-label">Start Date:</label>
+                            <input type="date" id="start-date" name="start-date" class="form-control">
+                        </div>
+                        <div class="col-auto">
+                            <label for="end-date" class="form-label">End Date:</label>
+                            <input type="date" id="end-date" name="end-date" class="form-control">
+                        </div>
+                        <div class="col-auto">
+                            <button type="button" id="filter-button" class="btn btn-primary mt-4">Filter</button>
+                        </div>
+                    </form>
                 </div>
                 <div class="plr mt-50">
                     <div class="chart-wrapper">
@@ -172,4 +186,6 @@ Dashboard Body
     </div>
 
     <!-- /.dashboard-body -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
+

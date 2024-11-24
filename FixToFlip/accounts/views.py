@@ -37,7 +37,7 @@ def ajax_signup(request):
 
 
 class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    template_name = 'dashboard/profile.html'
+    template_name = 'account/profile.html'
 
     def test_func(self):
         profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
@@ -75,7 +75,7 @@ class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class AccountDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = BaseAccount
-    template_name = 'dashboard/delete-account.html'
+    template_name = 'account/delete-account.html'
     success_url = reverse_lazy('index')
 
     def test_func(self):

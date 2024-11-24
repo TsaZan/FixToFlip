@@ -76,7 +76,7 @@ class BlogPostView(View):
 
 class BlogPostsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     model = BlogPost
-    template_name = 'dashboard/blogposts-list.html'
+    template_name = 'blog/blogposts-list.html'
     filterset_class = BlogPostsFilter
     login_url = 'index'
 
@@ -109,7 +109,7 @@ class BlogPostsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 class AddBlogPostView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = BlogPost
     form_class = AddBlogPostForm
-    template_name = 'dashboard/add-blogpost.html'
+    template_name = 'blog/add-blogpost.html'
     success_url = reverse_lazy('dashboard_blogposts')
     login_url = 'index'
 
@@ -132,7 +132,7 @@ class EditBlogPostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     model = BlogPost
     form_class = AddBlogPostForm
-    template_name = 'dashboard/edit-blogpost.html'
+    template_name = 'blog/edit-blogpost.html'
 
     def get_object(self, queryset=None):
         return BlogPost.objects.get(slug=self.kwargs['slug'])
@@ -148,7 +148,7 @@ class EditBlogPostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class DeleteBlogPostView(PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = BlogPost
     form_class = BlogPostDeleteForm
-    template_name = 'dashboard/delete-blogpost.html'
+    template_name = 'blog/delete-blogpost.html'
     success_url = reverse_lazy('dashboard_blogposts')
     permission_required = ('dashboard.delete_blogpost',)
     login_url = 'index'
@@ -165,7 +165,7 @@ class DeleteBlogPostView(PermissionRequiredMixin, LoginRequiredMixin, UserPasses
 
 class BlogCommentsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     model = Comment
-    template_name = 'dashboard/comments-list.html'
+    template_name = 'blog/comments-list.html'
     login_url = 'index'
 
     def test_func(self):

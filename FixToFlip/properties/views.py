@@ -1,7 +1,7 @@
 from datetime import date
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView
@@ -12,7 +12,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django.utils.dateparse import parse_date
 from FixToFlip.choices import ExpenseTypeChoices, PropertyConditionChoices
 from FixToFlip.credits.models import Credit
 from FixToFlip.money_operations import sum_current_expenses
@@ -25,7 +25,7 @@ from FixToFlip.properties.serializers import PropertySerializer, PropertyExpense
 
 
 class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
-    template_name = 'dashboard/properties-list.html'
+    template_name = 'properties/properties-list.html'
     filterset_class = PropertiesFilter
     login_url = 'index'
 
@@ -83,11 +83,11 @@ def property_add_view(request):
         'header_title': 'Add Property',
     }
 
-    return render(request, 'dashboard/add-property.html', context)
+    return render(request, 'properties/add-property.html', context)
 
 
 class PropertyEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    template_name = 'dashboard/edit-property.html'
+    template_name = 'properties/edit-property.html'
     model = Property
     fields = '__all__'
 
@@ -156,7 +156,7 @@ class PropertyDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     form_class = PropertyDeleteForm
     property_financial_information_form_class = PropertyFinanceInformationForm
     expense_form_class = PropertyExpenseForm
-    template_name = 'dashboard/delete-property.html'
+    template_name = 'properties/delete-property.html'
 
     def test_func(self):
         property = self.get_object()
@@ -166,7 +166,7 @@ class PropertyDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class PropertyDetailsView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     login_url = 'index'
     model = Property
-    template_name = 'dashboard/property-details.html'
+    template_name = 'properties/property-details.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -205,7 +205,7 @@ class PropertyDetailsView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
 class DashboardExpensesView(LoginRequiredMixin, TemplateView):
     model = PropertyExpense
-    template_name = 'dashboard/expenses-list.html'
+    template_name = 'properties/expenses-list.html'
     login_url = 'index'
 
     def get_context_data(self, **kwargs):
@@ -267,7 +267,7 @@ def add_expense(request, pk):
         'property': property,
     }
 
-    return render(request, 'dashboard/expenses-details.html', context)
+    return render(request, 'properties/expenses-details.html', context)
 
 
 ''' API Views '''
@@ -294,51 +294,49 @@ class PropertyExpenseData(APIView):
 
     def get(self, request, *args, **kwargs):
         user = request.user
+
         if not user.is_authenticated:
             return Response({"error": "User not authenticated"}, status=403)
 
+        start_date = request.GET.get('start_date', '')
+        end_date = request.GET.get('end_date', '')
+
+        start_date = parse_date(start_date) if start_date else None
+        end_date = parse_date(end_date) if end_date else None
+
+        expenses = PropertyExpense.objects.filter(property__owner=user)
+        if start_date or end_date:
+            expenses = expenses.filter(
+                expenses_notes__expense_date__gte=start_date if start_date else Q(),
+                expenses_notes__expense_date__lte=end_date if end_date else Q()
+            ).distinct()
+
+        aggregated_fields = [
+            'utilities',
+            'notary_taxes',
+            'profit_tax',
+            'municipality_taxes',
+            'advertising',
+            'administrative_fees',
+            'insurance',
+            'other_expenses',
+            'bathroom_repair_expenses',
+            'electrical_repair_expenses',
+            'facade_repair_expenses',
+            'floors_repair_expenses',
+            'kitchen_repair_expenses',
+            'other_repair_expenses',
+            'plumbing_repair_expenses',
+            'roof_repair_expenses',
+            'walls_repair_expenses',
+            'windows_doors_repair_expenses',
+        ]
+
         expenses_data = {
-            'utilities': PropertyExpense.objects.filter(property__owner=user)
-                         .aggregate(Sum('utilities'))['utilities__sum'] or 0,
-            'notary_taxes': PropertyExpense.objects.filter(property__owner=user)
-                            .aggregate(Sum('notary_taxes'))['notary_taxes__sum'] or 0,
-            'profit_tax': PropertyExpense.objects.filter(property__owner=user)
-                          .aggregate(Sum('profit_tax'))['profit_tax__sum'] or 0,
-            'municipality_taxes': PropertyExpense.objects.filter(property__owner=user)
-                                  .aggregate(Sum('municipality_taxes'))['municipality_taxes__sum'] or 0,
-            'advertising': PropertyExpense.objects.filter(property__owner=user)
-                           .aggregate(Sum('advertising'))['advertising__sum'] or 0,
-            'administrative_fees': PropertyExpense.objects.filter(property__owner=user)
-                                   .aggregate(Sum('administrative_fees'))['administrative_fees__sum'] or 0,
-            'insurance': PropertyExpense.objects.filter(property__owner=user)
-                         .aggregate(Sum('insurance'))['insurance__sum'] or 0,
-            'other_expenses': PropertyExpense.objects.filter(property__owner=user)
-                              .aggregate(Sum('other_expenses'))['other_expenses__sum'] or 0,
-            'bathroom_repair_expenses': PropertyExpense.objects.filter(property__owner=user)
-                                        .aggregate(Sum('bathroom_repair_expenses'))[
-                                            'bathroom_repair_expenses__sum'] or 0,
-            'kitchen_repair_expenses': PropertyExpense.objects.filter(property__owner=user)
-                                       .aggregate(Sum('kitchen_repair_expenses'))['kitchen_repair_expenses__sum'] or 0,
-            'floors_repair_expenses': PropertyExpense.objects.filter(property__owner=user)
-                                      .aggregate(Sum('floors_repair_expenses'))['floors_repair_expenses__sum'] or 0,
-            'walls_repair_expenses': PropertyExpense.objects.filter(property__owner=user)
-                                     .aggregate(Sum('walls_repair_expenses'))['walls_repair_expenses__sum'] or 0,
-            'windows_doors_repair_expenses': PropertyExpense.objects.filter(property__owner=user)
-                                             .aggregate(Sum('windows_doors_repair_expenses'))[
-                                                 'windows_doors_repair_expenses__sum'] or 0,
-            'plumbing_repair_expenses': PropertyExpense.objects.filter(property__owner=user)
-                                        .aggregate(Sum('plumbing_repair_expenses'))[
-                                            'plumbing_repair_expenses__sum'] or 0,
-            'electrical_repair_expenses': PropertyExpense.objects.filter(property__owner=user)
-                                          .aggregate(Sum('electrical_repair_expenses'))[
-                                              'electrical_repair_expenses__sum'] or 0,
-            'roof_repair_expenses': PropertyExpense.objects.filter(property__owner=user)
-                                    .aggregate(Sum('roof_repair_expenses'))['roof_repair_expenses__sum'] or 0,
-            'facade_repair_expenses': PropertyExpense.objects.filter(property__owner=user)
-                                      .aggregate(Sum('facade_repair_expenses'))['facade_repair_expenses__sum'] or 0,
-            'other_repair_expenses': PropertyExpense.objects.filter(property__owner=user)
-                                     .aggregate(Sum('other_repair_expenses'))['other_repair_expenses__sum'] or 0
+            field: expenses.aggregate(Sum(field))[f"{field}__sum"] or 0
+            for field in aggregated_fields
         }
+
         return Response(expenses_data)
 
 
