@@ -1,17 +1,8 @@
 from django import forms
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV3
+
 from FixToFlip.blog.models import Comment, BlogPost
-
-
-class BlogPostForm(forms.ModelForm):
-    class Meta:
-        model = BlogPost
-        fields = ['title', 'content', 'category']
-
-
-class BlogCommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ['content']
 
 
 class AddBlogPostForm(forms.ModelForm):
@@ -51,5 +42,9 @@ class BlogPostDeleteForm(forms.ModelForm):
         fields = []
 
 
-class BlogEditForm(AddBlogPostForm):
-    pass
+class BlogCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+
+    captcha = ReCaptchaField(widget=ReCaptchaV3())

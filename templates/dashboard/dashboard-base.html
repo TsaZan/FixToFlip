@@ -5,29 +5,27 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="Real estate, Property sale, Property buy">
-    <meta name="description" content="Homy is a beautiful website template designed for Real Estate Agency.">
-    <meta property="og:site_name" content="Homy">
-    <meta property="og:url" content="https://creativegigstf.com">
+    <meta name="keywords" content="Fix and Flip, Real estate investment, Property buying, Property selling, Renovation projects, Real estate marketplace, Investment opportunities, FixToFlip platform">
+    <meta name="description" content="FixToFlip is the leading platform for real estate investors, offering property flipping and renovation solutions. Discover profitable investment opportunities and manage your property projects with ease.">
+    <meta property="og:site_name" content="FixToFlip">
+    <meta property="og:url" content="https://fixtoflip.azurewebsites.net/">
     <meta property="og:type" content="website">
     {% if post.title %}
-        <meta property="og:title" content="{{ post.title }}">{% else %}
-        <meta property="og:title" content="Homy-Real Estate HTML5 Template & Dashboard"> {% endif %}
-    <meta name='og:image' content="{% static 'images/assets/ogg.png' %}"
-          property="{% static 'images/assets/ogg.png' %}">
-    <!-- For IE -->
+        <meta property="og:title" content="{{ post.title }}">
+    {% else %}
+        <meta property="og:title" content="FixToFlip - Real Estate Investment Platform for Property Flipping">
+    {% endif %}
+    <meta name="og:image" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- For Resposive Device -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- For Window Tab Color -->
-    <!-- Chrome, Firefox OS and Opera -->
     <meta name="theme-color" content="#0D1A1C">
-    <!-- Windows Phone -->
     <meta name="msapplication-navbutton-color" content="#0D1A1C">
-    <!-- iOS Safari -->
     <meta name="apple-mobile-web-app-status-bar-style" content="#0D1A1C">
-    {% if post.title %} <title>{{ post.title }}</title>{% else %}
-        <title>Homy-Real Estate HTML5 Template & Dashboard</title>{% endif %}
+    {% if post.title %}
+        <title>{{ post.title }} - FixToFlip</title>
+    {% else %}
+        <title>FixToFlip - Real Estate Investment & Property Flipping Platform</title>
+    {% endif %}
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="56x56" href="{% static 'images/fav-icon/icon.png' %}">
     <!-- Bootstrap CSS -->
@@ -119,6 +117,8 @@ Loading Transition
     <script src="{% static 'vendor/isotope.pkgd.min.js' %}"></script>
     <!-- Theme js -->
     <script src="{% static 'js/theme.js' %}"></script>
+
+
 </div>
 </body>
 

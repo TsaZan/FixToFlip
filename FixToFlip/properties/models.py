@@ -268,6 +268,7 @@ class PropertyExpense(models.Model):
         null=True,
         blank=True,
     )
+
     expected_expenses = MoneyField(
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,

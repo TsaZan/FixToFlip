@@ -1,31 +1,9 @@
 from django.urls import path, include
-from FixToFlip.blog.views import BlogPostsView, EditBlogPostView, AddBlogPostView, DeleteBlogPostView, BlogCommentsView
 from FixToFlip.dashboard.views import DashboardView, DashboardTasksView
-from FixToFlip.properties.views import DashboardPropertiesView, PropertyDetailsView, property_add_view, \
-    DashboardExpensesView, PropertyEditView, PropertyDeleteView
 
 urlpatterns = [
     path('', DashboardView.as_view(), name='dashboard'),
 
-    path('properties/', include([
-        path('', DashboardPropertiesView.as_view(), name='dashboard_properties'),
-        path('add-property/', property_add_view, name='add_property'),
-        path('<int:pk>/view/', PropertyDetailsView.as_view(), name='property_details'),
-        path('<int:pk>/edit/', PropertyEditView.as_view(), name='edit_property'),
-        path('<int:pk>/delete/', PropertyDeleteView.as_view(), name='delete_property'),
-    ])),
-
     path('tasks/', DashboardTasksView.as_view(), name='dashboard_tasks'),
 
-    path('expenses/', DashboardExpensesView.as_view(), name='dashboard_expenses'),
-
-    path('blogposts/', include([
-        path('', BlogPostsView.as_view(), name='dashboard_blogposts'),
-        path('<str:slug>/edit/', EditBlogPostView.as_view(), name='edit_blogpost'),
-        path('add/', AddBlogPostView.as_view(), name='add_blogpost'),
-        path('<str:slug>/delete/', DeleteBlogPostView.as_view(), name='delete_blogpost'),
-        path('comments/', include([
-            path('', BlogCommentsView.as_view(), name='blog_comments'),
-        ])),
-    ])),
 ]

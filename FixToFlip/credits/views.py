@@ -14,7 +14,7 @@ from FixToFlip.properties.models import PropertyFinancialInformation
 
 
 class DashboardCreditsView(LoginRequiredMixin, TemplateView):
-    template_name = 'dashboard/credits-list.html'
+    template_name = 'credits/credits-list.html'
     filterset_class = CreditsFilter
     login_url = 'index'
 
@@ -48,7 +48,7 @@ class DashboardCreditsView(LoginRequiredMixin, TemplateView):
 class CreditAddView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Credit
     form_class = CreditAddForm
-    template_name = 'dashboard/add-credit.html'
+    template_name = 'credits/add-credit.html'
     success_url = reverse_lazy('dashboard_credits')
 
     def test_func(self):
@@ -65,7 +65,7 @@ class CreditAddView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
 
 class CreditDetailsView(LoginRequiredMixin, TemplateView):
-    template_name = 'dashboard/credit-details.html'
+    template_name = 'credits/credit-details.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -107,13 +107,13 @@ class CreditDetailsView(LoginRequiredMixin, TemplateView):
             payment.credit = credit
             payment.save()
             return redirect('credit_details', pk=credit.id)
-        return render(request, 'dashboard/credit-details.html', {'credit': credit, 'form': form})
+        return render(request, 'credits/credit-details.html', {'credit': credit, 'form': form})
 
 
 class EditCreditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Credit
     form_class = CreditEditForm
-    template_name = 'dashboard/edit-credit.html'
+    template_name = 'credits/edit-credit.html'
     success_url = reverse_lazy('dashboard_credits')
 
     def test_func(self):
@@ -127,7 +127,7 @@ class EditCreditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class DeleteCreditView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Credit
-    template_name = 'dashboard/delete-credit.html'
+    template_name = 'credits/delete-credit.html'
     success_url = reverse_lazy('dashboard_credits')
 
     def test_func(self):
