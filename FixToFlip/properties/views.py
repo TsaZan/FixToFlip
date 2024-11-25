@@ -283,10 +283,10 @@ def delete_expense(request, pk):
     try:
         field = ExpenseTypeChoices.get_choice(note.expense_type)
     except ValueError as e:
-        raise Http404(f"Няма такъв разход: {e}")
+        raise Http404(f"There is no field: {e}")
 
     if not hasattr(related_expense, field):
-        raise Http404(f"Няма такъв разход: {field}")
+        raise Http404(f"There is no field: {field}")
 
     current_value = getattr(related_expense, field)
 
