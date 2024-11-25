@@ -1,9 +1,33 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const allCategories = [
+        'Utilities', 'Notary Taxes', 'Profit Tax', 'Municipality Taxes',
+        'Advertising', 'Administrative Fees', 'Insurance', 'Other Expenses',
+        'Bathroom Repair Expenses', 'Kitchen Repair Expenses', 'Floors Repair Expenses',
+        'Walls Repair Expenses', 'Windows and Doors Repair Expenses', 'Plumbing Repair Expenses',
+        'Electrical Repair Expenses', 'Roof Repair Expenses', 'Facade Repair Expenses',
+        'Other Repair Expenses'
+    ];
+
     function loadChart(apiUrl) {
         fetch(apiUrl)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
-                console.log('Chart Data:', data);
+                console.log('API Response:', data);
+
+                const expenseData = allCategories.map(category => {
+                    if (data[category] === undefined) {
+                        console.warn(`Missing data for ${category}, assigning 0.`);
+                        return 0;
+                    }
+                    return data[category];
+                });
+
+                console.log('Mapped Expense Data:', expenseData);
 
                 if (window.propertyExpensesChart) {
                     window.propertyExpensesChart.destroy();
@@ -13,62 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.propertyExpensesChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: [
-                            'Utilities', 'Notary Taxes', 'Profit Tax', 'Municipal Taxes',
-                            'Advertising', 'Administrative Fees', 'Insurance', 'Other Expenses',
-                            'Bathroom Repair Expenses', 'Kitchen Repair Expenses', 'Floor Repair Expenses',
-                            'Wall Repair Expenses', 'Window/Door Repair Expenses', 'Plumbing Repair Expenses',
-                            'Electrical Repair Expenses', 'Roof Repair Expenses', 'Facade Repair Expenses',
-                            'Other Repair Expenses'
-                        ],
+                        labels: allCategories,
                         datasets: [{
                             label: 'Property Expenses',
-                            data: [
-                                data.utilities, data.notary_taxes, data.profit_tax, data.municipality_taxes,
-                                data.advertising, data.administrative_fees, data.insurance, data.other_expenses,
-                                data.bathroom_repair_expenses, data.kitchen_repair_expenses, data.floors_repair_expenses,
-                                data.walls_repair_expenses, data.windows_doors_repair_expenses, data.plumbing_repair_expenses,
-                                data.electrical_repair_expenses, data.roof_repair_expenses, data.facade_repair_expenses,
-                                data.other_repair_expenses
-                            ],
-                            backgroundColor: [
-                                'rgba(54, 162, 235, 0.6)',
-                                'rgba(255, 99, 132, 0.6)',
-                                'rgba(75, 192, 192, 0.6)',
-                                'rgba(153, 102, 255, 0.6)',
-                                'rgba(255, 159, 64, 0.6)',
-                                'rgba(255, 206, 86, 0.6)',
-                                'rgba(54, 162, 235, 0.6)',
-                                'rgba(255, 99, 132, 0.6)',
-                                'rgba(75, 192, 192, 0.6)',
-                                'rgba(153, 102, 255, 0.6)',
-                                'rgba(255, 159, 64, 0.6)',
-                                'rgba(255, 206, 86, 0.6)',
-                                'rgba(54, 162, 235, 0.6)',
-                                'rgba(255, 99, 132, 0.6)',
-                                'rgba(75, 192, 192, 0.6)',
-                                'rgba(153, 102, 255, 0.6)',
-                                'rgba(255, 159, 64, 0.6)'
-                            ],
-                            borderColor: [
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 99, 132, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 99, 132, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 99, 132, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)'
-                            ],
+                            data: expenseData,
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
                             borderWidth: 1
                         }]
                     },
@@ -88,23 +62,43 @@ document.addEventListener('DOMContentLoaded', () => {
                                     text: 'Expense Categories'
                                 }
                             }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            }
                         }
                     }
                 });
             })
-            .catch(error => console.error('Error loading chart:', error));
+            .catch(error => {
+                console.error('Error loading chart:', error);
+            });
     }
 
     function applyDateFilter() {
         const startDate = document.getElementById('start-date').value;
         const endDate = document.getElementById('end-date').value;
 
-        if (startDate && endDate) {
-            const apiUrl = `/properties/api-expenses/?start_date=${startDate}&end_date=${endDate}`;
-            loadChart(apiUrl);
-        } else {
-            loadChart('/properties/api-expenses/');
+        let apiUrl = '/properties/api-expenses/';
+        if (startDate || endDate) {
+            apiUrl += `?${startDate ? `start_date=${startDate}` : ''}${startDate && endDate ? '&' : ''}${endDate ? `end_date=${endDate}` : ''}`;
         }
+
+        loadChart(apiUrl);
+    }
+
+    function resetDates() {
+        document.getElementById('start-date').value = '';
+        document.getElementById('end-date').value = '';
+
+        loadChart('/properties/api-expenses/');
+    }
+
+    const resetButton = document.getElementById('reset-button');
+    if (resetButton) {
+        resetButton.addEventListener('click', resetDates);
     }
 
     const filterButton = document.getElementById('filter-button');

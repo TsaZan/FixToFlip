@@ -5,12 +5,12 @@
         <!-- ************************ Header **************************** -->
         <header class="dashboard-header">
             <div class="d-flex align-items-center justify-content-xxl-between order-1">
-                <h3 class="m0 d-none d-lg-block">{{ header_title }}</h3>
+                <h4 class="mt-3 d-none d-lg-block">{{ header_title }}</h4>
                 <button class="dash-mobile-nav-toggler d-block d-md-none me-auto">
                     <span></span>
                 </button>
                 {% if search_placeholder %}
-                    <form class="search-form ms-auto" method="get">
+                    <form class="search-form ms-auto mt-3" method="get">
                         <input type="text" name="q" placeholder="{{ search_placeholder | default:"Search here.." }}">
                         <button type="submit">
                             <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/icon/icon_43.svg' %}" alt=""
@@ -19,18 +19,17 @@
                     </form>
                 {% endif %}
                 <div class="profile-notification position-relative dropdown-center ms-3 ms-md-10 me-4">
-                    
+
                 </div>
-                <div class="d-flex align-items-center mt-3 justify-content-between justify-content-xxl-start order-2">
-                    <div class="d-none d-md-block me-3 order-3">
-                        <a href="{% url 'add_property' %}" class="btn-two"><span>Add Property</span> <i
-                                class="fa-thin fa-arrow-up-right"></i></a>
-                    </div>
-                    <div class="d-none d-md-block me-3 order-4">
-                        <a href="{% url 'add_credit' %}" class="btn-two"><span>Add Credit</span> <i
-                                class="fa-thin fa-arrow-up-right"></i></a>
-                    </div>
-                    {##}
+                <div class="d-flex align-items-center mt-3 justify-content-xxl-between">
+{#                    <div class="d-none d-md-block me-3 order-3">#}
+{#                        <a href="{% url 'add_property' %}" class="btn-two"><span>Add Property</span> <i#}
+{#                                class="fa-thin fa-arrow-up-right"></i></a>#}
+{#                    </div>#}
+{#                    <div class="d-none d-md-block me-3 order-4">#}
+{#                        <a href="{% url 'add_credit' %}" class="btn-two"><span>Add Credit</span> <i#}
+{#                                class="fa-thin fa-arrow-up-right"></i></a>#}
+{#                    </div>#}
                     <div class="user-data position-relative order-5">
                         <button class="online position-relative rounded-circle" type="button"
                                 id="profile-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside"
@@ -40,10 +39,10 @@
                                      style="width: 65px; height: 65px; object-fit: cover; border-radius: 50%;"/>
                             {% elif user.socialaccount_set.all.0.get_avatar_url %}
                                 <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.socialaccount_set.all.0.get_avatar_url }}"  alt="" class="lazy-img"
-                                style="width: 65px; height: 65px; object-fit: cover; border-radius: 50%;"/>
+                                     style="width: 65px; height: 65px; object-fit: cover; border-radius: 50%;"/>
                             {% else %}
                                 <img src="{% static 'images/lazy.svg' %}" data-src="{% static 'images/avatar_01.jpg' %}" alt="" class="lazy-img"
-                                style="width: 65px; height: 65px; object-fit: cover; border-radius: 50%;">
+                                     style="width: 65px; height: 65px; object-fit: cover; border-radius: 50%;">
                             {% endif %}
                         </button>
                         <!-- /.user-avatar -->
