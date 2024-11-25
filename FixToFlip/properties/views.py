@@ -355,27 +355,26 @@ class PropertyExpenseData(APIView):
 
 
 class PropertyListApiView(generics.ListAPIView):
-    queryset = Property.objects.all()
     serializer_class = PropertySerializer
     permission_classes = [IsAuthenticated, ]
-    authentication_classes = [TokenAuthentication]
+
+    def get_queryset(self):
+        return Property.objects.filter(owner=self.request.user)
 
 
 class PropertyApiView(generics.ListAPIView):
     def get_queryset(self):
         pk = self.kwargs.get('pk')
-        return Property.objects.filter(pk=pk)
+        return Property.objects.filter(pk=pk, owner=self.request.user)
 
     permission_classes = [IsAuthenticated, ]
-    authentication_classes = [TokenAuthentication]
     serializer_class = PropertySerializer
 
 
 class PropertyExpensesApiView(generics.ListAPIView):
     def get_queryset(self):
         pk = self.kwargs.get('pk')
-        return PropertyExpense.objects.filter(property_id=pk)
+        return PropertyExpense.objects.filter(property_id=pk, property__owner=self.request.user)
 
     permission_classes = [IsAuthenticated, ]
-    authentication_classes = [TokenAuthentication]
     serializer_class = PropertyExpenseSerializer
