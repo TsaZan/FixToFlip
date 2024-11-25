@@ -125,6 +125,8 @@ Property Listing Details
                                             <th scope="col">Amount</th>
                                             <th scope="col">Expense Type</th>
                                             <th scope="col">Note</th>
+                                            <th scope="col">Delete</th>
+
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -135,12 +137,18 @@ Property Listing Details
                                                 <td>{{ note.expense_amount }}</td>
                                                 <td>{{ note.expense_type }}</td>
                                                 <td>{{ note.notes }}</td>
+                                                <td><a href="{% url 'delete_expense' note.id %}"
+                                                       class="btn btn-danger btn-sm"
+                                                       onclick="return confirm('Are you sure you want to delete this expense?');">
+                                                    Delete
+                                                </a></td>
                                             </tr>
                                         {% endfor %}
                                         <tr>
                                             <th scope="row" class="fw-500"></th>
                                             <td scope="row" class="fw-500">Total:</td>
                                             <td>{{ expenses.actual_expenses }}</td>
+                                            <td></td>
                                             <td></td>
                                             <td></td>
                                         </tr>
@@ -156,7 +164,7 @@ Property Listing Details
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-8 me-auto ms-auto">
-                        <div class="theme-sidebar-one ms-xl-5 lg-mt-80">
+                        <div class="theme-sidebar-one ms-xl-6 lg-mt-80">
 
                             <div class="tour-schedule bg-white border-20 p-30 mb-40">
                                 <h5 class="mb-40">Add Expense</h5>

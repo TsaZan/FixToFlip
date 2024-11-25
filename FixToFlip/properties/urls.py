@@ -2,7 +2,7 @@ from django.urls import path, include
 
 from FixToFlip.properties.views import add_expense, PropertyConditionChartData, PropertyExpenseData, \
     DashboardPropertiesView, property_add_view, PropertyDetailsView, PropertyEditView, PropertyDeleteView, \
-    DashboardExpensesView
+    DashboardExpensesView, delete_expense
 
 urlpatterns = [
     path('', include([
@@ -16,6 +16,8 @@ urlpatterns = [
         path('expenses/', DashboardExpensesView.as_view(), name='dashboard_expenses'),
 
         path('<int:pk>/expense/', add_expense, name='add_expense'),
+        path('expense/<int:pk>/delete/', delete_expense, name='delete_expense'),
+
         path('api-condition/', PropertyConditionChartData.as_view(), name='api_condition'),
         path('api-expenses/', PropertyExpenseData.as_view(), name='api_expenses'),
     ])),

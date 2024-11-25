@@ -1,10 +1,14 @@
 from datetime import date
+from decimal import Decimal, InvalidOperation
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Sum, Q
+from django.http import Http404
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView
+from djmoney.money import Money
 from rest_framework import generics
 from django.shortcuts import render
 from django.core.paginator import Paginator
@@ -270,6 +274,34 @@ def add_expense(request, pk):
     return render(request, 'properties/expenses-details.html', context)
 
 
+@login_required(login_url='index')
+def delete_expense(request, pk):
+    note = get_object_or_404(PropertyExpenseNotes, pk=pk)
+    related_expense = note.relates_expenses
+    expense_type = note.expense_type.lower().replace(" ", "_")
+
+    try:
+        field = ExpenseTypeChoices.get_choice(note.expense_type)
+    except ValueError as e:
+        raise Http404(f"There is no field: {e}")
+
+    if not hasattr(related_expense, field):
+        raise Http404(f"There is no field: {field}")
+
+    current_value = getattr(related_expense, field)
+
+    amount = note.expense_amount
+
+    new_value = current_value - amount
+    new_value = max(new_value, Money(0, current_value.currency))
+    setattr(related_expense, field, new_value)
+
+    related_expense.save()
+    note.delete()
+
+    return redirect('add_expense', pk=related_expense.pk)
+
+
 ''' API Views '''
 
 
@@ -304,38 +336,20 @@ class PropertyExpenseData(APIView):
         start_date = parse_date(start_date) if start_date else None
         end_date = parse_date(end_date) if end_date else None
 
-        expenses = PropertyExpense.objects.filter(property__owner=user)
-        if start_date or end_date:
-            expenses = expenses.filter(
-                expenses_notes__expense_date__gte=start_date if start_date else Q(),
-                expenses_notes__expense_date__lte=end_date if end_date else Q()
-            ).distinct()
+        notes_queryset = PropertyExpenseNotes.objects.filter(
+            relates_expenses__property__owner=user
+        )
 
-        aggregated_fields = [
-            'utilities',
-            'notary_taxes',
-            'profit_tax',
-            'municipality_taxes',
-            'advertising',
-            'administrative_fees',
-            'insurance',
-            'other_expenses',
-            'bathroom_repair_expenses',
-            'electrical_repair_expenses',
-            'facade_repair_expenses',
-            'floors_repair_expenses',
-            'kitchen_repair_expenses',
-            'other_repair_expenses',
-            'plumbing_repair_expenses',
-            'roof_repair_expenses',
-            'walls_repair_expenses',
-            'windows_doors_repair_expenses',
-        ]
+        if start_date:
+            notes_queryset = notes_queryset.filter(expense_date__gte=start_date)
+        if end_date:
+            notes_queryset = notes_queryset.filter(expense_date__lte=end_date)
 
-        expenses_data = {
-            field: expenses.aggregate(Sum(field))[f"{field}__sum"] or 0
-            for field in aggregated_fields
-        }
+        aggregated_expenses = notes_queryset.values('expense_type').annotate(
+            total_amount=Sum('expense_amount')
+        )
+
+        expenses_data = {entry['expense_type']: entry['total_amount'] for entry in aggregated_expenses}
 
         return Response(expenses_data)
 

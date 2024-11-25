@@ -34,6 +34,12 @@ class ExpenseTypeChoices(models.TextChoices):
     insurance = 'insurance', 'Insurance'
     other_expenses = 'other_expenses', 'Other Expenses'
 
+    @classmethod
+    def get_choice(cls, label):
+        for choice in cls.choices:
+            if choice[1] == label:
+                return choice[0]
+        raise ValueError(f"No field found for label: {label}")
 
 
 class PropertySizeChoices(models.TextChoices):
