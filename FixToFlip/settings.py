@@ -71,6 +71,9 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer'
 
     ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
 }
 
 INSTALLED_APPS = [
@@ -229,4 +232,10 @@ EMAIL_USE_TLS = True
 ADMIN_EMAIL = os.getenv('ADMIN_EMAIL')
 
 
-
+CELERY_BROKER_URL = os.getenv('BROKER_URL')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+CELERY_IMPORTS = (
+    'FixToFlip.common.task',
+)

@@ -1,9 +1,19 @@
 {% load static %}
+{% load template_tags %}
+{% verified_header request.user as is_verified %}
+{% days_to_confirm request.user as days %}
+
 
 <div class="dashboard-body">
     <div class="position-relative">
         <!-- ************************ Header **************************** -->
         <header class="dashboard-header">
+
+            {% if not is_verified and not request.user.is_staff %}
+                <div class="alert-wrapper text-center">
+                    <p class="fs-16 m0 color-dark fw-500 text-white bg-danger">Your account is no confirmed. Please confirm your account in {{ days }} days or your account will be deleted!</p>
+                </div>
+            {% endif %}
             <div class="d-flex align-items-center justify-content-xxl-between order-1">
                 <h4 class="mt-3 d-none d-lg-block">{{ header_title }}</h4>
                 <button class="dash-mobile-nav-toggler d-block d-md-none me-auto">

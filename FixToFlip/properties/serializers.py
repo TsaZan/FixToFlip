@@ -5,7 +5,7 @@ from FixToFlip.properties.models import Property, PropertyForSale, PropertyFinan
 class PropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
-        fields = ['property_name', 'country', 'city', 'address',
+        fields = ['pk', 'property_name', 'country', 'city', 'address',
                   'property_type', 'property_size', 'bought_date', 'property_condition']
 
 
