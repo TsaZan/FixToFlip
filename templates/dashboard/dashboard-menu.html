@@ -18,7 +18,8 @@ Dashboard Aside Menu
         </div>
         <nav class="dasboard-main-nav pt-30 pb-30 bottom-line">
             <ul class="style-none">
-                <li class="plr"><a href="{% url 'dashboard' %}" class="d-flex w-100 align-items-center {% active_url request 'dashboard' %}">
+                <li class="plr"><a href="{% url 'dashboard' %}"
+                                   class="d-flex w-100 align-items-center {% active_url request 'dashboard' %}">
                     <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_1' 'dashboard' %}" alt="">
                     <span>Dashboard</span>
                     <li class="plr"><a href="{% url 'blog_main_page' %}" class="d-flex w-100 align-items-center">
@@ -27,24 +28,31 @@ Dashboard Aside Menu
                     </a></li>
 
                 </a></li>
-                {% if user.is_staff %}
-                    <li class="bottom-line pt-30 lg-pt-20 mb-40 lg-mb-30"></li>
-                    <li>
-                        <div class="nav-title">Blog Management</div>
-                    </li>
-                    <li class="plr"><a href="{% url 'dashboard_blogposts' %}" class="d-flex w-100 align-items-center {% active_url request 'dashboard_blogposts' %}">
-                        <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_6' 'dashboard_blogposts' %}" alt="">
-                        <span>Blog Posts</span>
-                    </a></li>
-                    <li class="plr"><a href="{% url 'add_blogpost' %}" class="d-flex w-100 align-items-center {% active_url request 'add_blogpost' %}">
-                        <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_7' 'add_blogpost' %}" alt="">
-                        <span>Add Post</span>
-                    </a></li>
-                    <li class="plr"><a href="{% url 'blog_comments' %}" class="d-flex w-100 align-items-center {% active_url request 'blog_comments' %}">
-                        <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_10' 'blog_comments' %}" alt="">
-                        <span>Comments</span>
-                    </a></li>
-                {% endif %}
+                {% for group in user.groups.all %}
+                    {% if group.name == 'moderator' or group.name == 'super_moderator' %}
+                        {% ifchanged %}
+
+                            <li class="bottom-line pt-30 lg-pt-20 mb-40 lg-mb-30"></li>
+                            <li>
+                                <div class="nav-title">Blog Management</div>
+                            </li>
+                            <li class="plr"><a href="{% url 'dashboard_blogposts' %}" class="d-flex w-100 align-items-center {% active_url request 'dashboard_blogposts' %}">
+                                <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_6' 'dashboard_blogposts' %}" alt="">
+                                <span>Blog Posts</span>
+                            </a></li>
+                            <li class="plr"><a href="{% url 'add_blogpost' %}" class="d-flex w-100 align-items-center {% active_url request 'add_blogpost' %}">
+                                <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_7' 'add_blogpost' %}" alt="">
+                                <span>Add Post</span>
+                            </a></li>
+                            <li class="plr"><a href="{% url 'blog_comments' %}" class="d-flex w-100 align-items-center {% active_url request 'blog_comments' %}">
+                                <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_10' 'blog_comments' %}" alt="">
+                                <span>Comments</span>
+                            </a></li>
+
+                        {% endifchanged %}
+                    {% endif %}
+                {% endfor %}
+
                 <li class="bottom-line pt-30 lg-pt-20 mb-40 lg-mb-30"></li>
 
                 <li>

@@ -1,5 +1,4 @@
 from datetime import date
-from decimal import Decimal, InvalidOperation
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -12,7 +11,6 @@ from djmoney.money import Money
 from rest_framework import generics
 from django.shortcuts import render
 from django.core.paginator import Paginator
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -37,7 +35,7 @@ class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         properties = Property.objects.filter(owner=self.request.user)
         sorted_properties = PropertiesFilter(self.request.GET, queryset=properties)
-        properties = sorted_properties.qs.distinct()
+        properties = sorted_properties.qs.distinct().order_by('-created_at')
         paginator = Paginator(properties, 5)
         page_number = self.request.GET.get('page')
         properties = paginator.get_page(page_number)
@@ -217,7 +215,7 @@ class DashboardExpensesView(LoginRequiredMixin, TemplateView):
 
         properties = Property.objects.filter(owner=self.request.user)
 
-        expenses_list = PropertyExpense.objects.filter(property__in=properties)
+        expenses_list = PropertyExpense.objects.filter(property__in=properties).order_by('-id')
         if 'q' in self.request.GET:
             q = self.request.GET.get('q', '')
             expenses_list = PropertyExpense.objects.filter(property__property_name__icontains=q,

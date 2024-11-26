@@ -1,5 +1,4 @@
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
@@ -81,7 +80,7 @@ class BlogPostsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     login_url = 'index'
 
     def test_func(self):
-        return self.request.user.is_staff
+        return self.request.user.is_staff or self.request.user.groups.filter(name__contains='moderator').exists()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -90,7 +89,7 @@ class BlogPostsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
         blog_post_filter = BlogPostsFilter(self.request.GET, queryset=blog_posts)
 
-        sorted_posts = blog_post_filter.qs.distinct()
+        sorted_posts = blog_post_filter.qs.distinct().order_by('-created_at')
 
         paginator = Paginator(sorted_posts, 5)
         page_number = self.request.GET.get('page')
@@ -113,13 +112,13 @@ class AddBlogPostView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     success_url = reverse_lazy('dashboard_blogposts')
     login_url = 'index'
 
+    def test_func(self):
+        return self.request.user.groups.filter(name__contains='moderator').exists()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['header_title'] = 'Add Blog Post'
         return context
-
-    def test_func(self):
-        return self.request.user.is_staff
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -127,8 +126,11 @@ class AddBlogPostView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
 
 class EditBlogPostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    if login_required:
-        login_url = 'index'
+    permission_required = 'blog.edit_blogpost'
+    permission_denied_message = 'You do not have permission to edit this post'
+
+    def test_func(self):
+        return self.request.user.groups.filter(name__contains='moderator').exists()
 
     model = BlogPost
     form_class = AddBlogPostForm
@@ -141,8 +143,7 @@ class EditBlogPostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         slug = self.object.slug
         return reverse_lazy('edit_blogpost', kwargs={'slug': slug})
 
-    def test_func(self):
-        return self.request.user.is_staff
+
 
 
 class DeleteBlogPostView(PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -150,8 +151,12 @@ class DeleteBlogPostView(PermissionRequiredMixin, LoginRequiredMixin, UserPasses
     form_class = BlogPostDeleteForm
     template_name = 'blog/delete-blogpost.html'
     success_url = reverse_lazy('dashboard_blogposts')
-    permission_required = ('dashboard.delete_blogpost',)
+    permission_required = 'blog.delete_blogpost'
+    permission_denied_message = 'You do not have permission to delete this post'
     login_url = 'index'
+
+    def test_func(self):
+        return self.request.user.groups.filter(name__contains='super_moderator').exists()
 
     def get_object(self, queryset=None):
         return BlogPost.objects.get(slug=self.kwargs['slug'])
@@ -159,8 +164,7 @@ class DeleteBlogPostView(PermissionRequiredMixin, LoginRequiredMixin, UserPasses
     def post(self, request, *args, **kwargs):
         return self.delete(request, *args, **kwargs)
 
-    def test_func(self):
-        return self.request.user.is_staff
+
 
 
 class BlogCommentsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
@@ -169,7 +173,7 @@ class BlogCommentsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     login_url = 'index'
 
     def test_func(self):
-        return self.request.user.is_staff
+        return self.request.user.groups.filter(name__contains='moderator').exists()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -192,8 +196,7 @@ class BlogCommentsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         return context
 
 
-@login_required(login_url='index')
-@staff_member_required
+@user_passes_test(lambda user: user.groups.filter(name__contains='moderator').exists())
 def delete_comment(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.delete()
