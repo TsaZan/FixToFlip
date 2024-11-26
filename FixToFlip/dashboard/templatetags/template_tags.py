@@ -38,6 +38,5 @@ def verified_header(user):
 def days_to_confirm(user):
     expiration_days = settings.ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS
     days_since_joined = (timezone.now() - user.date_joined).days
-    print(days_since_joined)
     remaining_days = expiration_days - days_since_joined
     return remaining_days

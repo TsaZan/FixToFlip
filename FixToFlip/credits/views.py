@@ -21,7 +21,7 @@ class DashboardCreditsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         credits_list = Credit.objects.filter(credit_owner=self.request.user)
         credits_filter = CreditsFilter(self.request.GET, queryset=credits_list)
-        sorted_credits = credits_filter.qs.distinct()
+        sorted_credits = credits_filter.qs.distinct().order_by('-credit_start_date')
         paginator = Paginator(sorted_credits, 5)
         page_number = self.request.GET.get('page')
         credits = paginator.get_page(page_number)

@@ -70,12 +70,14 @@ Dashboard Body
                                             data-src="{% static '/dash/images/icon/icon_20.svg' %}"
                                             alt="" class="lazy-img">
                                         Edit</a></li>
-                                    {% if request.user.is_superuser %}
-                                        <li><a class="dropdown-item" href="{% url 'delete_blogpost' slug=post.slug %}" target="_self"><img src="{% static '/images/lazy.svg' %}"
-                                                                   data-src="{% static '/dash/images/icon/icon_21.svg' %}"
-                                                                   alt="" class="lazy-img">
-                                            Delete</a></li>
-                                    {% endif %}
+                                    {% for group in user.groups.all %}
+                                        {% if group.name == 'super_moderator' %}
+                                            <li><a class="dropdown-item" href="{% url 'delete_blogpost' slug=post.slug %}" target="_self"><img src="{% static '/images/lazy.svg' %}"
+                                                    data-src="{% static '/dash/images/icon/icon_21.svg' %}"
+                                                    alt="" class="lazy-img">
+                                                Delete</a></li>
+                                        {% endif %}
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </td>

@@ -1,13 +1,14 @@
 from celery import shared_task
 from django.core.mail import send_mail
 
+from FixToFlip import settings
+
 
 @shared_task
-def send_email_task(subject, message, from_email, recipient_list):
+def contact_form_mail(message):
     send_mail(
-        subject,
-        message,
-        from_email,
-        recipient_list,
+        subject='Fix To Flip Contact Form!',
+        message=message,
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[settings.ADMIN_EMAIL]
     )
-

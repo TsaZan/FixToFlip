@@ -17,17 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return response.json();
             })
             .then(data => {
-                console.log('API Response:', data);
-
-                const expenseData = allCategories.map(category => {
-                    if (data[category] === undefined) {
-                        console.warn(`Missing data for ${category}, assigning 0.`);
-                        return 0;
-                    }
-                    return data[category];
-                });
-
-                console.log('Mapped Expense Data:', expenseData);
+                const expenseData = allCategories.map(category => data[category] || 0);
 
                 if (window.propertyExpensesChart) {
                     window.propertyExpensesChart.destroy();
@@ -92,19 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function resetDates() {
         document.getElementById('start-date').value = '';
         document.getElementById('end-date').value = '';
-
         loadChart('/properties/api-expenses/');
     }
 
-    const resetButton = document.getElementById('reset-button');
-    if (resetButton) {
-        resetButton.addEventListener('click', resetDates);
-    }
-
-    const filterButton = document.getElementById('filter-button');
-    if (filterButton) {
-        filterButton.addEventListener('click', applyDateFilter);
-    }
+    document.getElementById('reset-button')?.addEventListener('click', resetDates);
+    document.getElementById('filter-button')?.addEventListener('click', applyDateFilter);
 
     loadChart('/properties/api-expenses/');
 });
