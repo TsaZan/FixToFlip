@@ -64,7 +64,6 @@ THIRD_PARTY_APPS = [
 REST_FRAMEWORK = {
 
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_RENDERER_CLASSES': [
@@ -73,8 +72,15 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ],
 }
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8888',
+    "https://fixtoflip.azurewebsites.net",
+]
 
 INSTALLED_APPS = [
                      'unfold',
@@ -230,7 +236,6 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 ADMIN_EMAIL = os.getenv('ADMIN_EMAIL')
-
 
 CELERY_BROKER_URL = os.getenv('BROKER_URL')
 CELERY_ACCEPT_CONTENT = ['json']
