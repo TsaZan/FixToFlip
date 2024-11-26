@@ -1,7 +1,5 @@
 from django.shortcuts import render
-from django.core.mail import send_mail
-
-from FixToFlip import settings
+from FixToFlip.common.task import contact_form_mail
 from FixToFlip.common.forms import ContactUsForm
 
 
@@ -32,7 +30,8 @@ def contact(request):
                     Message:\n\t\t{}\n
                     Email:\n\t\t{}\n
                     '''.format(form_data['name'], form_data['message'], form_data['email'])
-            send_mail('Fix To Flip Contact Form!', message, settings.EMAIL_HOST_USER, [settings.ADMIN_EMAIL])
+
+            contact_form_mail.delay(message)
 
             return render(request, 'common/contact.html', {'success': True})
     else:
