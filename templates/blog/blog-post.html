@@ -135,7 +135,9 @@ Blog Details
                                 <h5 class="mb-20">Category</h5>
                                 <ul class="style-none">
                                     {% for category in categories %}
-                                        <li><a href="#">{{ category.name }} ({{ category.posts.count }})</a></li>
+                                        {% if category.posts.count > 0 %}
+                                            <li><a href="/blog/?category={{ category.name }}">{{ category.name }} ({{ category.posts.count }})</a></li>
+                                        {% endif %}
                                     {% endfor %}
                                 </ul>
                             </div>
