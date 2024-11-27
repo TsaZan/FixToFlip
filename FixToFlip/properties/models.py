@@ -1,5 +1,8 @@
+from decimal import Decimal
+
 from django.db import models
 from djmoney.models.fields import MoneyField
+from djmoney.models.validators import MinMoneyValidator
 from djmoney.money import Money
 from django.conf import settings
 
@@ -148,14 +151,29 @@ class PropertyFinancialInformation(models.Model):
         verbose_name = 'Property Financial Information'
         verbose_name_plural = 'Property Financial Information'
 
-    initial_price = MoneyField(max_digits=10, decimal_places=2, default=Money(0, 'EUR'))
+    initial_price = MoneyField(max_digits=10,
+                               decimal_places=2,
+                               default=Money(0, 'EUR'),
+                               validators=[MinMoneyValidator(
+                                   Decimal(0),
+                                   message='Initial property price cannot be negative.'
+                               )],
+                               )
 
-    repair_cost = MoneyField(max_digits=10, decimal_places=2, default=Money(0, 'EUR'),
+    repair_cost = MoneyField(max_digits=10, decimal_places=2,
+                             default=Money(0, 'EUR'),
+                             validators=[MinMoneyValidator(
+                                 Decimal(0),
+                                 message='Repair cost cannot be negative.'
+                             )],
                              null=True,
                              blank=True,
                              )
 
-    is_credited = models.BooleanField()
+    is_credited = models.BooleanField(
+        default=False,
+        null=False,
+    )
 
     credit = models.ForeignKey(
         to=Credit,
@@ -168,6 +186,10 @@ class PropertyFinancialInformation(models.Model):
     credited_amount = MoneyField(
         max_digits=10,
         decimal_places=2,
+        validators=[MinMoneyValidator(
+            Decimal(0),
+            message='Credited amount cannot be negative.'
+        )],
         null=True,
         blank=True,
         default=Money(0, 'EUR'),
@@ -188,7 +210,7 @@ class PropertyFinancialInformation(models.Model):
 class PropertyExpense(models.Model):
     '''Property expenses information. Can be seen by property owners and all authorized users.'''
 
-    MAX_DIGITS = 7
+    MAX_DIGITS = 8
     MAX_DECIMAL_PLACES = 2
 
     class Meta:
@@ -273,6 +295,7 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(Decimal(0), message='Expected expenses cannot be negative.')],
         verbose_name='Expected Expenses',
         null=True,
         blank=True,
@@ -376,7 +399,10 @@ class PropertyExpense(models.Model):
         null=False,
     )
 
-    last_expense_date = models.DateField(blank=True, null=True, auto_now=True)
+    last_expense_date = models.DateField(
+        blank=True,
+        null=True,
+        auto_now=True)
 
     def expense_total(self):
         return (self.utilities + self.notary_taxes + self.profit_tax + self.municipality_taxes +
@@ -433,6 +459,10 @@ class PropertyExpenseNotes(models.Model):
     expense_amount = MoneyField(
         max_digits=PropertyExpense.MAX_DIGITS,
         decimal_places=PropertyExpense.MAX_DECIMAL_PLACES,
+        validators=[MinMoneyValidator(
+            Decimal(0),
+            message='Expense amount cannot be negative.'
+        )],
 
     )
 

@@ -7,11 +7,10 @@ class ProfileTypes(models.TextChoices):
 
 
 class PropertyTypeChoices(models.TextChoices):
-    TOWNHOUSE = 'TH', 'Townhouse'
-    APARTMENT = 'AP', 'Apartment'
-    CONDO = 'C', 'Condo'
-    VILLA = 'V', 'Villa'
-    CARAVAN = 'CN', 'Caravan'
+    TOWNHOUSE = 'Townhouse', 'Townhouse'
+    APARTMENT = 'Apartment', 'Apartment'
+    CONDO = 'Condo', 'Condo'
+    VILLA = 'Villa', 'Villa'
 
 
 class ExpenseTypeChoices(models.TextChoices):
@@ -54,11 +53,11 @@ class CreditTypeChoices(models.TextChoices):
 
 
 class OfferStatusChoices(models.TextChoices):
-    PROPOSED = 'P', 'Proposed'
-    ACTIVE = 'A', 'Active'
-    NEGOTIATIONS = 'N', 'Negotiations'
-    EXPIRED = 'E', 'Expired'
-    SOLD = 'S', 'Sold'
+    PROPOSED = 'Proposed', 'Proposed'
+    ACTIVE = 'Active', 'Active'
+    NEGOTIATIONS = 'Negotiations', 'Negotiations'
+    EXPIRED = 'Expired', 'Expired'
+    SOLD = 'Sold', 'Sold'
 
 
 class PropertyConditionChoices(models.TextChoices):

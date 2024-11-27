@@ -80,17 +80,14 @@ class BlogPostsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     login_url = 'index'
 
     def test_func(self):
-        return self.request.user.is_staff or self.request.user.groups.filter(name__contains='moderator').exists()
+        return self.request.user.groups.filter(name__contains='moderator').exists()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         blog_posts = BlogPost.objects.all()
         blog_posts = blog_posts.annotate(comments_count=Count('comments'))
-
         blog_post_filter = BlogPostsFilter(self.request.GET, queryset=blog_posts)
-
-        sorted_posts = blog_post_filter.qs.distinct().order_by('-created_at')
-
+        sorted_posts = blog_post_filter.qs.distinct()
         paginator = Paginator(sorted_posts, 5)
         page_number = self.request.GET.get('page')
         posts = paginator.get_page(page_number)
@@ -144,8 +141,6 @@ class EditBlogPostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return reverse_lazy('edit_blogpost', kwargs={'slug': slug})
 
 
-
-
 class DeleteBlogPostView(PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = BlogPost
     form_class = BlogPostDeleteForm
@@ -156,15 +151,13 @@ class DeleteBlogPostView(PermissionRequiredMixin, LoginRequiredMixin, UserPasses
     login_url = 'index'
 
     def test_func(self):
-        return self.request.user.groups.filter(name__contains='super_moderator').exists()
+        return self.request.user.groups.filter(name='super_moderator').exists()
 
     def get_object(self, queryset=None):
         return BlogPost.objects.get(slug=self.kwargs['slug'])
 
     def post(self, request, *args, **kwargs):
         return self.delete(request, *args, **kwargs)
-
-
 
 
 class BlogCommentsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):

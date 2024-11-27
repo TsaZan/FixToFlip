@@ -8,7 +8,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView
 from djmoney.money import Money
-from rest_framework import generics
+from rest_framework import generics, status
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from rest_framework.permissions import IsAuthenticated
@@ -23,7 +23,7 @@ from FixToFlip.properties.forms import PropertyAddForm, \
     PropertyEditForm, PropertyDeleteForm, AddExpenseForm, AddCreditToPropertyForm, PropertyFinanceInformationForm, \
     PropertyExpenseForm, ExpenseNotesForm
 from FixToFlip.properties.models import Property, PropertyExpense, PropertyFinancialInformation, PropertyExpenseNotes
-from FixToFlip.properties.serializers import PropertySerializer, PropertyExpenseSerializer
+from FixToFlip.properties.serializers import PropertySerializer, PropertyExpenseSerializer, BulkPropertySerializer
 
 
 class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
@@ -35,7 +35,7 @@ class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         properties = Property.objects.filter(owner=self.request.user)
         sorted_properties = PropertiesFilter(self.request.GET, queryset=properties)
-        properties = sorted_properties.qs.distinct().order_by('-created_at')
+        properties = sorted_properties.qs.distinct()
         paginator = Paginator(properties, 5)
         page_number = self.request.GET.get('page')
         properties = paginator.get_page(page_number)
@@ -215,7 +215,7 @@ class DashboardExpensesView(LoginRequiredMixin, TemplateView):
 
         properties = Property.objects.filter(owner=self.request.user)
 
-        expenses_list = PropertyExpense.objects.filter(property__in=properties).order_by('-id')
+        expenses_list = PropertyExpense.objects.filter(property__in=properties)
         if 'q' in self.request.GET:
             q = self.request.GET.get('q', '')
             expenses_list = PropertyExpense.objects.filter(property__property_name__icontains=q,
@@ -352,12 +352,24 @@ class PropertyExpenseData(APIView):
         return Response(expenses_data)
 
 
-class PropertyListApiView(generics.ListAPIView):
+class PropertyListApiView(generics.ListCreateAPIView):
     serializer_class = PropertySerializer
     permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
         return Property.objects.filter(owner=self.request.user)
+
+
+class BulkPropertyCreate(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = PropertySerializer(data=request.data, many=True, context={'request': request})
+
+        if serializer.is_valid():
+            created_properties = serializer.save()
+            response_data = PropertySerializer(created_properties, many=True).data
+            return Response(response_data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PropertyApiView(generics.ListAPIView):
