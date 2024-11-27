@@ -17,7 +17,28 @@ class PropertyFinancialInformationSerializer(serializers.ModelSerializer):
 class PropertyExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyExpense
-        fields = ['expected_expenses']
+        fields = [
+            'id',
+            'utilities',
+            'notary_taxes',
+            'profit_tax',
+            'municipality_taxes',
+            'advertising',
+            'administrative_fees',
+            'insurance',
+            'other_expenses',
+            'bathroom_repair_expenses',
+            'kitchen_repair_expenses',
+            'floors_repair_expenses',
+            'walls_repair_expenses',
+            'windows_doors_repair_expenses',
+            'plumbing_repair_expenses',
+            'electrical_repair_expenses',
+            'roof_repair_expenses',
+            'facade_repair_expenses',
+            'other_repair_expenses',
+
+        ]
 
 
 def finance_property_data(property_instance, financial_data, expenses_data):
