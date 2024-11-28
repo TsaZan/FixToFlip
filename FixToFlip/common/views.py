@@ -1,5 +1,7 @@
+from django.core.mail import send_mail
 from django.shortcuts import render
-from FixToFlip.common.task import contact_form_mail
+
+from FixToFlip import settings
 from FixToFlip.common.forms import ContactUsForm
 
 
@@ -31,15 +33,14 @@ def contact(request):
                     Email:\n\t\t{}\n
                     '''.format(form_data['name'], form_data['message'], form_data['email'])
 
-            contact_form_mail.delay(message)
+            send_mail('[FixToFlip]Contact Form!', message, settings.EMAIL_HOST_USER, [settings.ADMIN_EMAIL])
 
             return render(request, 'common/contact.html', {'success': True})
     else:
         form = ContactUsForm()
         if request.user.is_authenticated:
             if request.user.first_name or request.user.last_name:
-                form.fields[
-                    'name'].initial = request.user.first_name + ' ' + request.user.last_name + ' - Registered User'
+                form.fields['name'].initial = request.user.first_name + ' ' + request.user.last_name + ' - Registered User'
             else:
                 form.fields['name'].initial = request.user.username + ' - Registered User'
             form.fields['name'].widget.attrs['readonly'] = True

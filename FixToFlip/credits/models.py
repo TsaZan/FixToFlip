@@ -25,7 +25,7 @@ class Credit(models.Model):
         max_digits=10,
         decimal_places=2,
         default=Money(0, 'EUR'),
-        validators=[MinMoneyValidator(Decimal(0))]
+        validators=[MinMoneyValidator(Decimal(0), message='Credit amount must be greater than 0.')],
     )
 
     amounts_paid = MoneyField(
@@ -40,13 +40,13 @@ class Credit(models.Model):
     credit_interest = models.DecimalField(
         max_digits=5,
         decimal_places=2,
-        validators=[MinValueValidator(0)]
+        validators=[MinValueValidator(0, message='Interest must be greater than 0.')],
     )
     monthly_payment = MoneyField(
         max_digits=10,
         decimal_places=2,
         default=Money(0, 'EUR'),
-        validators=[MinMoneyValidator(Decimal(0))]
+        validators=[MinMoneyValidator(Decimal(0), message='Monthly payment must be greater than 0.')],
     )
     credit_description = models.TextField(
         blank=True,
@@ -92,14 +92,14 @@ class CreditPayment(models.Model):
         max_digits=10,
         decimal_places=2,
         default=Money(0, 'EUR'),
-        validators=[MinMoneyValidator(Decimal(0))]
+        validators=[MinMoneyValidator(Decimal(0), message='Principal amount must be greater than 0.')]
     )
 
     interest_amount = MoneyField(
         max_digits=10,
         decimal_places=2,
         default=Money(0, 'EUR'),
-        validators=[MinMoneyValidator(Decimal(0))]
+        validators=[MinMoneyValidator(Decimal(0), message='Interest amount must be greater than 0.')]
     )
 
     credit = models.ForeignKey(

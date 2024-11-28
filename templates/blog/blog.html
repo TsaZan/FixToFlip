@@ -40,9 +40,15 @@ Blog Section Three
         <div class="container">
             <div class="blog-filter-nav">
                 <ul class="style-none d-flex justify-content-center flex-wrap isotop-menu-wrapper">
-                    <li class="is-checked" data-filter="*">All</li>
+                    <li class="{% if not request.GET.category %}is-checked{% endif %}" data-filter="*">
+                        <a href="?">All</a>
+                    </li>
                     {% for category in categories %}
-                        <li data-filter=".{{ category.name }}">{{ category.name }}</li>
+                        {% if category.posts.count > 0 %}
+                            <li class="{% if request.GET.category == category.name %}is-checked{% endif %}" data-filter=".{{ category.name }}">
+                                <a href="?category={{ category.name }}">{{ category.name }}</a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>

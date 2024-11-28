@@ -18,7 +18,7 @@ class BlogPost(models.Model):
     title = models.CharField(
         max_length=200,
         validators=[
-            MinLengthValidator(10),
+            MinLengthValidator(10, "Title must be at least 10 characters long"),
         ]
     )
 
@@ -87,6 +87,7 @@ class Category(models.Model):
 
     name = models.CharField(
         max_length=30,
+        unique=True,
     )
 
     @property
@@ -118,6 +119,9 @@ class Comment(models.Model):
     content = models.TextField(
         null=False,
         blank=False,
+        validators=[
+            MinLengthValidator(20, "Comment must be at least 20 characters long"),
+        ]
     )
 
     created_at = models.DateTimeField(

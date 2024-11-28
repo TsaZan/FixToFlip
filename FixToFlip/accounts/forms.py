@@ -10,9 +10,8 @@ class ProfileEditForm(forms.ModelForm):
             'url': forms.TextInput(attrs={'placeholder': 'http://....'}),
             'company_name': forms.TextInput(attrs={'placeholder': 'Company Name'}),
             'profile_picture': forms.ClearableFileInput(attrs={
-                'type': 'file',}),
+                'type': 'file', }),
         }
-
 
 
 class UserEditForm(forms.ModelForm):
