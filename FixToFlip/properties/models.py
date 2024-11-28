@@ -184,7 +184,7 @@ class PropertyFinancialInformation(models.Model):
 class PropertyExpense(models.Model):
     '''Property expenses information. Can be seen by property owners and all authorized users.'''
 
-    MAX_DIGITS = 8
+    MAX_DIGITS = 10
     MAX_DECIMAL_PLACES = 2
 
     class Meta:

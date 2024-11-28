@@ -11,6 +11,14 @@ from FixToFlip.properties.models import Property
 
 
 class Offer(models.Model):
+    MAX_DIGITS = 10
+    MAX_DECIMAL_PLACES = 2
+
+    class Meta:
+        verbose_name = 'Offer'
+        verbose_name_plural = 'Offers'
+        ordering = ['-updated_at']
+
     title = models.CharField(
         max_length=100,
     )
@@ -25,8 +33,8 @@ class Offer(models.Model):
     description = models.TextField()
 
     listed_price = MoneyField(
-        max_digits=10,
-        decimal_places=2,
+        max_digits=MAX_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
         validators=[MinMoneyValidator(Decimal(0), message='Price cannot be negative.')],
         blank=True,
@@ -34,7 +42,7 @@ class Offer(models.Model):
     )
 
     offer_status = models.CharField(
-        max_length=15,
+        max_length=6,
         choices=OfferStatusChoices.choices,
         blank=True,
         null=True,
@@ -60,9 +68,10 @@ class Offer(models.Model):
     )
 
     actual_sold_price = MoneyField(
-        max_digits=10,
+        max_digits=MAX_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
-        decimal_places=2,
+        validators=[MinMoneyValidator(Decimal(0), message='Price cannot be negative.')],
         blank=True,
         null=True,
     )
@@ -72,11 +81,22 @@ class Offer(models.Model):
         null=True,
     )
 
+    is_published = models.BooleanField(
+        blank=True,
+        null=True,
+        default=False
+    )
+
     def __str__(self):
         return self.title
 
 
 class OfferImages(models.Model):
+    class Meta:
+        verbose_name = 'Offer Image'
+        verbose_name_plural = 'Offer Images'
+        ordering = ['-uploaded_at']
+
     related_property = models.ForeignKey(
         to=Offer,
         on_delete=models.CASCADE,
@@ -84,10 +104,16 @@ class OfferImages(models.Model):
     )
 
     image = CloudinaryField('image', resource_type='image')
+
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
 
 class OfferVideos(models.Model):
+    class Meta:
+        verbose_name = 'Offer Video'
+        verbose_name_plural = 'Offer Videos'
+        ordering = ['-uploaded_at']
+
     related_property = models.ForeignKey(
         to=Offer,
         on_delete=models.CASCADE,
@@ -95,4 +121,5 @@ class OfferVideos(models.Model):
     )
 
     video = CloudinaryField('video', resource_type='video')
+
     uploaded_at = models.DateTimeField(auto_now_add=True)
