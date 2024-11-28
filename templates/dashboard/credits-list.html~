@@ -1,0 +1,139 @@
+{% extends 'dashboard/dashboard-base.html' %}
+{% load static %}
+{% block content %}
+{% load account %}
+
+
+<!-- 
+=============================================
+Dashboard Body
+============================================== 
+-->
+
+    <h2 class="main-title d-block d-lg-none">My Credits</h2>
+    <div class="d-sm-flex align-items-center justify-content-between mb-25">
+        <div class="fs-16">Showing <span class="color-dark fw-500">{{ credits.start_index }}–{{ credits.end_index }}</span> of <span
+                class="color-dark fw-500">{{ credits.paginator.count }}</span> results
+        </div>
+        <div class="d-flex ms-auto xs-mt-30">
+            <div class="short-filter d-flex align-items-center ms-sm-auto">
+                <div class="fs-16 me-2">Short by:</div>
+    <form method="get">
+        <div class="d-flex ms-auto xs-mt-30">
+            <div class="short-filter d-flex align-items-center ms-sm-auto">
+                <div class="fs-16 me-2">Sort by:</div>
+                {{ filter.form.sort }}
+                <button type="submit" class="btn btn-primary ms-2">Apply</button>
+            </div>
+        </div>
+    </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white card-box p0 border-20">
+        <div class="table-responsive pt-25 pb-25 pe-4 ps-4">
+            <table class="table property-list-table">
+                <thead>
+                <tr>
+                    <th scope="col">Bank</th>
+                    <th scope="col">Credit Term</th>
+                    <th scope="col">Monthly Payment</th>
+                    <th scope="col">Credit Balance</th>
+                    <th scope="col">Interest Paid</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Last Payment</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody class="border-0">
+
+                {% for credit in credits %}
+                    <tr>
+                        <td>
+                            <div class="d-lg-flex align-items-center position-relative">
+                                <div class="ps-lg-4 md-pt-10">
+                                    <a href="{% url 'credit_details' credit.id %}"
+                                       class="property-name tran3s color-dark fw-500 fs-10 stretched-link">{{ credit.bank_name }}</a>
+                                    <div class="address">Interest Rate: {{ credit.credit_interest | default:"0" }}%</div>
+                                    <strong class="price color-dark">
+                                        Credit Amount: {{ credit.credit_amount }}
+                                    </strong>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ credit.credit_term }}</td>
+                        <td>{{ credit.monthly_payment }}</td>
+                        <td>
+                            <div class="property-status">{{ credit.balance }}</div>
+                        </td>
+                        <td>
+                            <div class="property-status">{{ credit.interest_paid  | default:"0"}}</div>
+                        </td>
+                        <td>
+                            <div class="property-status">{{ credit.remaining_credit_amount }}</div>
+                        </td>
+                        <td>
+                            <div class="property-status">{{ credit.last_payment|date:"d-m-Y" | default:"None" }}</div>
+                        </td>
+                        <td>
+                            <div class="action-dots float-end">
+                                <button class="action-btn dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="{% url 'credit_details' credit.id %}"><img src="{% static '/images/lazy.svg' %}"
+                                            data-src="{% static '/dash/images/icon/icon_18.svg' %}"
+                                            alt="" class="lazy-img">Details / Add Payment</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{% url 'edit_credit' credit.id %}"><img src="{% static '/images/lazy.svg' %}"
+                                            data-src="{% static '/dash/images/icon/icon_20.svg' %}"
+                                            alt="" class="lazy-img"> Edit</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{% url 'delete_credit' credit.id %}"><img src="{% static '/images/lazy.svg' %}"
+                                            data-src="{% static '/dash/images/icon/icon_21.svg' %}"
+                                            alt="" class="lazy-img">
+                                        Delete</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+            <!-- /.table property-list-table -->
+        </div>
+    </div>
+    <!-- /.card-box -->
+
+
+    <ul class="pagination-one d-flex align-items-center justify-content-center style-none pt-40">
+        {% if credits.has_previous %}
+            <li class="ms-2"><a href="?page=1" class="d-flex align-items-center">First</a></li>
+
+            <li class="me-4 ms-2"><a  href="?page={{ credits.previous_page_number }}" class="d-flex align-items-center">Previous</a></li>
+        {% endif %}
+
+        {% for num in credits.paginator.page_range %}
+            {% if num == credits.number %}
+                <li class="active"><a href="?page={{ num }}">{{ num }}</a></li>
+            {% elif num > credits.number|add:'-3' and num < credits.number|add:'3' %}
+                <li><a href="?page={{ num }}">{{ num }}</a></li>
+
+            {% endif %}
+        {% endfor %}
+
+        {% if credits.has_next %}
+            <li class="ms-2"><a href="?page={{ credits.next_page_number }}" class="d-flex align-items-center">Next</a></li>
+            <li class="ms-2"><a href="?page={{ credits.paginator.num_pages }}" class="d-flex align-items-center">Last</a></li>
+
+        {% endif %}
+
+    </ul>
+    <!-- /.dashboard-body -->
+
+
+
+{% endblock %}
