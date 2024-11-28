@@ -3,6 +3,8 @@ from cloudinary.models import CloudinaryField
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from djmoney.settings import CURRENCY_CHOICES
+from phonenumber_field.modelfields import PhoneNumberField
+
 from FixToFlip.accounts.managers import BaseAccountManager
 from FixToFlip.choices import ProfileTypes
 
@@ -29,12 +31,15 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
         primary_key=True
     )
+
     profile_type = models.CharField(
         max_length=10,
         choices=ProfileTypes,
         null=True,
         blank=True,
     )
+
+    phone_number = PhoneNumberField(blank=True)
 
     preferred_currency = models.CharField(
         max_length=3,
@@ -58,6 +63,8 @@ class Profile(models.Model):
         blank=True,
     )
 
+    company_phone = PhoneNumberField(blank=True)
+
     company_location_country = models.ForeignKey(
         to=Country,
         null=True,
@@ -66,7 +73,7 @@ class Profile(models.Model):
         related_name='company_location_profile'
     )
 
-    url = models.URLField(
+    company_url = models.URLField(
         null=True,
         blank=True,
     )
@@ -75,16 +82,6 @@ class Profile(models.Model):
         'image',
         blank=True,
         null=True,
-    )
-
-    linkedin_url = models.URLField(
-        null=True,
-        blank=True,
-    )
-
-    facebook_url = models.URLField(
-        null=True,
-        blank=True,
     )
 
     def __str__(self):

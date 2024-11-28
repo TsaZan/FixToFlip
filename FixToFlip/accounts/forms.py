@@ -5,9 +5,9 @@ from FixToFlip.accounts.models import Profile, BaseAccount
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['profile_picture', 'url', 'company_name', 'preferred_currency', 'profile_type']
+        fields = ['profile_picture', 'company_url', 'company_name', 'preferred_currency', 'profile_type']
         widgets = {
-            'url': forms.TextInput(attrs={'placeholder': 'http://....'}),
+            'company_url': forms.TextInput(attrs={'placeholder': 'http://....'}),
             'company_name': forms.TextInput(attrs={'placeholder': 'Company Name'}),
             'profile_picture': forms.ClearableFileInput(attrs={
                 'type': 'file', }),

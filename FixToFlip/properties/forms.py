@@ -3,7 +3,7 @@ from djmoney.forms import MoneyField
 
 from FixToFlip.choices import ExpenseTypeChoices
 from FixToFlip.credits.models import Credit
-from FixToFlip.properties.models import Property, PropertyForSale, PropertyExpense, PropertyFinancialInformation, \
+from FixToFlip.properties.models import Property, PropertyExpense, PropertyFinancialInformation, \
     PropertyExpenseNotes
 
 
@@ -48,21 +48,6 @@ class PropertyDeleteForm(PropertyBaseForm):
         model = Property
         fields = []
 
-
-class PropertyForSaleForm(forms.ModelForm):
-    class Meta:
-        model = PropertyForSale
-        fields = '__all__'
-        widgets = {
-            'listed_price': forms.TextInput(attrs={'placeholder': 'Price'}),
-            'list_description': forms.Textarea(attrs={'placeholder': 'Description'}),
-        }
-
-        labels = {
-            'listed_price': '',
-            'list_description': '',
-
-        }
 
 
 class PropertyExpenseForm(forms.ModelForm):

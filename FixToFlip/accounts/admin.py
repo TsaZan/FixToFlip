@@ -6,6 +6,7 @@ from FixToFlip.accounts.models import BaseAccount, Profile
 @admin.register(BaseAccount)
 class AccountsAdmin(ModelAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'is_active')
+    list_filter = ('is_active', 'is_staff')
     search_fields = ('username', 'email', 'first_name', 'last_name',)
     fieldsets = (
         (None, {
@@ -29,14 +30,14 @@ class Profile(ModelAdmin):
         (None, {
             'fields': ('profile_type', 'profile_picture')
         }),
-        ('Contact and Links', {
-            'fields': ('url', 'linkedin_url', 'facebook_url')
+        ('Links', {
+            'fields': ('company_url',)
+        }),
+        ('Personal Info', {
+            'fields': ('user_location', 'phone_number')
         }),
         ('Company Info', {
-            'fields': ('company_name', 'company_location_country')
-        }),
-        ('Location', {
-            'fields': ('user_location',)
+            'fields': ('company_name', 'company_location_country', 'company_phone')
         }),
         ('Preferences', {
             'fields': ('preferred_currency',)
