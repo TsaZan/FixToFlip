@@ -19,12 +19,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 AUTH_USER_MODEL = 'accounts.BaseAccount'
-DEBUG = False
+DEBUG = bool(int(os.getenv('DEBUG', 0)))
 
 CSRF_COOKIE_SECURE = False
+
 RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
-ALLOWED_HOSTS = ('fixtoflip.azurewebsites.net', '127.0.0.1', 'localhost')
+
+ALLOWED_HOSTS = os.getenv('HOSTS_ALLOWED').split(',')
 
 PROJECT_APPS = [
     'FixToFlip.accounts',
@@ -42,11 +44,8 @@ AUTHENTICATION_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.linkedin_oauth2',
     'allauth.socialaccount.providers.openid_connect',
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.facebook',
-]
+    'allauth.socialaccount.providers.google', ]
 
 THIRD_PARTY_APPS = [
     'djmoney',
@@ -58,8 +57,23 @@ THIRD_PARTY_APPS = [
     'cities_light',
     'django_recaptcha',
     'whitenoise.runserver_nostatic',
+    "phonenumber_field",
 
 ]
+
+INSTALLED_APPS = [
+                     'unfold',
+                     'unfold.contrib.filters',
+                     'django.contrib.admin',
+                     'django.contrib.auth',
+                     'django.contrib.sites',
+                     'django.contrib.contenttypes',
+                     'django.contrib.sessions',
+                     'django.contrib.messages',
+                     'django.contrib.staticfiles',
+
+                     'django.contrib.sitemaps'
+                 ] + PROJECT_APPS + THIRD_PARTY_APPS + AUTHENTICATION_APPS
 
 REST_FRAMEWORK = {
 
@@ -76,25 +90,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8888',
-    "https://fixtoflip.azurewebsites.net",
-]
 
-INSTALLED_APPS = [
-                     'unfold',
-                     'unfold.contrib.filters',
-                     'django.contrib.admin',
-                     'django.contrib.auth',
-                     'django.contrib.sites',
-                     'django.contrib.contenttypes',
-                     'django.contrib.sessions',
-                     'django.contrib.messages',
-                     'django.contrib.staticfiles',
-
-                     'django.contrib.sitemaps'
-                 ] + PROJECT_APPS + THIRD_PARTY_APPS + AUTHENTICATION_APPS
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -122,25 +118,31 @@ DJANGO_MONEY_RATES = {
     'OPENEXCHANGERATES_APP_ID': os.getenv('EXCHANGE_RATE_API_KEY'),
 }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-CSRF_TRUSTED_ORIGINS = ['https://fixtoflip.azurewebsites.net', 'http://127.0.0.1', 'http://localhost']
-ALLOWED_DOMAIN = ['fixtoflip.azurewebsites.net', '127.0.0.1', 'localhost']
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_URLS', '').split(',')
+CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
+ALLOWED_DOMAIN = ALLOWED_HOSTS
+
 SOCIALACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_LOGOUT_ON_GET = True
 SOCIALACCOUNT_AUTO_SIGN_UP = True
+
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[FixToFlip] "
-SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
 ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
+
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+
 LOGOUT_REDIRECT_URL = "/"
-ACCOUNT_LOGOUT_ON_GET = True
 LOGIN_REDIRECT_URL = '/dashboard/'
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -187,6 +189,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 SITE_ID = 1
+
 WSGI_APPLICATION = 'FixToFlip.wsgi.application'
 
 DATABASES = {'default': dj_database_url.config(default=os.getenv('DATABASE_URL', None))}
@@ -214,6 +217,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATIC_URL = '/static/'
@@ -223,8 +228,11 @@ STATICFILES_DIRS = (
 )
 
 STATIC_ROOT = BASE_DIR / 'static'
+
 CURRENCIES = ('EUR',)
+
 DEFAULT_CURRENCY = 'EUR'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 mimetypes.add_type("image/svg+xml", ".svg", True)
