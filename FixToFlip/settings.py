@@ -26,7 +26,7 @@ CSRF_COOKIE_SECURE = False
 RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
 
-ALLOWED_HOSTS = os.getenv('HOSTS_ALLOWED')
+ALLOWED_HOSTS = os.getenv('HOSTS_ALLOWED').split(',')
 
 PROJECT_APPS = [
     'FixToFlip.accounts',
@@ -120,7 +120,7 @@ DJANGO_MONEY_RATES = {
 
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_URLS')
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_URLS').split(',')
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 ALLOWED_DOMAIN = ALLOWED_HOSTS
 
@@ -191,15 +191,8 @@ SITE_ID = 1
 
 WSGI_APPLICATION = 'FixToFlip.wsgi.application'
 
-if os.getenv('GITHUB_ACTIONS'):  # Ако сме в GitHub Actions
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-else:
-    DATABASES = {'default': dj_database_url.config(default=os.getenv('DATABASE_URL', None))}
+
+DATABASES = {'default': dj_database_url.config(default=os.getenv('DATABASE_URL', None))}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
