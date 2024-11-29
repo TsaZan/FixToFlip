@@ -82,19 +82,23 @@ Dashboard Body
                                     <span></span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="{% url 'property_details' pk=property.pk %}"><img src="{% static '/dash/images/lazy.svg' %}"
+                                    <li><a class="dropdown-item" href="{% url 'property_details' pk=property.pk %}"><img src="{% static '/images/lazy.svg' %}"
                                             data-src="{% static '/dash/images/icon/icon_18.svg' %}"
                                             alt="" class="lazy-img"> View</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="{% url 'add_expense' pk=property.pk %}"><img src="{% static '/dash/images/lazy.svg' %}"
+                                    <li><a class="dropdown-item" href="{% url 'add_expense' pk=property.pk %}"><img src="{% static '/images/lazy.svg' %}"
                                             data-src="{% static '/dash/images/icon/icon_20.svg' %}"
                                             alt="" class="lazy-img">
                                         Property Expenses</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'edit_property' pk=property.pk %}"><img src="{% static '/dash/images/lazy.svg' %}"
+                                    <li><a class="dropdown-item" href="{% url 'edit_property' pk=property.pk %}"><img src="{% static '/images/lazy.svg' %}"
                                             data-src="{% static '/dash/images/icon/icon_20.svg' %}"
                                             alt="" class="lazy-img"> Edit</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="{% url 'delete_property' pk=property.pk %}"><img src="{% static '/dash/images/lazy.svg' %}"
+                                    <li><a class="dropdown-item" href=""><img src="{% static '/images/lazy.svg' %}"
+                                                                              data-src="{% static '/dash/images/icon/icon_21.svg' %}"
+                                                                              alt="" class="lazy-img">
+                                        Create Offer</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'delete_property' pk=property.pk %}"><img src="{% static '/images/lazy.svg' %}"
                                             data-src="{% static '/dash/images/icon/icon_21.svg' %}"
                                             alt="" class="lazy-img">
                                         Delete</a></li>

@@ -53,10 +53,7 @@ class CreditTypeChoices(models.TextChoices):
 
 
 class OfferStatusChoices(models.TextChoices):
-    PROPOSED = 'Proposed', 'Proposed'
     ACTIVE = 'Active', 'Active'
-    NEGOTIATIONS = 'Negotiations', 'Negotiations'
-    EXPIRED = 'Expired', 'Expired'
     SOLD = 'Sold', 'Sold'
 
 

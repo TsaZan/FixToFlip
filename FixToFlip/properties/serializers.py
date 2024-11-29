@@ -1,11 +1,5 @@
 from rest_framework import serializers
-from FixToFlip.properties.models import Property, PropertyForSale, PropertyFinancialInformation, PropertyExpense
-
-
-class PropertiesForSalesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PropertyForSale
-        fields = ['__all__']
+from FixToFlip.properties.models import Property, PropertyFinancialInformation, PropertyExpense
 
 
 class PropertyFinancialInformationSerializer(serializers.ModelSerializer):
