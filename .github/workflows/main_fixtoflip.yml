@@ -36,6 +36,7 @@ jobs:
           name: python-app
           path: |
             release.zip
+            startup.sh
             !venv/
   deploy:
     runs-on: ubuntu-latest
