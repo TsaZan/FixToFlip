@@ -191,7 +191,15 @@ SITE_ID = 1
 
 WSGI_APPLICATION = 'FixToFlip.wsgi.application'
 
-DATABASES = {'default': dj_database_url.config(default=os.getenv('DATABASE_URL', None))}
+if os.getenv('GITHUB_ACTIONS'):  # Ако сме в GitHub Actions
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    DATABASES = {'default': dj_database_url.config(default=os.getenv('DATABASE_URL', None))}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
