@@ -10,10 +10,9 @@ Dashboard Body
 ============================================== 
 -->
 
-
     <h2 class="main-title d-block d-lg-none">Profile</h2>
     <div class="bg-white card-box border-20 p-4">
-        <h2 class="mb-4">Edit Profile</h2>
+        <h2 class="mb-4">User Profile</h2>
         <div class="user-avatar-setting d-flex flex-column align-items-start mb-4">
             {% if user.profile.profile_picture %}
                 <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.profile.profile_picture.url }}" class="lazy-img user-img mb-3" alt="Profile Picture" />
@@ -24,7 +23,6 @@ Dashboard Body
             {% endif %}
 
             <form method="post" enctype="multipart/form-data" class="w-100">
-
                 <div class="mb-3 w-100">
                     <label for="profile_picture" class="form-label">Upload New Picture:</label><br>
                     {{ profile_form.profile_picture }}
@@ -41,6 +39,8 @@ Dashboard Body
                         <div class="dash-input-wrapper mb-30">
                             <label for="">First Name</label>
                             {{ user_form.first_name }}
+                            <small class="error-message">{{ user_form.first_name.errors }}</small>
+
                         </div>
                         <!-- /.dash-input-wrapper -->
                     </div>
@@ -48,6 +48,7 @@ Dashboard Body
                         <div class="dash-input-wrapper mb-30">
                             <label for="">Last Name</label>
                             {{ user_form.last_name }}
+                            <small class="error-message">{{ user_form.last_name.errors }}</small>
 
 
                         </div>
@@ -57,6 +58,14 @@ Dashboard Body
                         <div class="dash-input-wrapper mb-30">
                             <label for="">Email*</label>
                             <b>{{ user_form.email }}</b>
+                        </div>
+                        <!-- /.dash-input-wrapper -->
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dash-input-wrapper mb-30">
+                            <label for="">Phone Number</label>
+                            {{ profile_form.phone_number }}
+                            <small class="error-message">{{ profile_form.phone_number.errors }}</small>
                         </div>
                         <!-- /.dash-input-wrapper -->
                     </div>
@@ -84,17 +93,56 @@ Dashboard Body
                         </div>
                         <!-- /.dash-input-wrapper -->
                     </div>
+
+                </div>
+                <div class="bg-white card-box border-10 mt-10"></div>
+                <h2 class="mb-4">Company Profile</h2>
+                <div class="row">
+                    <div class="col-12">
+
+                    </div>
                     <div class="col-sm-6">
                         <div class="dash-input-wrapper mb-30">
-                            <label for="">Website</label>
-                            {{ profile_form.url }}
+                            <label for="">Company Name</label>
+                            {{ profile_form.company_name }}
+                            <small class="error-message">{{ profile_form.company_name.errors }}</small>
+
                         </div>
                         <!-- /.dash-input-wrapper -->
                     </div>
+                    <div class="col-sm-6">
+                        <div class="dash-input-wrapper mb-30">
+                            <label for="">Company Phone</label>
+                            {{ profile_form.company_phone }}
+                            <small class="error-message">{{ profile_form.company_phone.errors }}</small>
+
+
+                        </div>
+                        <!-- /.dash-input-wrapper -->
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dash-input-wrapper mb-30">
+                            <label for="">Company Location</label>
+                            <select name="company_location" class="nice-select">
+                                {% for company_location in  profile_form.company_location %}
+                                    <option>{{ company_location }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- /.dash-input-wrapper -->
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dash-input-wrapper mb-30">
+                            <label for="">Company URL</label>
+                            {{ profile_form.company_url }}
+                            <small class="error-message">{{ profile_form.company_url.errors }}</small>
+
+
+                        </div>
+                        <!-- /.dash-input-wrapper -->
+                    </div>
+
                 </div>
-
-                <!-- /.card-box -->
-
                 <div class="button-group d-inline-flex align-items-center mt-30">
                     <button type="submit" class="dash-btn-two tran3s me-3">Save</button>
                     <a href="{% url 'dashboard' %}" class="dash-cancel-btn tran3s">Cancel</a>
@@ -102,4 +150,6 @@ Dashboard Body
 
                 </div>
             </form>
+        </div>
+    </div>
 {% endblock %}
