@@ -11,12 +11,10 @@ admin.site.unregister(Country)
 admin.site.unregister(City)
 admin.site.unregister(Region)
 admin.site.unregister(SubRegion)
-admin.site.unregister(Site)
 admin.site.unregister(Rate)
 admin.site.unregister(SocialApp)
 admin.site.unregister(SocialToken)
 admin.site.unregister(SocialAccount)
-admin.site.unregister(EmailAddress)
 
 
 
