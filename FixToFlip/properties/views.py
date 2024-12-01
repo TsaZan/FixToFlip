@@ -131,12 +131,10 @@ class PropertyEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             property_form.instance.owner = request.user
             property_form.save()
 
-            # Save the expenses form
             expense = expense_form.save(commit=False)
             expense.property = self.object
             expense.save()
 
-            # Save the financial information form
             financial_information = property_financial_information_form.save(commit=False)
             financial_information.property = self.object
             financial_information.save()

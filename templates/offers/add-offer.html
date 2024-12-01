@@ -1,0 +1,64 @@
+{% extends 'dashboard/dashboard-base.html' %}
+{% load static %}
+{% load template_tags %}
+
+{% block content %}
+
+    <!-- 
+=============================================
+Dashboard Body
+============================================== 
+-->
+
+    <h2 class="main-title d-block d-lg-none">Add New Offer</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.errors }}
+        <div class="bg-white card-box border-20">
+            <h4 class="dash-title-three">Overview</h4>
+            <div class="dash-input-wrapper mb-30">
+                <label for="">Property Title*</label>
+                {{ form.title }}
+                {{ form.title.errors }}
+            </div>
+            <!-- /.dash-input-wrapper -->
+            <div class="dash-input-wrapper mb-30">
+                <label for="">Description</label>
+                {{ form.description }}
+                {{ form.description.errors }}
+
+            </div>
+            <!-- /.dash-input-wrapper -->
+            <div class="row align-items-end">
+                <div class="col-md-6">
+                    <div class="dash-input-wrapper mb-30">
+                        <label for="">Offer Status</label>
+                        <select name="property_type" class="nice-select">
+                            {% for status in  form.offer_status %}
+                                <option value="{{ status.id }}">{{ status }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- /.dash-input-wrapper -->
+                </div>
+
+                <div class="col-md-6">
+                    <div class="dash-input-wrapper mb-0">
+                        <label for="">Listing Price</label>
+                        {{ form.listed_price | add_class:"form-control" }}
+                        {{ form.listed_price.errors }}
+                    </div>
+                    <!-- /.dash-input-wrapper -->
+                </div>
+
+                <!-- /.card-box -->
+                <div class="button-group d-inline-flex align-items-center mt-30">
+                    <button type="submit" class="dash-btn-two tran3s me-3">Add Offer</button>
+                    <a href="{% url 'dashboard_properties' %}" class="dash-cancel-btn tran3s">Cancel</a>
+                </div></div></div>
+    </form>
+
+    <!-- /.dashboard-body -->
+
+
+{% endblock %}

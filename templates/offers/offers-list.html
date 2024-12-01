@@ -1,0 +1,129 @@
+{% extends 'dashboard/dashboard-base.html' %}
+{% load static %}
+{% block content %}
+{% load account %}
+
+    <!--
+=============================================
+Dashboard Body
+============================================== 
+-->
+
+    <h2 class="main-title d-block d-lg-none">My Offers</h2>
+    <div class="d-sm-flex align-items-center justify-content-between mb-25">
+        <div class="fs-16">Showing <span
+                class="color-dark fw-500">{{ offers.start_index }}–{{ offers.end_index }}</span> of <span
+                class="color-dark fw-500">{{ offers.paginator.count }}</span> results
+        </div>
+        <div class="d-flex ms-auto xs-mt-30">
+            <div class="short-filter d-flex align-items-center ms-sm-auto">
+                <form method="get">
+                    <div class="d-flex ms-auto xs-mt-30">
+                        <div class="short-filter d-flex align-items-center ms-sm-auto">
+                            <div class="fs-16 me-2">Sort by:</div>
+                            {{ filter.form.sort }}
+                            <button type="submit" class="btn btn-primary ms-2">Apply</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white card-box p0 border-20">
+        <div class="table-responsive pt-25 pb-25 pe-4 ps-4">
+            <table class="table property-list-table">
+                <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Listed Property</th>
+                    <th scope="col">Listed Date</th>
+                    <th scope="col">Listed Price</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Action</th>
+
+                </tr>
+                </thead>
+                <tbody class="border-0">
+                {% for offer in offers %}
+                    <tr>
+                        <td>
+                            <div class="d-lg-flex align-items-center position-relative">
+                                <img src="{{ offer.futured_image }}" alt="" class="p-img">
+                                <div class="ps-lg-4 md-pt-10">
+                                    <a href="{% url 'edit_offer' pk=offer.pk %}"
+                                       class="property-name tran3s color-dark fw-500 fs-20 stretched-link">{{ offer.title }}</a>
+                                </div>
+
+                            </div>
+                        </td>
+                        <td>
+                            <a href="{% url 'property_details' pk=offer.listed_property.pk %}">{{ offer.listed_property.property_name }}</a>
+                        </td>
+                        <td>{{ offer.listed_property.bought_date | date:"d-m-Y" }}</td>
+                        <td><strong class="price">{{ offer.listed_price }}</strong></td>
+                        <td>
+                            <div class="text">{{ offer.description }}</div>
+                        </td>
+
+
+                        <td>
+                            <div class="action-dots float-end">
+                                <button class="action-btn dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="{% url 'edit_offer' pk=offer.pk %}"><img src="{% static '/images/lazy.svg' %}"
+                                            data-src="{% static '/dash/images/icon/icon_18.svg' %}"
+                                            alt="" class="lazy-img">Edit Offer</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{% url 'delete_offer' pk=offer.pk %}"><img src="{% static '/images/lazy.svg' %}"
+                                            data-src="{% static '/dash/images/icon/icon_20.svg' %}"
+                                            alt="" class="lazy-img">
+                                        Delete Offer</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+            <!-- /.table property-list-table -->
+        </div>
+    </div>
+    <!-- /.card-box -->
+
+
+    <ul class="pagination-one d-flex align-items-center justify-content-center style-none pt-40">
+        {% if offers.has_previous %}
+            <li class="ms-2"><a href="?page=1" class="d-flex align-items-center">First</a></li>
+
+            <li class="me-4 ms-2"><a href="?page={{ offers.previous_page_number }}" class="d-flex align-items-center">Previous</a>
+            </li>
+        {% endif %}
+
+        {% for num in offers.paginator.page_range %}
+            {% if num == properties.number %}
+                <li class="active"><a href="?page={{ num }}">{{ num }}</a></li>
+            {% elif num > offers.number|add:'-3' and num < offers.number|add:'3' %}
+                <li><a href="?page={{ num }}">{{ num }}</a></li>
+
+            {% endif %}
+        {% endfor %}
+
+        {% if properties.has_next %}
+            <li class="ms-2"><a href="?page={{ offers.next_page_number }}" class="d-flex align-items-center">Next</a></li>
+            <li class="ms-2"><a href="?page={{ offers.paginator.num_pages }}" class="d-flex align-items-center">Last</a></li>
+
+        {% endif %}
+
+    </ul>
+
+    <!-- /.dashboard-body -->
+
+
+
+{% endblock %}
