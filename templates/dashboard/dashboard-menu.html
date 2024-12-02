@@ -82,8 +82,12 @@ Dashboard Aside Menu
 
                 <li class="bottom-line pt-30 lg-pt-20 mb-40 lg-mb-30"></li>
                 <li>
-                    <div class="nav-title">Calculators</div>
+                    <div class="nav-title">Offer Management</div>
                 </li>
+                <li class="plr"><a href="{% url 'offers_main_page' %}" class="d-flex w-100 align-items-center {% active_url request 'offers_main_page' %}">
+                    <img src="{% static 'dash/images/icon/' %}{% icon_src request 'icon_6' 'offers_main_page' %}" alt="">
+                    <span>Offers</span>
+                </a></li>
             </ul>
         </nav>
         <!-- /.dasboard-main-nav -->

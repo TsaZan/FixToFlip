@@ -1,5 +1,6 @@
 from cities_light.models import Country
 from cloudinary.models import CloudinaryField
+from django.core.validators import MinLengthValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from djmoney.settings import CURRENCY_CHOICES
@@ -7,9 +8,29 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 from FixToFlip.accounts.managers import BaseAccountManager
 from FixToFlip.choices import ProfileTypes
+from FixToFlip.validators import OnlyLettersValidator
 
 
 class BaseAccount(AbstractUser):
+    first_name = models.CharField(
+        validators=[
+            MinLengthValidator(2, 'First name must be at least 2 characters long.'),
+            OnlyLettersValidator('First name must contain only letters'),
+        ],
+        max_length=30,
+        blank=True,
+        null=True,
+    )
+
+    last_name = models.CharField(
+        validators=[
+            MinLengthValidator(2, 'Last name must be at least 2 characters long.'),
+            OnlyLettersValidator('Last name must contain only letters'),
+        ],
+        max_length=30,
+        blank=True,
+        null=True,
+    )
     last_login = models.DateTimeField(
         auto_now_add=True,
     )
@@ -58,6 +79,7 @@ class Profile(models.Model):
     )
 
     company_name = models.CharField(
+        validators=[MinLengthValidator(2, 'Company name must be at least 2 characters long.')],
         max_length=50,
         null=True,
         blank=True,
@@ -65,7 +87,7 @@ class Profile(models.Model):
 
     company_phone = PhoneNumberField(blank=True)
 
-    company_location_country = models.ForeignKey(
+    company_location = models.ForeignKey(
         to=Country,
         null=True,
         blank=True,

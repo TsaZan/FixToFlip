@@ -1,18 +1,31 @@
 from django import forms
+from phonenumber_field.formfields import PhoneNumberField, SplitPhoneNumberField
+
 from FixToFlip.accounts.models import Profile, BaseAccount
 
 
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['profile_picture', 'company_url', 'company_name', 'preferred_currency', 'profile_type']
+        fields = ['profile_type',
+                  'phone_number',
+                  'preferred_currency',
+                  'user_location',
+                  'profile_picture',
+                  'company_name',
+                  'company_phone',
+                  'company_location',
+                  'company_url',
+                  'company_name',
+                  ]
         widgets = {
             'company_url': forms.TextInput(attrs={'placeholder': 'http://....'}),
             'company_name': forms.TextInput(attrs={'placeholder': 'Company Name'}),
             'profile_picture': forms.ClearableFileInput(attrs={
                 'type': 'file', }),
+            'phone_number': forms.TextInput(attrs={'placeholder': 'eg. +359 000 000 000'}),
+            'company_phone': forms.TextInput(attrs={'placeholder': 'eg. +359 000 000 000'}),
         }
-
 
 class UserEditForm(forms.ModelForm):
     class Meta:

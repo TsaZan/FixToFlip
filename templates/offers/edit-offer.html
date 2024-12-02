@@ -1,0 +1,175 @@
+{% extends 'dashboard/dashboard-base.html' %}
+{% load static %}
+{% load template_tags %}
+
+{% block content %}
+
+    <!-- 
+=============================================
+Dashboard Body
+============================================== 
+-->
+
+    <h2 class="main-title d-block d-lg-none">Edit Offer</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.errors }}
+        <div class="bg-white card-box border-20">
+            <h4 class="dash-title-three">Overview</h4>
+            <div class="dash-input-wrapper mb-30">
+                <label for="">Offer Title*</label>
+                {{ offer_form.title }}
+                {{ offer_form.title.errors }}
+            </div>
+            <!-- /.dash-input-wrapper -->
+            <div class="dash-input-wrapper mb-30">
+                <label for="">Offer Description</label>
+                {{ offer_form.description }}
+                {{ offer_form.description.errors }}
+
+            </div>
+            <!-- /.dash-input-wrapper -->
+            <div class="row align-items-end">
+                <div class="col-md-6">
+                    <div class="dash-input-wrapper mb-30">
+                        <label for="">Offer Status</label>
+                        <select name="offer_status" class="nice-select">
+                            {% for status in offer_form.offer_status %}
+                                <option value="{{ status.id }}">{{ status }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- /.dash-input-wrapper -->
+                </div>
+
+                <div class="col-md-6">
+                    <div class="dash-input-wrapper mb-0">
+                        <label for="">Listed Price</label>
+                        {{ offer_form.listed_price | add_class:"form-control" }}
+                        {{ offer_form.listed_price.errors }}
+                    </div>
+                    <!-- /.dash-input-wrapper -->
+                </div>
+
+
+                <!-- /.dash-input-wrapper -->
+            </div>
+        </div>
+        <!-- /.card-box -->
+
+
+        <div class="bg-white card-box border-20 mt-40">
+            <h4 class="dash-title-three">Offer Photos</h4>
+            <div class="row align-items-end">
+                <div class="col-md-6">
+
+                    <div class="dash-input-wrapper mb-0">
+                        <label for="">Featured Image</label>
+                        {{ offer_form.featured_image | add_class:"form-control" }}
+                        {{ offer_form.featured_image.errors }}
+                    </div>
+                    <br>
+                    <div class="dash-input-wrapper mb-0">
+                        <label for="">Video Tour</label>
+                        {{ video_form.video }}
+                        {{ video_form.video.errors }}
+                    </div>
+
+                    <!-- /.dash-input-wrapper -->
+                </div>
+            </div>
+        </div>
+
+
+        <div class="bg-white card-box border-20 mt-40">
+            <h4 class="dash-title-three">Listing Details</h4>
+            <div class="row align-items-end">
+                <div class="col-md-6">
+                    <div class="dash-input-wrapper mb-30">
+                        <label for="">Property size</label>
+                        {{ property_form.property_size }}
+                    </div>
+                    <!-- /.dash-input-wrapper -->
+                </div>
+                <div class="col-md-6">
+                    <div class="dash-input-wrapper mb-30">
+                        <label for="">Bedrooms</label>
+                        {{ property_form.bedrooms}}
+                    </div>
+                    <!-- /.dash-input-wrapper -->
+                </div>
+                <div class="col-md-6">
+                    <div class="dash-input-wrapper mb-30">
+                        <label for="">Bathrooms</label>
+                        {{ property_form.bathrooms }}
+                    </div>
+                    <!-- /.dash-input-wrapper -->
+                </div>
+
+                <div class="col-md-6">
+                    <div class="dash-input-wrapper mb-30">
+                        <label for="">Building Year</label>
+                        {{ property_form.year_of_built }}
+                    </div>
+                    <!-- /.dash-input-wrapper -->
+                </div>
+                <div class="col-md-6">
+                    <div class="dash-input-wrapper mb-30">
+                        <label for="">Floor</label>
+                        {{ form.listed_property.floor }}
+                    </div>
+                    <!-- /.dash-input-wrapper -->
+                </div>
+                <div class="col-12">
+                    <div class="dash-input-wrapper">
+                        <label for="">Notes</label>
+                        {{ property_form.notes }}
+                    </div>
+                    <!-- /.dash-input-wrapper -->
+                </div>
+            </div>
+        </div>
+        <!-- /.card-box -->
+
+        <div class="bg-white card-box border-20 mt-40">
+            <h4 class="dash-title-three">Address & Location</h4>
+            <div class="row">
+                <div class="col-12">
+                    <div class="dash-input-wrapper mb-25">
+                        <label for="">Address</label>
+                        {{ property_form.address }}
+                    </div>
+                    <!-- /.dash-input-wrapper -->
+                </div>
+                <div class="col-lg-6">
+                    <div class="dash-input-wrapper mb-25">
+                        <label for="">Country</label>
+                        {{ property_form.country }}
+
+                    </div>
+                    <!-- /.dash-input-wrapper -->
+                </div>
+                <div class="col-lg-6">
+                    <div class="dash-input-wrapper mb-25">
+                        <label for="">City</label>
+                        {{ property_form.city }}
+
+                    </div>
+                    <!-- /.dash-input-wrapper -->
+                </div>
+
+                <!-- /.dash-input-wrapper -->
+            </div>
+        </div>
+
+        <!-- /.card-box -->
+        <div class="button-group d-inline-flex align-items-center mt-30">
+            <button type="submit" class="dash-btn-two tran3s me-3">Edit Property</button>
+            <a href="{% url 'dashboard_properties' %}" class="dash-cancel-btn tran3s">Cancel</a>
+        </div>
+    </form>
+
+    <!-- /.dashboard-body -->
+
+
+{% endblock %}

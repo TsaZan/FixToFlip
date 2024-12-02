@@ -21,6 +21,8 @@ class Offer(models.Model):
 
     title = models.CharField(
         max_length=100,
+        blank=True,
+        null=True,
     )
 
     featured_image = CloudinaryField(
@@ -30,13 +32,18 @@ class Offer(models.Model):
         null=True,
     )
 
-    description = models.TextField()
+    description = models.TextField(
+        blank=True,
+        null=True,
+    )
 
     listed_price = MoneyField(
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
-        validators=[MinMoneyValidator(Decimal(0), message='Price cannot be negative.')],
+        validators=[MinMoneyValidator(
+            Decimal(0),
+            message='Price cannot be negative.')],
         blank=True,
         null=True,
     )
@@ -65,13 +72,16 @@ class Offer(models.Model):
         related_name='listed_for_sales',
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
     )
 
     actual_sold_price = MoneyField(
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
-        validators=[MinMoneyValidator(Decimal(0), message='Price cannot be negative.')],
+        validators=[MinMoneyValidator(
+            Decimal(0),
+            message='Price cannot be negative.')],
         blank=True,
         null=True,
     )
@@ -82,9 +92,7 @@ class Offer(models.Model):
     )
 
     is_published = models.BooleanField(
-        blank=True,
-        null=True,
-        default=False
+        default=False,
     )
 
     def __str__(self):
@@ -103,9 +111,12 @@ class OfferImages(models.Model):
         related_name='images'
     )
 
-    image = CloudinaryField('image', resource_type='image')
+    image = CloudinaryField('image',
+                            resource_type='image')
 
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+    uploaded_at = models.DateTimeField(
+        auto_now_add=True
+    )
 
 
 class OfferVideos(models.Model):
@@ -120,6 +131,10 @@ class OfferVideos(models.Model):
         related_name='videos'
     )
 
-    video = CloudinaryField('video', resource_type='video')
+    video = CloudinaryField('video',
+                            resource_type='video',
+                            )
 
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+    uploaded_at = models.DateTimeField(
+        auto_now_add=True
+    )
