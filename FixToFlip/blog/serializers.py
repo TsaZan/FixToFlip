@@ -6,7 +6,7 @@ from FixToFlip.blog.models import BlogPost, Category
 class BlogPostSerializer(serializers.ModelSerializer):
     author = serializers.StringRelatedField()
     category = serializers.StringRelatedField()
-    created_at = serializers.DateTimeField(format="%d-%m-%Y")  # or format="%d %B %Y"
+    created_at = serializers.DateTimeField(format="%d-%m-%Y")
     updated_at = serializers.DateTimeField(format="%d-%m-%Y")
 
     class Meta:
