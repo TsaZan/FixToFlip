@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from FixToFlip.blog.views import BlogIndexView, CategoryView, BlogPostAPIView, PostsByCategoryAPIView
 from FixToFlip.offers.views import AllOffersAPIView, OfferAPIView
 from FixToFlip.properties.views import PropertyListApiView, PropertyExpensesApiView, \
-    PropertyApiView, BulkPropertyCreate
+    PropertyApiView, BulkPropertyCreate, PropertyExpenseNoteCreateAPIView
 
 app_name = "FixToFlip API"
 
@@ -21,7 +21,8 @@ urlpatterns = [
             path('', PropertyListApiView.as_view(), name='property_list_api'),
             path('bulk/', BulkPropertyCreate.as_view(), name='bulk_property_list_api'),
             path('<int:pk>/', PropertyApiView.as_view(), name='property_details_api'),
-            path('<int:pk>/expenses/', PropertyExpensesApiView.as_view(), name='property_expenses_api')
+            path('<int:pk>/expenses/', PropertyExpensesApiView.as_view(), name='property_expenses_api'),
+            path('<int:pk>/expenses/add/', PropertyExpenseNoteCreateAPIView.as_view(), name='create_expense'),
         ])),
 
         path('blog/', include([

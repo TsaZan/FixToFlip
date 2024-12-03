@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from FixToFlip.properties.models import Property, PropertyFinancialInformation, PropertyExpense
+from FixToFlip.properties.models import Property, PropertyFinancialInformation, PropertyExpense, PropertyExpenseNotes
 
 
 class PropertyFinancialInformationSerializer(serializers.ModelSerializer):
@@ -31,7 +31,6 @@ class PropertyExpenseSerializer(serializers.ModelSerializer):
             'roof_repair_expenses',
             'facade_repair_expenses',
             'other_repair_expenses',
-
         ]
 
 
@@ -81,3 +80,32 @@ class PropertySerializer(serializers.ModelSerializer):
         finance_property_data(new_property, property_financial_data, property_expenses_data)
 
         return new_property
+
+
+class ExpenseNotesCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PropertyExpenseNotes
+        fields = ['id', 'notes', 'expense_amount', 'expense_type', 'expense_date']
+
+    def create(self, validated_data):
+        relates_expenses = self.context.get('relates_expenses')
+
+        expense_note = PropertyExpenseNotes.objects.create(
+            relates_expenses=relates_expenses,
+            **validated_data
+        )
+
+        expense_type = validated_data.get('expense_type')
+        expense_amount = validated_data.get('expense_amount')
+
+        if hasattr(relates_expenses, expense_type):
+            current_value = getattr(relates_expenses, expense_type, 0)
+            setattr(relates_expenses, expense_type, current_value + expense_amount)
+            relates_expenses.save()
+        else:
+            raise serializers.ValidationError(
+                {"expense_type": f"Invalid expense type: {expense_type}"}
+            )
+
+        return expense_note
+
