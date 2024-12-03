@@ -6,7 +6,7 @@ from djmoney.models.fields import MoneyField
 from djmoney.models.validators import MinMoneyValidator
 from djmoney.money import Money
 
-from FixToFlip.choices import OfferStatusChoices
+from FixToFlip.choices import OfferStatusChoices, PublishChoices
 from FixToFlip.properties.models import Property
 
 
@@ -51,8 +51,8 @@ class Offer(models.Model):
     offer_status = models.CharField(
         max_length=6,
         choices=OfferStatusChoices.choices,
+        default=OfferStatusChoices.ACTIVE,
         blank=True,
-        null=True,
     )
 
     created_at = models.DateTimeField(
@@ -91,8 +91,11 @@ class Offer(models.Model):
         null=True,
     )
 
-    is_published = models.BooleanField(
-        default=False,
+    is_published = models.CharField(
+        max_length=5,
+        choices=PublishChoices.choices,
+        default=PublishChoices.NO,
+        blank=True,
     )
 
     def __str__(self):

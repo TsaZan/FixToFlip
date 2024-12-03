@@ -86,7 +86,9 @@ Dashboard Body
                                             data-src="{% static '/dash/images/icon/icon_18.svg' %}"
                                             alt="" class="lazy-img"> View</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="{% url 'add_expense' pk=property.pk %}"><img src="{% static '/images/lazy.svg' %}"
+
+                                    <li><a class="dropdown-item" href="{% url 'add_expense' pk=property.property_expenses.all.0.id %}"><img
+                                            src="{% static '/images/lazy.svg' %}"
                                             data-src="{% static '/dash/images/icon/icon_20.svg' %}"
                                             alt="" class="lazy-img">
                                         Property Expenses</a></li>

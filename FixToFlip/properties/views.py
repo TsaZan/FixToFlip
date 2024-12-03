@@ -39,6 +39,7 @@ class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
         paginator = Paginator(properties, 5)
         page_number = self.request.GET.get('page')
         properties = paginator.get_page(page_number)
+
         if 'q' in self.request.GET:
             q = self.request.GET.get('q', '')
             properties = Property.objects.filter(property_name__icontains=q)

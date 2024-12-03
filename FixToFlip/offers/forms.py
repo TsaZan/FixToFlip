@@ -1,6 +1,7 @@
 from django import forms
 from djmoney.forms import MoneyField
 
+from FixToFlip.choices import PublishChoices
 from FixToFlip.offers.models import Offer
 from FixToFlip.properties.forms import PropertyBaseForm
 from FixToFlip.properties.models import Property
@@ -25,9 +26,17 @@ class OfferBaseForm(forms.ModelForm):
             "listed_property",
             "is_published",
         ]
+
         widgets = {
-            "description": forms.Textarea(attrs={"rows": 4, "placeholder": "Enter offer details..."}),
-            "title": forms.TextInput(attrs={"placeholder": "Offer Title"}),
+            "description": forms.Textarea(attrs={
+                "rows": 4, "placeholder": "Enter offer details...",
+            }),
+            "title": forms.TextInput(attrs={
+                "placeholder": "Offer Title",
+            }),
+            'is_published': forms.Select(choices=PublishChoices.choices,
+                                         attrs={'class': 'form-control'}),
+
         }
 
 
@@ -40,8 +49,13 @@ class OfferEditForm(OfferBaseForm):
         model = Offer
         exclude = ['listed_property']
         widgets = {
-            "description": forms.Textarea(attrs={"rows": 4, "placeholder": "Enter offer details..."}),
-            "title": forms.TextInput(attrs={"placeholder": "Offer Title"}),
+            "description": forms.Textarea(attrs={
+                "rows": 4, "placeholder": "Enter offer details...",
+            }),
+
+            "title": forms.TextInput(attrs={
+                "placeholder": "Offer Title",
+            }),
         }
 
 

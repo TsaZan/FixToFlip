@@ -49,7 +49,6 @@ def add_offer_view(request, pk):
         form = OfferAddForm(request.POST)
         if form.is_valid() and request.user == Property.objects.get(pk=pk).owner:
             offer = form.save(commit=False)
-            offer.offer_status = form.instance.offer_status
             offer.listed_property = Property.objects.get(pk=pk)
             offer.save()
             pk = offer.pk
@@ -74,7 +73,6 @@ class EditOfferView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         context['offer_form'] = OfferBaseForm(instance=self.object)
         context['property_form'] = PropertyAddForm(instance=self.object.listed_property)
         context['header_title'] = 'Edit Offer'
@@ -116,7 +114,7 @@ class AllOffersAPIView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        offers = get_object_or_404(Offer.objects.all())
+        offers = Offer.objects.filter(is_published=True)
         serializer = OfferAPISerializer(offers, many=True)
         return Response(serializer.data)
 
