@@ -11,8 +11,4 @@ urlpatterns = [
         path('edit/', EditOfferView.as_view(), name='edit_offer'),
         path('delete/', OfferDeleteView.as_view(), name='delete_offer'),
     ])),
-    path('api/', include([
-        path('', AllOffersAPIView.as_view(), name='api_offers'),
-        path('<int:pk>/', OfferAPIView.as_view(), name='detail_offer'),
-    ])),
 ]

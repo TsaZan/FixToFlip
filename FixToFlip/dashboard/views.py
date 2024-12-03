@@ -25,8 +25,4 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class DashboardTasksView(LoginRequiredMixin, TemplateView):
-    template_name = 'dashboard/tasks.html'
-    login_url = 'index'
-
 
