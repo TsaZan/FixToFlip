@@ -1,6 +1,7 @@
 from django.test import TestCase
 from djmoney.money import Money
 
+from FixToFlip.choices import PublishChoices
 from FixToFlip.offers.models import Offer, OfferImages, OfferVideos
 from FixToFlip.properties.models import Property
 from datetime import date
@@ -61,7 +62,7 @@ class OfferModelTest(TestCase):
         )
         self.assertEqual(new_offer.listed_price.amount, 0)
         self.assertEqual(str(new_offer.listed_price.currency), "EUR")
-        self.assertFalse(new_offer.is_published)
+        self.assertEqual(new_offer.is_published, PublishChoices.NO)
         self.assertIsNone(new_offer.listed_property)
         self.assertIsNone(new_offer.sold_date)
 
