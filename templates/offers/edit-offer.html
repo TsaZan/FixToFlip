@@ -68,12 +68,6 @@ Dashboard Body
                         {{ offer_form.featured_image | add_class:"form-control" }}
                         {{ offer_form.featured_image.errors }}
                     </div>
-                    <br>
-                    <div class="dash-input-wrapper mb-0">
-                        <label for="">Video Tour</label>
-                        {{ video_form.video }}
-                        {{ video_form.video.errors }}
-                    </div>
 
                     <!-- /.dash-input-wrapper -->
                 </div>
@@ -86,11 +80,22 @@ Dashboard Body
             <div class="row align-items-end">
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
+                        <select name="property_type" class="nice-select">
+                            {% for type in  property_form.property_type %}
+                                <option value="{{ type.id }}">{{ type }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- /.dash-input-wrapper -->
+                </div>
+                <div class="col-md-6">
+                    <div class="dash-input-wrapper mb-30">
                         <label for="">Property size</label>
                         {{ property_form.property_size }}
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
+
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
                         <label for="">Bedrooms</label>
@@ -116,7 +121,7 @@ Dashboard Body
                 <div class="col-md-6">
                     <div class="dash-input-wrapper mb-30">
                         <label for="">Floor</label>
-                        {{ form.listed_property.floor }}
+                        {{ property_form.floor }}
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
@@ -160,6 +165,30 @@ Dashboard Body
 
                 <!-- /.dash-input-wrapper -->
             </div>
+        </div>
+
+        <div class="bg-white card-box border-20 mt-40">
+            <h4 class="dash-title-three">Offer Publication Status</h4>
+            <div class="row align-items-end">
+                <div class="col-md-6">
+                    <div class="dash-input-wrapper mb-30">
+                        <select name="is_published" id="id_is_published" class="form-control nice-select">
+
+                            <option value="True"
+                                    {% if offer_form.instance.is_published == 'True' %}selected{% endif %}>
+                                Published
+                            </option>
+
+                            <option value="False"
+                                    {% if offer_form.instance.is_published == 'False' %}selected{% endif %}>
+                                Not Published
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <!-- /.dash-input-wrapper -->
+            </div>
+
         </div>
 
         <!-- /.card-box -->

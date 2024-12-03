@@ -63,3 +63,8 @@ class PropertyConditionChoices(models.TextChoices):
     FOR_SALE = 'For sale', 'For sale'
     SOLD = 'Sold', 'Sold'
 
+
+class PublishChoices(models.TextChoices):
+    YES = 'True', 'Published'
+    NO = 'False', 'Not Published'
+
