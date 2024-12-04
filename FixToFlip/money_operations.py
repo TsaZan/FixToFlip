@@ -14,7 +14,6 @@ def sum_current_expenses(property_id):
         'roof_repair_expenses', 'facade_repair_expenses', 'windows_doors_repair_expenses'
     ).first()
 
-
     if not expenses:
         return 0
 

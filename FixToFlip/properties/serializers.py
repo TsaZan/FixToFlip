@@ -5,7 +5,10 @@ from FixToFlip.properties.models import Property, PropertyFinancialInformation, 
 class PropertyFinancialInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyFinancialInformation
-        fields = ['initial_price', 'repair_cost']
+        fields = [
+            'initial_price',
+            'repair_cost'
+        ]
 
 
 class PropertyExpenseSerializer(serializers.ModelSerializer):
@@ -65,10 +68,23 @@ class PropertySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Property
-        fields = ['pk', 'property_name', 'country', 'city', 'address',
-                  'property_type', 'property_size', 'bought_date', 'property_condition', 'property_description',
-                  'bedrooms', 'bathrooms', 'floor', 'year_of_built', 'notes', 'property_financial_information',
-                  'property_expenses']
+        fields = ['pk',
+                  'property_name',
+                  'country',
+                  'city',
+                  'address',
+                  'property_type',
+                  'property_size',
+                  'bought_date',
+                  'property_condition',
+                  'property_description',
+                  'bedrooms', 'bathrooms',
+                  'floor', 'year_of_built',
+                  'notes',
+                  'property_financial_information',
+                  'property_expenses'
+                  ]
+
         list_serializer_class = BulkPropertySerializer
 
     def create(self, validated_data):
@@ -85,7 +101,12 @@ class PropertySerializer(serializers.ModelSerializer):
 class ExpenseNotesCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyExpenseNotes
-        fields = ['id', 'notes', 'expense_amount', 'expense_type', 'expense_date']
+        fields = ['id',
+                  'notes',
+                  'expense_amount',
+                  'expense_type',
+                  'expense_date'
+                  ]
 
     def create(self, validated_data):
         relates_expenses = self.context.get('relates_expenses')

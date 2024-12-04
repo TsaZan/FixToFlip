@@ -5,4 +5,4 @@ from FixToFlip.credits.models import Credit
 class CreditSerializer(serializers.ModelSerializer):
     class Meta:
         model = Credit
-        fields = ['__all__']
+        fields = '__all__'
