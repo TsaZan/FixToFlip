@@ -11,7 +11,6 @@ from FixToFlip.credits.models import Credit
 
 
 class Property(models.Model):
-    '''Property Basic Information. Can be added and seen by all types of authorized users.'''
     MAX_LENGTH = 100
 
     class Meta:
@@ -119,8 +118,6 @@ class Property(models.Model):
 
 
 class PropertyFinancialInformation(models.Model):
-    '''Property financial information. Can be seen by property owners and another authorized users'''
-
     class Meta:
         verbose_name = 'Property Financial Information'
         verbose_name_plural = 'Property Financial Information'
@@ -182,7 +179,6 @@ class PropertyFinancialInformation(models.Model):
 
 
 class PropertyExpense(models.Model):
-    '''Property expenses information. Can be seen by property owners and all authorized users.'''
 
     MAX_DIGITS = 10
     MAX_DECIMAL_PLACES = 2

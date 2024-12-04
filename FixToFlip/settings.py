@@ -30,10 +30,8 @@ ALLOWED_HOSTS = os.getenv('HOSTS_ALLOWED').split(',')
 
 PROJECT_APPS = [
     'FixToFlip.accounts',
-    'FixToFlip.calculator',
     'FixToFlip.credits',
     'FixToFlip.properties',
-    'FixToFlip.notifications',
     'FixToFlip.offers',
     'FixToFlip.common',
     'FixToFlip.dashboard',
@@ -58,6 +56,7 @@ THIRD_PARTY_APPS = [
     'django_recaptcha',
     'whitenoise.runserver_nostatic',
     "phonenumber_field",
+    'django_celery_beat',
 
 ]
 
@@ -90,8 +89,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-
-
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -118,7 +115,6 @@ DJANGO_MONEY_RATES = {
     'OPENEXCHANGERATES_APP_ID': os.getenv('EXCHANGE_RATE_API_KEY'),
 }
 
-
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_URLS').split(',')
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
@@ -132,7 +128,7 @@ ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -190,7 +186,6 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 
 WSGI_APPLICATION = 'FixToFlip.wsgi.application'
-
 
 DATABASES = {'default': dj_database_url.config(default=os.getenv('DATABASE_URL', None))}
 

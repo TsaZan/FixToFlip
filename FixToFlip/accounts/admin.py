@@ -18,6 +18,9 @@ class AccountsAdmin(ModelAdmin):
         ('Permissions', {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')
         }),
+        ('Important Dates', {
+            'fields': ('date_joined',)
+        }),
     )
 
 
@@ -37,7 +40,7 @@ class Profile(ModelAdmin):
             'fields': ('user_location', 'phone_number')
         }),
         ('Company Info', {
-            'fields': ('company_name', 'company_location_country', 'company_phone')
+            'fields': ('company_name', 'company_location', 'company_phone')
         }),
         ('Preferences', {
             'fields': ('preferred_currency',)
