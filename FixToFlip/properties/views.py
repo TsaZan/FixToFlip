@@ -23,7 +23,8 @@ from FixToFlip.properties.forms import PropertyAddForm, \
     PropertyEditForm, PropertyDeleteForm, AddExpenseForm, AddCreditToPropertyForm, PropertyFinanceInformationForm, \
     PropertyExpenseForm, ExpenseNotesForm
 from FixToFlip.properties.models import Property, PropertyExpense, PropertyFinancialInformation, PropertyExpenseNotes
-from FixToFlip.properties.serializers import PropertySerializer, PropertyExpenseSerializer, BulkPropertySerializer
+from FixToFlip.properties.serializers import PropertySerializer, PropertyExpenseSerializer, BulkPropertySerializer, \
+    ExpenseNotesCreateSerializer
 
 
 class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
@@ -387,3 +388,26 @@ class PropertyExpensesApiView(generics.ListAPIView):
 
     permission_classes = [IsAuthenticated, ]
     serializer_class = PropertyExpenseSerializer
+
+
+class PropertyExpenseNoteCreateAPIView(APIView):
+    def post(self, request, pk, *args, **kwargs):
+        try:
+            related_expense = PropertyExpense.objects.get(id=pk)
+        except PropertyExpense.DoesNotExist:
+            return Response(
+                {"error": "PropertyExpense not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = ExpenseNotesCreateSerializer(
+            data=request.data,
+            context={'relates_expenses': related_expense}
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+

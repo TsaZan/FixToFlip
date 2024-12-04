@@ -30,10 +30,8 @@ ALLOWED_HOSTS = os.getenv('HOSTS_ALLOWED').split(',')
 
 PROJECT_APPS = [
     'FixToFlip.accounts',
-    'FixToFlip.calculator',
     'FixToFlip.credits',
     'FixToFlip.properties',
-    'FixToFlip.notifications',
     'FixToFlip.offers',
     'FixToFlip.common',
     'FixToFlip.dashboard',

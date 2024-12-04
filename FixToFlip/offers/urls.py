@@ -1,7 +1,6 @@
 from django.urls import path, include
 
-from FixToFlip.offers.views import OfferAPIView, AllOffersAPIView, EditOfferView, \
-    DashboardOffersView, add_offer_view, OfferDeleteView
+from FixToFlip.offers.views import EditOfferView, DashboardOffersView, add_offer_view, OfferDeleteView
 
 urlpatterns = [
     path('', DashboardOffersView.as_view(), name='offers_main_page'),
