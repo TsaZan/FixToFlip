@@ -252,11 +252,20 @@ class PropertyExpense(models.Model):
         blank=True,
     )
 
+    credit_interest = MoneyField(
+        max_digits=MAX_DIGITS,
+        decimal_places=MAX_DECIMAL_PLACES,
+        default=Money(0, 'EUR'),
+        verbose_name='Credit Interest',
+        null=True,
+        blank=True,
+    )
+
     other_expenses = MoneyField(
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
-        verbose_name='Insurance',
+        verbose_name='Other Expenses',
         null=True,
         blank=True,
     )
@@ -376,7 +385,7 @@ class PropertyExpense(models.Model):
 
     def expense_total(self):
         return (self.utilities + self.notary_taxes + self.profit_tax + self.municipality_taxes +
-                self.advertising + self.administrative_fees + self.insurance + self.other_expenses)
+                self.advertising + self.administrative_fees + self.insurance + self.other_expenses + self.credit_interest)
 
     def total_repair_expenses(self):
         return (self.plumbing_repair_expenses + self.electrical_repair_expenses + self.windows_doors_repair_expenses

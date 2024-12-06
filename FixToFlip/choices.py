@@ -24,6 +24,7 @@ class ExpenseTypeChoices(models.TextChoices):
     roof = 'roof_repair_expenses', 'Roof Repair Expenses'
     facade = 'facade_repair_expenses', 'Facade Repair Expenses'
     other = 'other_repair_expenses', 'Other Repair Expenses'
+    credit_interest = 'credit_interest', 'Credit Interest'
     utilities = 'utilities', 'Utilities'
     notary_taxes = 'notary_taxes', 'Notary Taxes'
     profit_Tax = 'profit_tax', 'Profit Tax'

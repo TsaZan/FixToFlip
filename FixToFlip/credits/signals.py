@@ -15,14 +15,15 @@ def create_expense_notes(sender, instance, created, **kwargs):
 
         for property in credited_properties:
             credit_share = property.credited_amount.amount / total_credit_amount['credited_amount__sum']
-            credit_expense = instance.interest_amount * credit_share
+            credit_interest_expense = instance.interest_amount * credit_share
             PropertyExpenseNotes.objects.create(
                 notes=f'Credit Payment for {instance.credit.bank_name} credit.',
-                expense_type='Other Expenses',
-                expense_amount=credit_expense,
+                expense_type='Credit Interest',
+                expense_amount=credit_interest_expense,
                 expense_date=instance.payment_date,
                 relates_expenses=property.property.property_expenses.first()
             )
 
             PropertyExpense.objects.filter(id=property.property.property_expenses.first().id) \
-                .update(other_expenses=property.property.property_expenses.first().other_expenses.amount + credit_expense.amount)
+                .update(credit_interest=property.property.property_expenses.first().credit_interest.amount
+                                        + credit_interest_expense.amount)

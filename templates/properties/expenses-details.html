@@ -106,6 +106,9 @@ Property Listing Details
 
                                         <li><span>Insurance: </span> <span
                                                 class="fw-500 color-dark">{{ expenses.insurance }}</span></li>
+                                        <li><span>Credit Expenses: </span> <span
+                                                class="fw-500 color-dark">{{ expenses.credit_interest }}</span>
+                                        </li>
                                         <li><span>Other Expenses: </span> <span
                                                 class="fw-500 color-dark">{{ expenses.other_expenses }}</span>
                                         </li>
@@ -132,7 +135,7 @@ Property Listing Details
                                         <tbody>
                                         {% for note in expenses_notes %}
                                             <tr>
-                                                <th scope="row" class="fw-500">{{forloop.counter}}</th>
+                                                <th scope="row" class="fw-500">{{ forloop.counter }}</th>
                                                 <td>{{ note.expense_date }}</td>
                                                 <td>{{ note.expense_amount }}</td>
                                                 <td>{{ note.expense_type }}</td>

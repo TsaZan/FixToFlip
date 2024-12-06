@@ -188,6 +188,22 @@ class PropertyDetailsView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     def post(self, request, *args, **kwargs):
         property = self.get_object()
         form = AddCreditToPropertyForm(request.POST, user=self.request.user)
+
+        if 'remove_credit' in request.POST:
+            credit_id = request.POST.get('remove_credit')
+            finance_info = PropertyFinancialInformation.objects.filter(
+                property=property,
+                credit_id=credit_id
+            )
+            finance_info.update(
+                credit=None,
+                is_credited=False,
+                credited_amount=0
+            )
+
+            messages.success(request, 'The credit was successfully removed from the property.')
+            return redirect('property_details', pk=property.id)
+
         if form.is_valid():
             finance_information = PropertyFinancialInformation.objects.filter(pk=property.pk)
             owned_credits = Credit.objects.filter(credit_owner_id=self.request.user.id)
@@ -278,6 +294,7 @@ def add_expense(request, pk):
         'expenses_notes': expenses_notes,
         'expenses': expenses,
         'property': property,
+
     }
 
     return render(request, 'properties/expenses-details.html', context)

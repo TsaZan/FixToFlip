@@ -115,11 +115,15 @@ Property Listing Details
 
                                             <li><span>Insurance: </span> <span
                                                     class="fw-500 color-dark">{{ expenses.insurance }}</span></li>
-                                            <li><span>Other Expenses: </span> <span
-                                                    class="fw-500 color-dark">{{ expenses.other_expenses }}</span>
+                                            <li><span>Credit Interest: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.credit_interest }}</span>
                                             </li>
+
                                             <li><span>Profit Tax: </span> <span
                                                     class="fw-500 color-dark">{{ expenses.profit_tax }}</span>
+                                            </li>
+                                            <li><span>Other Expenses: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.other_expenses }}</span>
                                             </li>
 
                                         </ul>
@@ -161,6 +165,11 @@ Property Listing Details
                                             Interest: {{ credit.credit_interest }}%<br>
                                             Term: {% if credit.credit_term < today %} EXPIRED on {{ credit.credit_term }} {% else %} {{ credit.credit_term }}{% endif %}<br>
                                         </p>
+                                        <form method="post" action="{% url 'property_details' pk=property.id %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="remove_credit" value="{{ credit.id }}">
+                                            <button type="submit" class="btn btn-danger">Remove Credit</button>
+                                        </form>
                                     {% endfor %}
                                 {% endif %}
                             </div>
