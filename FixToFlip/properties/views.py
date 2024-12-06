@@ -1,7 +1,10 @@
 from datetime import date
 
+from django import forms
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.exceptions import ValidationError
 from django.db.models import Sum, Q
 from django.http import Http404
 from django.shortcuts import redirect, get_object_or_404
@@ -187,6 +190,14 @@ class PropertyDetailsView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         form = AddCreditToPropertyForm(request.POST, user=self.request.user)
         if form.is_valid():
             finance_information = PropertyFinancialInformation.objects.filter(pk=property.pk)
+            owned_credits = Credit.objects.filter(credit_owner_id=self.request.user.id)
+            for credit in owned_credits:
+                if credit.id == int(form.cleaned_data['credit']):
+                    if credit.remaining_credit_amount().amount < form.cleaned_data['credited_amount'].amount:
+                        errors = f'You cannot credit more than the credit remaining amount. \n Remaining amount: {credit.remaining_credit_amount()}'
+                        return render(request, 'properties/property-details.html',
+                                      {'credit_form': form, 'property': property, 'errors': errors})
+
             finance_information.update(
                 property=property,
                 is_credited=True,

@@ -139,8 +139,9 @@ Property Listing Details
                                     <h5 class="mb-40">Add Credit</h5>
                                     <form action="#" method="post">
                                         {% csrf_token %}
+                                        <div class="error-message text-center">{{ errors | linebreaksbr }}</div>
                                         {{ credit_form }}
-                                        {{ form.credit_form.errors }}
+                                        {{ credit_form.errors }}
                                         <br>
                                         <div class="input-box-three mb-25"><!-- /.input-box-three -->
                                             <button class="btn-nine text-uppercase rounded-3 w-100 mb-10">Add To Credit
