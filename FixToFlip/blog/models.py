@@ -5,6 +5,8 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 
+from FixToFlip.validators import bad_words_validator
+
 
 class BlogPost(models.Model):
     class Meta:
@@ -121,6 +123,7 @@ class Comment(models.Model):
         blank=False,
         validators=[
             MinLengthValidator(20, "Comment must be at least 20 characters long"),
+            bad_words_validator,
         ]
     )
 

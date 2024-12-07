@@ -8,22 +8,12 @@ Dashboard Body
 ============================================== 
 -->
 
-    <h2 class="main-title d-block d-lg-none">My Properties</h2>
+    <h2 class="main-title d-block d-lg-none">Blog Comments</h2>
     <div class="d-sm-flex align-items-center justify-content-between mb-25">
         <div class="fs-16">Showing <span class="color-dark fw-500">{{ comments.start_index }}–{{ comments.end_index }}</span> of <span
                 class="color-dark fw-500">{{ comments.paginator.count }}</span> results
         </div>
     </div>
-
-    <form method="get">
-        <div class="d-flex ms-auto xs-mt-30">
-            <div class="short-filter d-flex align-items-center ms-sm-auto">
-                <div class="fs-16 me-2">Sort by:</div>
-                {{ filter.form.sort }}
-                <button type="submit" class="btn btn-primary ms-2">Apply</button>
-            </div>
-        </div>
-    </form>
 
     <div class="bg-white card-box p0 border-20">
         <div class="table-responsive pt-25 pb-25 pe-4 ps-4">
