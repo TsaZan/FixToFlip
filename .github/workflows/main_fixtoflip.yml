@@ -63,8 +63,3 @@ jobs:
           app-name: 'fixtoflip'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_56CC7183C81E4C1F9C2B67D7C39A1C9A }}
-
-      - name: Start application services
-        run: |
-          chmod +x ./startup.sh
-          ./startup.sh
