@@ -115,11 +115,15 @@ Property Listing Details
 
                                             <li><span>Insurance: </span> <span
                                                     class="fw-500 color-dark">{{ expenses.insurance }}</span></li>
-                                            <li><span>Other Expenses: </span> <span
-                                                    class="fw-500 color-dark">{{ expenses.other_expenses }}</span>
+                                            <li><span>Credit Interest: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.credit_interest }}</span>
                                             </li>
+
                                             <li><span>Profit Tax: </span> <span
                                                     class="fw-500 color-dark">{{ expenses.profit_tax }}</span>
+                                            </li>
+                                            <li><span>Other Expenses: </span> <span
+                                                    class="fw-500 color-dark">{{ expenses.other_expenses }}</span>
                                             </li>
 
                                         </ul>
@@ -139,8 +143,9 @@ Property Listing Details
                                     <h5 class="mb-40">Add Credit</h5>
                                     <form action="#" method="post">
                                         {% csrf_token %}
+                                        <div class="error-message text-center">{{ errors | linebreaksbr }}</div>
                                         {{ credit_form }}
-                                        {{ form.credit_form.errors }}
+                                        {{ credit_form.errors }}
                                         <br>
                                         <div class="input-box-three mb-25"><!-- /.input-box-three -->
                                             <button class="btn-nine text-uppercase rounded-3 w-100 mb-10">Add To Credit
@@ -160,6 +165,11 @@ Property Listing Details
                                             Interest: {{ credit.credit_interest }}%<br>
                                             Term: {% if credit.credit_term < today %} EXPIRED on {{ credit.credit_term }} {% else %} {{ credit.credit_term }}{% endif %}<br>
                                         </p>
+                                        <form method="post" action="{% url 'property_details' pk=property.id %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="remove_credit" value="{{ credit.id }}">
+                                            <button type="submit" class="btn btn-danger">Remove Credit</button>
+                                        </form>
                                     {% endfor %}
                                 {% endif %}
                             </div>

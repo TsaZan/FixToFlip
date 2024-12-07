@@ -1,5 +1,4 @@
 from django.core.exceptions import ValidationError
-import datetime
 
 from django.utils.deconstruct import deconstructible
 

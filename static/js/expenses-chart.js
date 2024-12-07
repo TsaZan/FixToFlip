@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const allCategories = [
         'Utilities', 'Notary Taxes', 'Profit Tax', 'Municipality Taxes',
-        'Advertising', 'Administrative Fees', 'Insurance', 'Other Expenses',
+        'Advertising', 'Administrative Fees', 'Insurance', 'Credit Interest', 'Other Expenses',
         'Bathroom Repair Expenses', 'Kitchen Repair Expenses', 'Floors Repair Expenses',
         'Walls Repair Expenses', 'Windows and Doors Repair Expenses', 'Plumbing Repair Expenses',
         'Electrical Repair Expenses', 'Roof Repair Expenses', 'Facade Repair Expenses',

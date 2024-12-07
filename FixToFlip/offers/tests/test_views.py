@@ -133,6 +133,7 @@ class OfferAPIViewTests(TestCase):
             offer_status="Active",
         )
         self.url = reverse('detail_offer', kwargs={'pk': self.offer.pk})
+        print(self.url)
 
     def test_offer_api_view(self):
         response = self.client.get(self.url)
