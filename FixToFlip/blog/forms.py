@@ -14,7 +14,6 @@ class AddBlogPostForm(forms.ModelForm):
                 'class': ' form-control mb-20',
                 'type': 'file',
                 'accept': 'image/*',
-                'id': 'customFile'
             }),
             'category': forms.Select(attrs={
                 'class': 'form-control mb-20'

@@ -111,8 +111,8 @@ Blog Details
                                 <div>
                             {% else %}
                                 <form method="post" class="mt-30">
-                                    {{ form }}
                                     {% csrf_token %}
+                                    {{ form }}
                                     <button class="btn-five rounded-0">Post Comment</button>
                                 </form>
                             {% endif %}
@@ -169,7 +169,6 @@ Blog Details
                 </div>
             </div>
             <!-- /.blog-details -->
-            {% include 'common/fancy-banner-two.html' %}
         </div>
         <!-- /.container -->
     </div>

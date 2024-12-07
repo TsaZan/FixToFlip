@@ -15,10 +15,23 @@ class PropertyBaseForm(forms.ModelForm):
             'bought_date': forms.DateInput(attrs={
                 'type': 'date', 'min': '1900-01-01', 'placeholder': 'YYYY-MM-DD'}),
             'property_name': forms.TextInput(attrs={'placeholder': 'Property Name'}),
+
+            'property_description': forms.Textarea(attrs={
+                'placeholder': 'Property Description',
+                'class': 'form-control',
+                'rows': 6,
+            }),
+
             'country': forms.TextInput(attrs={'placeholder': 'Country'}),
-            'town': forms.TextInput(attrs={'placeholder': 'Town'}),
+            'city': forms.TextInput(attrs={'placeholder': 'City'}),
             'address': forms.TextInput(attrs={'placeholder': 'Address'}),
-            'post_code': forms.TextInput(attrs={'placeholder': 'Post Code'}),
+
+            'property_size': forms.NumberInput(attrs={'placeholder': 'Property Size (sqm)'}),
+            'bedrooms': forms.NumberInput(attrs={'placeholder': 'Number of Bedrooms'}),
+            'bathrooms': forms.NumberInput(attrs={'placeholder': 'Number of Bathrooms'}),
+            'year_of_built': forms.NumberInput(attrs={'placeholder': 'Construction Year'}),
+            'floor': forms.NumberInput(attrs={'placeholder': 'Floor Number'}),
+            'notes': forms.Textarea(attrs={'placeholder': 'Additional Notes'}),
         }
 
         labels = {
@@ -47,7 +60,6 @@ class PropertyDeleteForm(PropertyBaseForm):
     class Meta:
         model = Property
         fields = []
-
 
 
 class PropertyExpenseForm(forms.ModelForm):

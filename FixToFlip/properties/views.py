@@ -1,11 +1,9 @@
 from datetime import date
 
-from django import forms
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.core.exceptions import ValidationError
-from django.db.models import Sum, Q
+from django.db.models import Sum
 from django.http import Http404
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -21,13 +19,12 @@ from django.utils.dateparse import parse_date
 from FixToFlip.choices import ExpenseTypeChoices, PropertyConditionChoices
 from FixToFlip.credits.models import Credit
 from FixToFlip.money_operations import sum_current_expenses
-from FixToFlip.properties.filters import PropertiesFilter
+from FixToFlip.properties.filters import PropertiesFilter, ExpensesFilter
 from FixToFlip.properties.forms import PropertyAddForm, \
     PropertyEditForm, PropertyDeleteForm, AddExpenseForm, AddCreditToPropertyForm, PropertyFinanceInformationForm, \
     PropertyExpenseForm, ExpenseNotesForm
 from FixToFlip.properties.models import Property, PropertyExpense, PropertyFinancialInformation, PropertyExpenseNotes
-from FixToFlip.properties.serializers import PropertySerializer, PropertyExpenseSerializer, BulkPropertySerializer, \
-    ExpenseNotesCreateSerializer
+from FixToFlip.properties.serializers import PropertySerializer, PropertyExpenseSerializer, ExpenseNotesCreateSerializer
 
 
 class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
@@ -241,18 +238,21 @@ class DashboardExpensesView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         properties = Property.objects.filter(owner=self.request.user)
-
         expenses_list = PropertyExpense.objects.filter(property__in=properties)
-        if 'q' in self.request.GET:
-            q = self.request.GET.get('q', '')
-            expenses_list = PropertyExpense.objects.filter(property__property_name__icontains=q,
-                                                           property__in=properties)
+        sorted_expenses = ExpensesFilter(self.request.GET, queryset=expenses_list)
+        expenses_list = sorted_expenses.qs.distinct()
         paginator = Paginator(expenses_list, 5)
         page_number = self.request.GET.get('page')
         expenses = paginator.get_page(page_number)
 
+        if 'q' in self.request.GET:
+            q = self.request.GET.get('q', '')
+            expenses = PropertyExpense.objects.filter(property__property_name__icontains=q,
+                                                      property__in=properties)
+
         context['header_title'] = 'Expenses Dashboard'
         context['search_placeholder'] = 'Search expenses by property...'
+        context['filter'] = sorted_expenses
         context['expenses'] = expenses
 
         return context

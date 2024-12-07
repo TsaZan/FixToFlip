@@ -15,8 +15,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context['properties_in_repair'] = Property.objects.filter(
             owner=self.request.user, property_condition='Under repair')
 
-        context['properties_for_sale'] = Property.objects.filter(
-            owner=self.request.user, property_condition='For sale')
+        context['repaired_properties'] = Property.objects.filter(
+            owner=self.request.user, property_condition='Repaired')
 
         context['properties_sold'] = Property.objects.filter(
             owner=self.request.user, property_condition='Sold')

@@ -61,6 +61,7 @@ class BlogPostView(View):
 
     def post(self, request, slug=None):
         form = BlogCommentForm(request.POST)
+        post = get_object_or_404(BlogPost, slug=slug) if slug else None
         if form.is_valid():
             new_post = form.save(commit=False)
             new_post.author = request.user
@@ -70,6 +71,7 @@ class BlogPostView(View):
             return redirect('blog_post_page', slug=slug)
 
         context = {
+            'post': post,
             'form': form,
             'posts': BlogPost.objects.all()[:5],
             'categories': Category.objects.all(),

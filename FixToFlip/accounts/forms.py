@@ -1,6 +1,4 @@
 from django import forms
-from phonenumber_field.formfields import PhoneNumberField, SplitPhoneNumberField
-
 from FixToFlip.accounts.models import Profile, BaseAccount
 
 
