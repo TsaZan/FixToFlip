@@ -8,7 +8,7 @@ Dashboard Body
 ============================================== 
 -->
 
-    <h2 class="main-title d-block d-lg-none">My Properties</h2>
+    <h2 class="main-title d-block d-lg-none">My Expenses</h2>
     <div class="d-sm-flex align-items-center justify-content-between mb-25">
         <div class="fs-16">Showing <span
                 class="color-dark fw-500">{{ expenses.start_index }}–{{ expenses.end_index }}</span> of <span
@@ -16,14 +16,15 @@ Dashboard Body
         </div>
         <div class="d-flex ms-auto xs-mt-30">
             <div class="short-filter d-flex align-items-center ms-sm-auto">
-                <div class="fs-16 me-2">Short by:</div>
-                <select class="nice-select">
-                    <option value="0">Newest</option>
-                    <option value="1">Best Seller</option>
-                    <option value="2">Best Match</option>
-                    <option value="3">Price Low</option>
-                    <option value="4">Price High</option>
-                </select>
+                <form method="get">
+                    <div class="d-flex ms-auto xs-mt-30">
+                        <div class="short-filter d-flex align-items-center ms-sm-auto">
+                            <div class="fs-16 me-2" >Sort by:</div>
+                            {{ filter.form.sort }}
+                            <button type="submit" class="btn btn-primary ms-2">Apply</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -35,8 +36,8 @@ Dashboard Body
                 <tr>
                     <th scope="col">Description</th>
                     <th scope="col">Date</th>
-                    <th scope="col">Ramaining Expected Expenses</th>
-                    <th scope="col">Property</th>
+                    <th scope="col">Remaining Expected Expenses</th>
+                    <th scope="col">Expenses per sqm</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
@@ -58,7 +59,7 @@ Dashboard Body
                         <td>{{ expense.last_expense_date }}</td>
                         <td>{{ expense.remaining_expected_expenses }}</td>
                         <td>
-                            <div class="property-status">Active</div>
+                            <div class="property-status">{{ expense.expenses_per_sqm }}</div>
                         </td>
                         <td>
                             <div class="action-dots float-end">

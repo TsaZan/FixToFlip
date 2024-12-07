@@ -78,8 +78,10 @@ class PropertySerializer(serializers.ModelSerializer):
                   'bought_date',
                   'property_condition',
                   'property_description',
-                  'bedrooms', 'bathrooms',
-                  'floor', 'year_of_built',
+                  'bedrooms',
+                  'bathrooms',
+                  'floor',
+                  'year_of_built',
                   'notes',
                   'property_financial_information',
                   'property_expenses'

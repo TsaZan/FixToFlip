@@ -35,7 +35,7 @@ Dashboard Body
                             <img src="{% static '/images/lazy.svg' %}" data-src="{% static '/dash/images/icon/icon_13.svg' %}" alt=""
                                  class="lazy-img"></div>
                         <div class="order-sm-0">
-                            <span>Repairing</span>
+                            <span>Under Repair</span>
                             <div class="value fw-500">{{ properties_in_repair.count | stringformat:"02d" }}</div>
                         </div>
                     </div>
@@ -49,8 +49,8 @@ Dashboard Body
                             <img src="{% static '/images/lazy.svg' %}" data-src="{% static '/dash/images/icon/icon_14.svg' %}" alt=""
                                  class="lazy-img"></div>
                         <div class="order-sm-0">
-                            <span>Properties For Sale</span>
-                            <div class="value fw-500">{{ properties_for_sale.count | stringformat:"02d" }}</div>
+                            <span>Repaired Properties</span>
+                            <div class="value fw-500">{{ repaired_properties.count | stringformat:"02d" }}</div>
                         </div>
                     </div>
                 </div>
@@ -118,72 +118,6 @@ Dashboard Body
                         <canvas id="property-expenses-chart"></canvas>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-xl-5 col-lg-6 d-flex">
-            <div class="recent-job-tab bg-white border-20 mt-30 plr w-100">
-                <h5 class="dash-title-two">Recent Message</h5>
-                <div class="message-wrapper">
-                    <div class="message-sidebar border-0">
-                        <div class="email-read-panel">
-                            <div class="email-list-item read border-0 pt-0">
-                                <div class="email-short-preview position-relative">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="sender-name">Jenny Rio.</div>
-                                        <div class="date">Aug 22</div>
-                                    </div>
-                                    <div class="mail-sub">Work inquiry from google.</div>
-                                    <div class="mail-text">Hello, This is Jenny from google. We’r the largest
-                                        online platform offer...
-                                    </div>
-                                    <div class="attached-file-preview d-flex align-items-center mt-15">
-                                        <div class="file d-flex align-items-center me-2">
-                                            <img src="{% static '/images/lazy.svg' %}" data-src="{% static '/dash/images/icon/icon_28.svg' %}"
-                                                 alt="" class="lazy-img me-2">
-                                            <span>details.pdf</span>
-                                        </div>
-                                    </div>
-                                    <!-- /.attached-file-preview -->
-                                </div>
-                                <!-- /.email-short-preview -->
-                            </div>
-                            <!-- /.email-list-item -->
-
-                            <div class="email-list-item primary">
-                                <div class="email-short-preview position-relative">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="sender-name">Hasan Islam.</div>
-                                        <div class="date">May 22</div>
-                                    </div>
-                                    <div class="mail-sub">Product Designer Opportunities</div>
-                                    <div class="mail-text">Hello, Greeting from Uber. Hope you doing great. I am
-                                        approcing to you for..
-                                    </div>
-                                </div>
-                                <!-- /.email-short-preview -->
-                            </div>
-                            <!-- /.email-list-item -->
-
-                            <div class="email-list-item">
-                                <div class="email-short-preview position-relative">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="sender-name">Jakie Chan</div>
-                                        <div class="date">July 22</div>
-                                    </div>
-                                    <div class="mail-sub">Hunting Marketing Specialist</div>
-                                    <div class="mail-text">Hello, This is Jannat from HuntX. We offer business
-                                        solution to our client..
-                                    </div>
-                                </div>
-                                <!-- /.email-short-preview -->
-                            </div>
-                            <!-- /.email-list-item -->
-                        </div>
-                        <!-- /.email-read-panel -->
-                    </div>
-                    <!-- /.message-sidebar -->
-                </div>
-                <!-- /.message-wrapper -->
             </div>
         </div>
     </div>

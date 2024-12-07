@@ -30,10 +30,10 @@ Dashboard Body
             <table class="table property-list-table">
                 <thead>
                 <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">Views</th>
+                    <th scope="col">Featured Image & Title</th>
+                    <th scope="col">Post Date</th>
                     <th scope="col">Comments</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Category</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
@@ -53,7 +53,7 @@ Dashboard Body
                         <td>{{ post.created_at|date:"d-m-Y" }}</td>
                         <td>{{ post.comments.count }}</td>
                         <td>
-                            <div class="property-status">Active</div>
+                            <div class="property-status">{{ post.category }}</div>
                         </td>
                         <td>
                             <div class="action-dots float-end">

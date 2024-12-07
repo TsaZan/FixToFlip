@@ -62,10 +62,13 @@ class OfferAPISerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
+        featured_image_url = (
+            instance.featured_image.url if instance.featured_image else None
+        )
         offer_data = {
             "id": data.get("id"),
             "title": data.get("title"),
-            "featured_image": data.get("featured_image"),
+            "featured_image": featured_image_url,
             "description": data.get("description"),
             "listed_price_currency": data.get("listed_price_currency"),
             "listed_price": data.get("listed_price"),

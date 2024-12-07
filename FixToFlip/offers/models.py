@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.core.validators import MinLengthValidator
 from django.db import models
 from cloudinary.models import CloudinaryField
 from djmoney.models.fields import MoneyField
@@ -8,6 +9,7 @@ from djmoney.money import Money
 
 from FixToFlip.choices import OfferStatusChoices, PublishChoices
 from FixToFlip.properties.models import Property
+from FixToFlip.validators import bad_words_validator
 
 
 class Offer(models.Model):
@@ -23,6 +25,10 @@ class Offer(models.Model):
         max_length=100,
         blank=True,
         null=True,
+        validators=[
+            MinLengthValidator(10, 'Title must be at least 10 characters long'),
+            bad_words_validator,
+        ]
     )
 
     featured_image = CloudinaryField(
@@ -35,6 +41,10 @@ class Offer(models.Model):
     description = models.TextField(
         blank=True,
         null=True,
+        validators=[
+            MinLengthValidator(30, 'Description must be at least 30 characters long'),
+            bad_words_validator,
+        ]
     )
 
     listed_price = MoneyField(
