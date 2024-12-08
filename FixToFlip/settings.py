@@ -252,8 +252,8 @@ CELERY_IMPORTS = (
 
 CELERY_BEAT_SCHEDULE = {
     'delete-unverified-users-everyday': {
-        'task': 'accounts.tasks.delete_unverified_users',
-        'schedule': crontab(hour=18, minute=25),
+        'task': 'FixToFlip.accounts.tasks.delete_unverified_users',
+        'schedule': crontab(hour=19, minute=00),
         'args': (),
     }
 }
