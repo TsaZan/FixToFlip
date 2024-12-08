@@ -1,0 +1,62 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load socialaccount %}
+
+{% block content %}
+    <body>
+    <div class="main-page-wrapper">
+
+        {% include 'common/navbar.html' %}
+
+
+        <!-- 
+=============================================
+Login Page
+============================================== 
+-->
+        <div class="error-section position-relative z-1 bg-pink">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xxl-8 col-xl-6 col-lg-7 col-md-8 m-auto">
+
+
+                        <div class="container mt-5">
+                            <div class="bg-white rounded shadow p-5">
+                                <h2>Welcome Back!</h2>
+                                <p>Still don't have an account? <a href="{% url 'account_signup' %}">Sign up</a></p>
+
+                                <form id="login-form" action="{% url 'account_login' %}" method="post">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    <button type="submit" class="btn btn-primary">Login</button>
+                                </form>
+
+                                <div class="mt-3">
+                                    <a href="{% url 'account_reset_password' %}">Forgot Password?</a>
+                                </div>
+
+                                <div class="mt-3">
+                                    <a href="{% provider_login_url "google" %}?next={{ request.path }}" class="btn btn-light">
+                                        <img src="{% static 'images/icon/google.png' %}" alt="">
+                                        Login with Google
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% include 'common/ajax-login.html' %}    
+                        
+                        
+                        
+                        <!-- /.title-one -->
+                    </div>
+                </div>
+            </div>
+            <img src={% static "images/lazy.svg" %} data-src={% static "images/assets/ils_08.svg" %} alt=""
+                 class="lazy-img w-100 position-absolute bottom-0 start-0 z-n1">
+        </div>
+    </div>
+    <!-- /.error-section -->
+
+{% endblock %}
