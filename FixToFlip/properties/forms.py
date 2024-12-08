@@ -80,6 +80,10 @@ class ExpenseNotesForm(forms.ModelForm):
     class Meta:
         model = PropertyExpenseNotes
         fields = ('notes', 'expense_date')
+        widgets = {
+            'expense_date': forms.DateInput(attrs={
+                'type': 'date', 'min': '1900-01-01', 'placeholder': 'YYYY-MM-DD'}),
+        }
 
 
 class AddCreditToPropertyForm(forms.Form):
