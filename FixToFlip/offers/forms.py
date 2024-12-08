@@ -47,7 +47,8 @@ class OfferAddForm(OfferBaseForm):
 class OfferEditForm(OfferBaseForm):
     class Meta:
         model = Offer
-        exclude = ['listed_property']
+        exclude = ['listed_property',
+                   ]
         widgets = {
             "description": forms.Textarea(attrs={
                 "rows": 4, "placeholder": "Enter offer details...",
@@ -65,7 +66,8 @@ class PropertyOfferEditForm(PropertyBaseForm):
         exclude = ['owner',
                    'property_name',
                    'property_description',
-                   'bought_date', ]
+                   'bought_date',
+                   ]
 
 
 class OfferDeleteForm(OfferBaseForm):

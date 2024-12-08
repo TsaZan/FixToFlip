@@ -18,132 +18,115 @@
 </head>
 <body>
 
+<div id="preloader">
+    <img src="{% static 'images/loader.gif' %}" alt="Loading...">
+</div>
+
 <script>
     const signupErrors = JSON.parse('{{ signup_errors|default:"{}"|safe }}');
     const loginErrors = JSON.parse('{{ login_errors|default:"{}"|safe }}');
-</script>
-<!-- ################### Login Modal ####################### -->
-<script>
+
+
+    function clearFieldErrors(form) {
+        form.find('.text-danger').remove();
+    }
+
+    function displayGeneralError(form, message) {
+        let errorContainer = form.find('.error-messages');
+        if (errorContainer.length === 0) {
+            errorContainer = $("<div class='error-messages'></div>").prependTo(form);
+        }
+        errorContainer.html(`<p class='text-danger'>${message}</p>`);
+    }
+
+    function displayFieldErrors(form, errors) {
+        clearFieldErrors(form);
+        $.each(errors, function (field, messages) {
+            const input = form.find(`[name="${field}"]`);
+            if (input.length) {
+                const errorHtml = messages.map(msg => `<p class='text-danger'>${msg}</p>`).join("");
+                input.before(errorHtml);
+            }
+        });
+    }
+
     $(document).ready(function () {
         const preloader = $("#preloader");
         const loginForm = $("#loginModal #login-form");
-        const errorContainer = $("<div class='error-messages'></div>").prependTo(loginForm);
-
-        console.log("Login form initialized.");
-
-        loginForm.on("submit", function (e) {
-            e.preventDefault();
-            console.log("Submitting form...");
-            preloader.show();
-
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'ajax_login' %}",
-                data: loginForm.serialize(),
-                headers: {"X-Requested-With": "XMLHttpRequest"},
-                success: function (response) {
-                    preloader.hide();
-                    if (response.success) {
-                        window.location.reload();
-                    } else {
-                        console.log("Login failed. Displaying errors...");
-                        displayFieldErrors(loginForm, response.errors);
-                    }
-                },
-                error: function (jqXHR) {
-                    preloader.hide();
-                    displayGeneralError(loginForm, "Please enter a correct username and password.");
-
-                }
-            });
-        });
-
-        const clearFieldErrors = function (form) {
-            form.find('.text-danger').remove();
-        };
-
-        const displayGeneralError = function (form, message) {
-            let errorContainer = form.find('.error-messages');
-            if (errorContainer.length === 0) {
-                errorContainer = $("<div class='error-messages'></div>").prependTo(form);
-            }
-            errorContainer.html(`<p class='text-danger'>${message}</p>`);
-        };
-
-        // Функция за показване на грешки в конкретни полета
-        const displayFieldErrors = function (form, errors) {
-            clearFieldErrors(form); // Изчистване на старите грешки
-            $.each(errors, function (field, messages) {
-                const input = form.find(`[name="${field}"]`);
-                if (input.length) {
-                    const errorHtml = messages.map(msg => `<p class='text-danger'>${msg}</p>`).join("");
-                    input.before(errorHtml);
-                }
-            });
-        };
-    });
-
-    $(document).ready(function () {
-        const preloader = $("#preloader");
         const signupForm = $("#loginModal #signup-form");
 
-        console.log("Signup form initialized.");
+        if (loginForm.length > 0) {
+            let loginErrorContainer = loginForm.find('.error-messages');
+            if (!loginErrorContainer.length) {
+                loginErrorContainer = $("<div class='error-messages'></div>").prependTo(loginForm);
+            }
 
-        signupForm.on("submit", function (e) {
-            e.preventDefault();
-            preloader.show();
-            clearFieldErrors(signupForm);
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'ajax_signup' %}",
-                data: signupForm.serialize(),
-                headers: { "X-Requested-With": "XMLHttpRequest" },
+            loginForm.on("submit", function (e) {
+                e.preventDefault();
+                preloader.show();
 
-                success: function (response) {
-                    preloader.hide();
-
-                    if (response.success) {
-                        window.location.reload();
-                    } else {
-                        displayFieldErrors(signupForm, response.errors);
-                    }
-                },
-
-                error: function (jqXHR) {
-                    preloader.hide();
-                    const errorContainer = signupForm.find('.error-messages');
-                    if (errorContainer.length === 0) {
-                        signupForm.prepend("<div class='error-messages'></div>");
-                    }
-
-                    try {
-                        const response = JSON.parse(jqXHR.responseText);
-                        if (response.errors) {
-                            displayFieldErrors(signupForm, response.errors);
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'ajax_login' %}",
+                    data: loginForm.serialize(),
+                    headers: {"X-Requested-With": "XMLHttpRequest"},
+                    success: function (response) {
+                        preloader.hide();
+                        if (response.success) {
+                            window.location.reload();
                         } else {
-                            errorContainer.html("<p class='text-danger'>Unexpected error occurred.</p>");
+                            displayFieldErrors(loginForm, response.errors);
                         }
-                    } catch (e) {
-                        console.error("Error parsing response:", e);
-                        errorContainer.html("<p class='text-danger'>Unexpected error occurred.</p>");
+                    },
+                    error: function () {
+                        preloader.hide();
+                        displayGeneralError(loginForm, "Please enter a correct username and password.");
                     }
-                }
+                });
             });
-        });
+        }
 
-        const clearFieldErrors = function (form) {
-            form.find('.text-danger').remove();
-        };
+        if (signupForm.length > 0) {
+            let signupErrorContainer = signupForm.find('.error-messages');
+            if (!signupErrorContainer.length) {
+                signupErrorContainer = $("<div class='error-messages'></div>").prependTo(signupForm);
+            }
 
-        const displayFieldErrors = function (form, errors) {
-            $.each(errors, function (field, messages) {
-                const input = form.find(`[name="${field}"]`);
-                if (input.length) {
-                    const errorHtml = messages.map(msg => `<p class='text-danger'>${msg}</p>`).join("");
-                    input.after(errorHtml);
-                }
+            signupForm.on("submit", function (e) {
+                e.preventDefault();
+                preloader.show();
+                clearFieldErrors(signupForm);
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'ajax_signup' %}",
+                    data: signupForm.serialize(),
+                    headers: { "X-Requested-With": "XMLHttpRequest" },
+                    success: function (response) {
+                        preloader.hide();
+                        if (response.success) {
+                            window.location.reload();
+                        } else {
+                            displayFieldErrors(signupForm, response.errors);
+                        }
+                    },
+                    error: function (jqXHR) {
+                        preloader.hide();
+
+                        try {
+                            const response = JSON.parse(jqXHR.responseText);
+                            if (response.errors) {
+                                displayFieldErrors(signupForm, response.errors);
+                            } else {
+                                signupErrorContainer.html("<p class='text-danger'>Unexpected error occurred.</p>");
+                            }
+                        } catch (e) {
+                            signupErrorContainer.html("<p class='text-danger'>Unexpected error occurred.</p>");
+                        }
+                    }
+                });
             });
-        };
+        }
     });
 </script>
 </body>

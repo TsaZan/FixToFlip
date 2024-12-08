@@ -47,6 +47,7 @@ class DashboardOffersView(LoginRequiredMixin, TemplateView):
 def add_offer_view(request, pk):
     if request.method == 'POST' and not Offer.objects.filter(listed_property__pk=pk).exists():
         form = OfferAddForm(request.POST)
+
         if form.is_valid() and request.user == Property.objects.get(pk=pk).owner:
             offer = form.save(commit=False)
             offer.listed_property = Property.objects.get(pk=pk)
@@ -83,6 +84,23 @@ class EditOfferView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         offer_form = OfferEditForm(request.POST, request.FILES, instance=self.object)
         property_form = PropertyOfferEditForm(request.POST, instance=self.object.listed_property)
         property_form.property_name = self.object.listed_property.property_name
+        user_profile = property_form.instance.owner.profile
+
+        if user_profile.profile_type == 'Personal':
+            if user_profile.user.first_name and user_profile.user.last_name and user_profile.phone_number:
+                pass
+            else:
+                property_form.add_error(None, 'As a personal profile, please provide your first name, last name, '
+                                              'and phone number before publishing a listing.')
+        elif user_profile.profile_type == 'Company':
+            if user_profile.company_name and user_profile.company_phone:
+                pass
+            else:
+                property_form.add_error(None, 'As a company profile, you must provide a company name and a phone '
+                                              'number before publishing a listing')
+        elif not user_profile.profile_type:
+            property_form.add_error(None, f'Please set up your profile type and provide the necessary details before '
+                                          'publishing a listing.')
 
         if offer_form.is_valid() and property_form.is_valid():
             offer_form.save()

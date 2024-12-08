@@ -14,16 +14,22 @@ class CreditAddForm(CreditBaseForm):
         model = Credit
         fields = '__all__'
 
+        widgets = {
+            'credit_term': forms.DateInput(attrs={
+                'type': 'date', 'min': '1900-01-01', 'placeholder': 'YYYY-MM-DD'}),
+            'credit_start_date': forms.DateInput(attrs={
+                'type': 'date', 'min': '1900-01-01', 'placeholder': 'YYYY-MM-DD'}),
+
+        }
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['credit_owner'].required = False
-        self.fields['credit_type'].widget.attrs['class'] = 'btn btn-two btn-lg dropdown-toggle'
+        self.fields['credit_type'].widget.attrs['class'] = 'nice-select'
+
         self.fields['bank_name'].widget.attrs['placeholder'] = 'Bank Name'
         self.fields['credit_description'].widget.attrs['placeholder'] = 'Notes (optional)'
         self.fields['credit_interest'].widget.attrs['placeholder'] = '%'
-        self.fields['credit_start_date'].widget.attrs['placeholder'] = 'YYYY-MM-DD'
-        self.fields['credit_term'].widget.attrs['type'] = 'YYYY-MM-DD'
-        self.fields['credit_term'].widget.attrs['placeholder'] = 'YYYY-MM-DD'
 
 
 class CreditEditForm(CreditAddForm):

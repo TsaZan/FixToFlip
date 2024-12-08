@@ -13,7 +13,7 @@ Dashboard Body
     <h2 class="main-title d-block d-lg-none">Edit Offer</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.errors }}
+        <div class="error-message">{{ property_form.non_field_errors }}</div>
         <div class="bg-white card-box border-20">
             <h4 class="dash-title-three">Overview</h4>
             <div class="dash-input-wrapper mb-30">

@@ -2,6 +2,8 @@ from datetime import timedelta
 from pathlib import Path
 
 import os
+
+from celery.schedules import crontab
 from dotenv import load_dotenv
 import dj_database_url
 import cloudinary
@@ -247,3 +249,11 @@ CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 CELERY_IMPORTS = (
     'FixToFlip.common.task',
 )
+
+CELERY_BEAT_SCHEDULE = {
+    'delete-unverified-users-everyday': {
+        'task': 'accounts.tasks.delete_unverified_users',
+        'schedule': crontab(hour=18, minute=0),
+        'args': (),
+    }
+}
