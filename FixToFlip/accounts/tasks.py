@@ -1,6 +1,7 @@
 from allauth.account.models import EmailAddress
 from celery import shared_task
 from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
 from django.utils.timezone import now
 from datetime import timedelta
 
@@ -27,6 +28,17 @@ def delete_unverified_users():
         is_active=True,
         date_joined__lt=expire_date,
         emailaddress__verified=False
+    )
+
+    unverified_users_list = list(unverified_users)
+    unverified_users_data = [f"{user.username} <{user.email}>" for user in unverified_users_list]
+    message = "Today we delete:\n" + "\n".join(unverified_users_data)
+
+    send_mail(
+        subject="Deleted Users",
+        message=message,
+        from_email="fixtoflips@gmail.com",
+        recipient_list=["fixtoflips@gmail.com"]
     )
 
     unverified_users.delete()

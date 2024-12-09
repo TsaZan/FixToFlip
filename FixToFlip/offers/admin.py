@@ -1,7 +1,7 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 
-from FixToFlip.offers.models import Offer, OfferImages, OfferVideos
+from FixToFlip.offers.models import Offer
 
 
 @admin.register(Offer)
@@ -23,11 +23,3 @@ class OfferAdmin(ModelAdmin):
     )
 
 
-@admin.register(OfferImages)
-class OfferImagesAdmin(ModelAdmin):
-    pass
-
-
-@admin.register(OfferVideos)
-class OfferVideosAdmin(admin.ModelAdmin):
-    pass

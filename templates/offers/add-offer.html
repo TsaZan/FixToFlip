@@ -13,19 +13,18 @@ Dashboard Body
     <h2 class="main-title d-block d-lg-none">Add New Offer</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.errors }}
         <div class="bg-white card-box border-20">
             <h4 class="dash-title-three">Overview</h4>
             <div class="dash-input-wrapper mb-30">
-                <label for="">Property Title*</label>
+                <label for="">Offer Title*</label>
                 {{ form.title }}
-                {{ form.title.errors }}
+                <div class="error-message">{{ form.title.errors }}</div>
             </div>
             <!-- /.dash-input-wrapper -->
             <div class="dash-input-wrapper mb-30">
-                <label for="">Description</label>
+                <label for="">Description*</label>
                 {{ form.description }}
-                {{ form.description.errors }}
+                <div class="error-message">{{ form.description.errors }}</div>
 
             </div>
             <!-- /.dash-input-wrapper -->
@@ -46,7 +45,7 @@ Dashboard Body
                     <div class="dash-input-wrapper mb-0">
                         <label for="">Listing Price</label>
                         {{ form.listed_price | add_class:"form-control" }}
-                        {{ form.listed_price.errors }}
+                        <div class="error-message">{{ form.listed_price.errors }}</div>
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
