@@ -109,7 +109,9 @@ class CreditDetailsView(LoginRequiredMixin, TemplateView):
             payment.credit = credit
             payment.save()
             return redirect('credit_details', pk=credit.id)
-        return render(request, 'credits/credit-details.html', {'credit': credit, 'form': form})
+        context = self.get_context_data(**kwargs)
+        context['form'] = form
+        return self.render_to_response(context)
 
 
 class CreditPaymentDeleteView(LoginRequiredMixin, View):
