@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from FixToFlip.credits.views import (EditCreditView, DeleteCreditView,
-                                     DashboardCreditsView, CreditDetailsView, CreditAddView)
+                                     DashboardCreditsView, CreditDetailsView, CreditAddView, CreditPaymentDeleteView)
 
 urlpatterns = [
 
@@ -13,5 +13,7 @@ urlpatterns = [
     path('<int:pk>/', include([
         path('', CreditDetailsView.as_view(), name='credit_details'),
         path('edit/', EditCreditView.as_view(), name='edit_credit'),
-        path('delete/', DeleteCreditView.as_view(), name='delete_credit'),])),
+        path('delete/', DeleteCreditView.as_view(), name='delete_credit'),
+        path('delete-payment/', CreditPaymentDeleteView.as_view(), name='delete_credit_payment')
+    ])),
 ]

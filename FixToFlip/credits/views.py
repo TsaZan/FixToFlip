@@ -1,8 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from django.db.models import Sum
-from django.shortcuts import redirect, render
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
 from djmoney.money import Money
 
@@ -108,6 +110,16 @@ class CreditDetailsView(LoginRequiredMixin, TemplateView):
             payment.save()
             return redirect('credit_details', pk=credit.id)
         return render(request, 'credits/credit-details.html', {'credit': credit, 'form': form})
+
+
+class CreditPaymentDeleteView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        payment = get_object_or_404(CreditPayment, pk=self.kwargs['pk'])
+        credit_id = payment.credit.id
+
+        payment.delete()
+
+        return HttpResponseRedirect(reverse_lazy('credit_details', kwargs={'pk': credit_id}))
 
 
 class EditCreditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
