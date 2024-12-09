@@ -47,14 +47,7 @@ Property Listing Details
                             <!-- /.property-overview -->
                             <div class="property-feature-accordion border-top p-40">
                                 <h3 class="mb-20">Property Expenses</h3>
-                                {#                                <p class="fs-20 lh-lg">#}
-                                {#                                <ul>#}
-                                {#                                    <li>The biggest expenses for this#}
-                                {#                                        property: {{ expenses.biggest_expense.0 | capfirst }}#}
-                                {#                                        for {{ expenses.biggest_expense.1 }}</li>#}
-                                {#                                    <li>Last added expense for this property: {{ expenses.last_expense_date }}</li>#}
-                                {#                                </ul>#}
-                                {#                                </p>#}
+
                                 {% for expenses in property.property_expenses.all %}
 
                                     <h5 class="pt-30 pb-25">Renovation Expenses:</h5>
