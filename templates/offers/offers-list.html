@@ -32,16 +32,16 @@ Dashboard Body
 
     <div class="bg-white card-box p0 border-20">
         <div class="table-responsive-md pt-25 pb-25 pe-4 ps-4">
-            <table class="table property-list-table">
+            <table class="table property-list-table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">Featured Image & Offer Title</th>
-                    <th scope="col">Listed Property</th>
-                    <th scope="col">Listed Date</th>
-                    <th scope="col">Listed Price</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Action</th>
+                    <th class="text-start" scope="col">Featured Image & Offer Title</th>
+                    <th class="text-start" scope="col">Listed Property</th>
+                    <th class="text-start" scope="col">Listed Date</th>
+                    <th class="text-start" scope="col">Listed Price</th>
+                    <th class="text-start" scope="col">Description</th>
+                    <th class="text-start" scope="col">Status</th>
+                    <th class="text-start" scope="col">Action</th>
 
                 </tr>
                 </thead>
@@ -64,7 +64,9 @@ Dashboard Body
                         <td>{{ offer.listed_property.bought_date | date:"d-m-Y" }}</td>
                         <td><strong class="price">{{ offer.listed_price }}</strong></td>
                         <td>
-                            <div class="text">{{ offer.description }}</div>
+                            <div style="white-space: normal; overflow-wrap: break-word;">
+                                {{ offer.description }}
+                            </div>
                         </td>
                         {% if offer.is_published == 'True' %}
                             <td class="property-status">
