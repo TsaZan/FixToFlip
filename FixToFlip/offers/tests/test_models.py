@@ -2,7 +2,7 @@ from django.test import TestCase
 from djmoney.money import Money
 
 from FixToFlip.choices import PublishChoices
-from FixToFlip.offers.models import Offer, OfferImages, OfferVideos
+from FixToFlip.offers.models import Offer
 from FixToFlip.properties.models import Property
 from datetime import date
 
@@ -76,45 +76,3 @@ class OfferModelTest(TestCase):
         self.assertEqual(offers.last(), self.offer)
 
 
-class OfferImagesVideosTest(TestCase):
-
-    def setUp(self):
-        self.property = Property.objects.create(
-            property_name="Test Property",
-            country="Test Country",
-            city="Test Town",
-            address="123 Test St",
-            property_type="House",
-            bedrooms=3,
-            property_size=120,
-            bought_date="2023-01-01",
-            property_condition="New",
-            owner=User.objects.create_user(
-                username='testuser',
-                password='testpassword'
-            )
-            ,
-        )
-        self.offer = Offer.objects.create(
-            title="Test Offer",
-            description="Test description.",
-            listed_price=Money(100000, "EUR"),
-            listed_property=self.property,
-        )
-        self.image = OfferImages.objects.create(
-            related_property=self.offer,
-            image="test_image.jpg",
-        )
-
-        self.video = OfferVideos.objects.create(
-            related_property=self.offer,
-            video="test_video.mp4",
-        )
-
-    def test_image_creation(self):
-        self.assertEqual(self.image.related_property, self.offer)
-        self.assertEqual(self.image.image, "test_image.jpg")
-
-    def test_video_creation(self):
-        self.assertEqual(self.video.related_property, self.offer)
-        self.assertEqual(self.video.video, "test_video.mp4")

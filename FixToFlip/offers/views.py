@@ -105,6 +105,9 @@ class EditOfferView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if offer_form.is_valid() and property_form.is_valid():
             offer_form.save()
             property_form.save()
+            action = request.POST.get('action', None)
+            if action == 'photo-submit':
+                return redirect('edit_offer', pk=self.object.pk)
             return redirect('offers_main_page')
 
         context = self.get_context_data()

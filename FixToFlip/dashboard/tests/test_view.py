@@ -46,8 +46,8 @@ class DashboardViewTest(TestCase):
             transform=lambda x: x
         )
         self.assertQuerySetEqual(
-            response.context['properties_for_sale'],
-            Property.objects.filter(owner=self.user, property_condition='For sale'),
+            response.context['repaired_properties'],
+            Property.objects.filter(owner=self.user, property_condition='Repaired'),
             transform=lambda x: x
         )
         self.assertQuerySetEqual(

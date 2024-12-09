@@ -23,10 +23,8 @@ class Offer(models.Model):
 
     title = models.CharField(
         max_length=100,
-        blank=True,
-        null=True,
         validators=[
-            MinLengthValidator(10, 'Title must be at least 10 characters long'),
+            MinLengthValidator(20, 'Title must be at least 20 characters long'),
             bad_words_validator,
         ]
     )
@@ -39,10 +37,8 @@ class Offer(models.Model):
     )
 
     description = models.TextField(
-        blank=True,
-        null=True,
         validators=[
-            MinLengthValidator(30, 'Description must be at least 30 characters long'),
+            MinLengthValidator(50, 'Description must be at least 50 characters long'),
             bad_words_validator,
         ]
     )
@@ -52,10 +48,10 @@ class Offer(models.Model):
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
         validators=[MinMoneyValidator(
-            Decimal(0),
-            message='Price cannot be negative.')],
-        blank=True,
-        null=True,
+            Decimal(1),
+            message='Price cannot be negative or 0.')],
+        blank=False,
+        null=False
     )
 
     offer_status = models.CharField(
@@ -110,44 +106,3 @@ class Offer(models.Model):
 
     def __str__(self):
         return self.title
-
-
-class OfferImages(models.Model):
-    class Meta:
-        verbose_name = 'Offer Image'
-        verbose_name_plural = 'Offer Images'
-        ordering = ['-uploaded_at']
-
-    related_property = models.ForeignKey(
-        to=Offer,
-        on_delete=models.CASCADE,
-        related_name='images'
-    )
-
-    image = CloudinaryField('image',
-                            resource_type='image')
-
-    uploaded_at = models.DateTimeField(
-        auto_now_add=True
-    )
-
-
-class OfferVideos(models.Model):
-    class Meta:
-        verbose_name = 'Offer Video'
-        verbose_name_plural = 'Offer Videos'
-        ordering = ['-uploaded_at']
-
-    related_property = models.ForeignKey(
-        to=Offer,
-        on_delete=models.CASCADE,
-        related_name='videos'
-    )
-
-    video = CloudinaryField('video',
-                            resource_type='video',
-                            )
-
-    uploaded_at = models.DateTimeField(
-        auto_now_add=True
-    )
