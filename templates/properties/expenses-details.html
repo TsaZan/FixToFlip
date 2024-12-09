@@ -166,21 +166,23 @@ Property Listing Details
 
                         </div>
                     </div>
-                    <div class="col-xl-4 col-lg-8 me-auto ms-auto">
+                    <div class="col-12 col-md-6 col-lg-8 col-xl-4 me-auto ms-auto">
                         <div class="theme-sidebar-one ms-xl-6 lg-mt-80">
 
                             <div class="tour-schedule bg-white border-20 p-30 mb-40">
                                 <h5 class="mb-40">Add Expense</h5>
-                                <form class='form-multiline' action="#" method="post">
+                                <form class='form-multiline row' action="#" method="post">
                                     {% csrf_token %}
-                                    {{ form }}
-                                    {{ form.errors }}
-                                    {{ notes_form }}
-                                    {{ notes_form.errors }}
-                                    <br>
-                                    <div class="input-box-three mb-25"><!-- /.input-box-three -->
-                                        <button class="btn-nine text-uppercase rounded-3 w-100 mb-10">Add Expense
-                                        </button>
+                                    <div class="col-12 mb-3">
+                                        {{ form }}
+                                        {{ form.errors }}
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        {{ notes_form }}
+                                        {{ notes_form.errors }}
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn-nine text-uppercase rounded-3 w-100 mb-10">Add Expense</button>
                                     </div>
                                 </form>
                             </div>

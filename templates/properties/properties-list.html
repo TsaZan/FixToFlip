@@ -53,7 +53,7 @@ Dashboard Body
                                     <a href="{% url 'property_details' pk=property.pk %}"
                                        class="property-name tran3s color-dark fw-500 fs-20 stretched-link">{{ property.property_name }}</a>
                                     <div class="address">{{ property.country }}, {{ property.city }}, {{ property.address }}</div>
-                                    <strong class="price">{{ property.property_financial_information.values_list.0.1 }} {{ property.property_financial_information.values_list.0.2 }}</strong>
+                                    <strong class="price">Price: {{ property.property_financial_information.values_list.0.1 }} {{ property.property_financial_information.values_list.0.2 }}</strong>
                                 </div>
                             </div>
                         </td>
@@ -63,7 +63,7 @@ Dashboard Body
                             <div class="property-status">{{ property.property_condition }}</div>
                         </td>
                         <td>
-                            <div class="price">{{ property.property_expenses.values_list.0.17 }} {{ property.property_expenses.values_list.0.18 }}</div>
+                            <div class="price">{{ property.property_expenses.values_list.0.19 }} {{ property.property_expenses.values_list.0.20 }}</div>
                         </td>
 
                         <td>

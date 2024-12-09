@@ -58,7 +58,8 @@ Property Listing Details
                                         <th scope="col">Date</th>
                                         <th scope="col">Principal Amount</th>
                                         <th scope="col">Interest Amount</th>
-                                        <th scope="col">Paid</th>
+                                        <th scope="col">Payment Id</th>
+                                        <th scope="col"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -68,7 +69,16 @@ Property Listing Details
                                             <td>{{ payment.payment_date | date:"d - m - Y" }}</td>
                                             <td>{{ payment.principal_amount }}</td>
                                             <td>{{ payment.interest_amount }}</td>
-                                            <td>{{ payment.full_payment }}</td>
+                                            <td>{{ payment.id }}</td>
+                                            <td>
+                                                <form method="post" action="{% url 'delete_credit_payment' payment.id %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('Are you sure you want to delete this credit payment?');">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     {% endfor %}
                                     <tr>
@@ -76,7 +86,9 @@ Property Listing Details
                                         <td scope="row" class="fw-500">Total:</td>
                                         <td>{{ total_principal }}</td>
                                         <td>{{ total_interest }}</td>
-                                        <td>{{ full_payment }}</td>
+                                        <td></td>
+                                        <td></td>
+
                                     </tr>
 
                                     </tbody>
