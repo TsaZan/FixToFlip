@@ -175,11 +175,11 @@ Property Listing Details
                                     {% csrf_token %}
                                     <div class="col-12 mb-3">
                                         {{ form }}
-                                        {{ form.errors }}
+                                        <div class="error-message">{{ form.errors }}</div>
                                     </div>
                                     <div class="col-12 mb-3">
                                         {{ notes_form }}
-                                        {{ notes_form.errors }}
+                                        <div class="error-message">{{ notes_form.errors }}</div>
                                     </div>
                                     <div class="col-12">
                                         <button class="btn-nine text-uppercase rounded-3 w-100 mb-10">Add Expense</button>

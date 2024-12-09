@@ -18,13 +18,13 @@ Dashboard Body
             <div class="dash-input-wrapper mb-30">
                 <label for="">Property Title*</label>
                 {{ property_form.property_name }}
-                {{ property_form.title.errors }}
+                <div class="error-message">{{ property_form.title.errors }}</div>
             </div>
             <!-- /.dash-input-wrapper -->
             <div class="dash-input-wrapper mb-30">
                 <label for="">Description</label>
                 {{ property_form.property_description }}
-                {{ property_form.description.errors }}
+                <div class="error-message">{{ property_form.description.errors }}</div>
 
             </div>
             <!-- /.dash-input-wrapper -->
@@ -55,7 +55,7 @@ Dashboard Body
                     <div class="dash-input-wrapper mb-30">
                         <label for="">Initial Price</label>
                         {{ property_financial_information_form.initial_price | add_class:'form-control' }}
-                        {{ property_financial_information_form.initial_price.errors }}
+                        <div class="error-message">{{ property_financial_information_form.initial_price.errors }}</div>
 
                     </div>
                     <!-- /.dash-input-wrapper -->
@@ -64,7 +64,7 @@ Dashboard Body
                     <div class="dash-input-wrapper mb-30">
                         <label for="">Expected Expenses</label>
                         {{ expense_form.expected_expenses  | add_class:'form-control' }}
-                        {{ expense_form.expected_expenses.errors }}
+                        <div class="error-message">{{ expense_form.expected_expenses.errors }}</div>
 
                     </div>
                     <!-- /.dash-input-wrapper -->
@@ -79,8 +79,7 @@ Dashboard Body
                     <!-- /.dash-input-wrapper -->
                 </div>
 
-                    <!-- /.dash-input-wrapper -->
-                </div>
+                <!-- /.dash-input-wrapper -->
             </div>
         </div>
         <!-- /.card-box -->
@@ -149,7 +148,7 @@ Dashboard Body
                     <div class="dash-input-wrapper mb-25">
                         <label for="">Country</label>
                         {{ property_form.country }}
-                        
+
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
@@ -158,7 +157,7 @@ Dashboard Body
                         <label for="">City</label>
                         {{ property_form.city }}
 
-                 
+
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>

@@ -138,7 +138,7 @@ Property Listing Details
                                         {% csrf_token %}
                                         <div class="error-message text-center">{{ errors | linebreaksbr }}</div>
                                         {{ credit_form }}
-                                        {{ credit_form.errors }}
+                                        <div class="error-message">{{ credit_form.errors }}</div>
                                         <br>
                                         <div class="input-box-three mb-25"><!-- /.input-box-three -->
                                             <button class="btn-nine text-uppercase rounded-3 w-100 mb-10">Add To Credit
