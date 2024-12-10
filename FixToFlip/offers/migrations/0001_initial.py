@@ -10,28 +10,95 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Offer',
+            name="Offer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100)),
-                ('description', models.TextField()),
-                ('image', cloudinary.models.CloudinaryField(blank=True, max_length=255, null=True, verbose_name='image')),
-                ('video', cloudinary.models.CloudinaryField(blank=True, max_length=255, null=True, verbose_name='video')),
-                ('price_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3, null=True)),
-                ('price', djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True)),
-                ('offer_validity', models.DateField(blank=True, null=True)),
-                ('brokerage_commission_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3, null=True)),
-                ('brokerage_commission', djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=8, null=True)),
-                ('offer_status', models.CharField(blank=True, choices=[('P', 'Proposed'), ('A', 'Active'), ('N', 'Negotiations'), ('E', 'Expired'), ('S', 'Sold')], max_length=10, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True, null=True)),
-                ('updated_at', models.DateTimeField(auto_now=True, null=True)),
-                ('rooms', models.PositiveIntegerField(blank=True, null=True)),
-                ('property_size', models.PositiveIntegerField(blank=True, null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=100)),
+                ("description", models.TextField()),
+                (
+                    "image",
+                    cloudinary.models.CloudinaryField(
+                        blank=True, max_length=255, null=True, verbose_name="image"
+                    ),
+                ),
+                (
+                    "video",
+                    cloudinary.models.CloudinaryField(
+                        blank=True, max_length=255, null=True, verbose_name="video"
+                    ),
+                ),
+                (
+                    "price_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                        null=True,
+                    ),
+                ),
+                (
+                    "price",
+                    djmoney.models.fields.MoneyField(
+                        blank=True,
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=10,
+                        null=True,
+                    ),
+                ),
+                ("offer_validity", models.DateField(blank=True, null=True)),
+                (
+                    "brokerage_commission_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                        null=True,
+                    ),
+                ),
+                (
+                    "brokerage_commission",
+                    djmoney.models.fields.MoneyField(
+                        blank=True,
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=8,
+                        null=True,
+                    ),
+                ),
+                (
+                    "offer_status",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("P", "Proposed"),
+                            ("A", "Active"),
+                            ("N", "Negotiations"),
+                            ("E", "Expired"),
+                            ("S", "Sold"),
+                        ],
+                        max_length=10,
+                        null=True,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True, null=True)),
+                ("updated_at", models.DateTimeField(auto_now=True, null=True)),
+                ("rooms", models.PositiveIntegerField(blank=True, null=True)),
+                ("property_size", models.PositiveIntegerField(blank=True, null=True)),
             ],
         ),
     ]

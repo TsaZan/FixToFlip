@@ -8,23 +8,43 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('properties', '0019_alter_propertyexpense_administrative_fees_and_more'),
+        ("properties", "0019_alter_propertyexpense_administrative_fees_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='propertyexpense',
-            name='credit_interest',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, verbose_name='Credit Interest'),
+            model_name="propertyexpense",
+            name="credit_interest",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                verbose_name="Credit Interest",
+            ),
         ),
         migrations.AddField(
-            model_name='propertyexpense',
-            name='credit_interest_currency',
-            field=djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3, null=True),
+            model_name="propertyexpense",
+            name="credit_interest_currency",
+            field=djmoney.models.fields.CurrencyField(
+                choices=[("EUR", "Euro")],
+                default="EUR",
+                editable=False,
+                max_length=3,
+                null=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='other_expenses',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, verbose_name='Other Expenses'),
+            model_name="propertyexpense",
+            name="other_expenses",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                verbose_name="Other Expenses",
+            ),
         ),
     ]

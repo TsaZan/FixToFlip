@@ -6,13 +6,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0007_rename_facebook_url_profile_company_url_and_more'),
+        ("accounts", "0007_rename_facebook_url_profile_company_url_and_more"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='profile',
-            old_name='company_location_country',
-            new_name='company_location',
+            model_name="profile",
+            old_name="company_location_country",
+            new_name="company_location",
         ),
     ]

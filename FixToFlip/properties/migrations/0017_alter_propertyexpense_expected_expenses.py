@@ -8,13 +8,25 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('properties', '0016_alter_property_property_type_and_more'),
+        ("properties", "0016_alter_property_property_type_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='expected_expenses',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=8, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expected expenses cannot be negative.')], verbose_name='Expected Expenses'),
+            model_name="propertyexpense",
+            name="expected_expenses",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=8,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expected expenses cannot be negative."
+                    )
+                ],
+                verbose_name="Expected Expenses",
+            ),
         ),
     ]

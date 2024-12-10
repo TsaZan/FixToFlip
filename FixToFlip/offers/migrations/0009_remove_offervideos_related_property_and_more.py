@@ -11,40 +11,68 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('offers', '0008_alter_offer_description_alter_offer_title'),
+        ("offers", "0008_alter_offer_description_alter_offer_title"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='offervideos',
-            name='related_property',
+            model_name="offervideos",
+            name="related_property",
         ),
         migrations.AlterField(
-            model_name='offer',
-            name='description',
-            field=models.TextField(default=1, validators=[django.core.validators.MinLengthValidator(50, 'Description must be at least 50 characters long'), FixToFlip.validators.bad_words_validator]),
+            model_name="offer",
+            name="description",
+            field=models.TextField(
+                default=1,
+                validators=[
+                    django.core.validators.MinLengthValidator(
+                        50, "Description must be at least 50 characters long"
+                    ),
+                    FixToFlip.validators.bad_words_validator,
+                ],
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='offer',
-            name='listed_price',
-            field=djmoney.models.fields.MoneyField(decimal_places=2, default=Decimal('0'), max_digits=10, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('1'), message='Price cannot be negative or 0.')]),
+            model_name="offer",
+            name="listed_price",
+            field=djmoney.models.fields.MoneyField(
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("1"), message="Price cannot be negative or 0."
+                    )
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='offer',
-            name='listed_price_currency',
-            field=djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3),
+            model_name="offer",
+            name="listed_price_currency",
+            field=djmoney.models.fields.CurrencyField(
+                choices=[("EUR", "Euro")], default="EUR", editable=False, max_length=3
+            ),
         ),
         migrations.AlterField(
-            model_name='offer',
-            name='title',
-            field=models.CharField(default=1, max_length=100, validators=[django.core.validators.MinLengthValidator(20, 'Title must be at least 20 characters long'), FixToFlip.validators.bad_words_validator]),
+            model_name="offer",
+            name="title",
+            field=models.CharField(
+                default=1,
+                max_length=100,
+                validators=[
+                    django.core.validators.MinLengthValidator(
+                        20, "Title must be at least 20 characters long"
+                    ),
+                    FixToFlip.validators.bad_words_validator,
+                ],
+            ),
             preserve_default=False,
         ),
         migrations.DeleteModel(
-            name='OfferImages',
+            name="OfferImages",
         ),
         migrations.DeleteModel(
-            name='OfferVideos',
+            name="OfferVideos",
         ),
     ]

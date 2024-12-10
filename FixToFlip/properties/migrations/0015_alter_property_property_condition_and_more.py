@@ -7,18 +7,32 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('properties', '0014_rename_expanse_date_propertyexpensenotes_expense_date'),
+        ("properties", "0014_rename_expanse_date_propertyexpensenotes_expense_date"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='property',
-            name='property_condition',
-            field=models.CharField(blank=True, choices=[('Under repair', 'Under repair'), ('Repaired', 'Repaired'), ('For sale', 'For sale'), ('Sold', 'Sold')], max_length=100, null=True),
+            model_name="property",
+            name="property_condition",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("Under repair", "Under repair"),
+                    ("Repaired", "Repaired"),
+                    ("For sale", "For sale"),
+                    ("Sold", "Sold"),
+                ],
+                max_length=100,
+                null=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpensenotes',
-            name='relates_expenses',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='expenses_notes', to='properties.propertyexpense'),
+            model_name="propertyexpensenotes",
+            name="relates_expenses",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="expenses_notes",
+                to="properties.propertyexpense",
+            ),
         ),
     ]

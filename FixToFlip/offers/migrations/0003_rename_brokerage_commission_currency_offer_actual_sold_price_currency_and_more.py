@@ -11,87 +11,150 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('offers', '0002_alter_offer_offer_status'),
-        ('properties', '0018_delete_propertyforsale'),
+        ("offers", "0002_alter_offer_offer_status"),
+        ("properties", "0018_delete_propertyforsale"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='offer',
-            old_name='brokerage_commission_currency',
-            new_name='actual_sold_price_currency',
+            model_name="offer",
+            old_name="brokerage_commission_currency",
+            new_name="actual_sold_price_currency",
         ),
         migrations.RenameField(
-            model_name='offer',
-            old_name='image',
-            new_name='featured_image',
+            model_name="offer",
+            old_name="image",
+            new_name="featured_image",
         ),
         migrations.RenameField(
-            model_name='offer',
-            old_name='price_currency',
-            new_name='listed_price_currency',
+            model_name="offer",
+            old_name="price_currency",
+            new_name="listed_price_currency",
         ),
         migrations.RenameField(
-            model_name='offer',
-            old_name='offer_validity',
-            new_name='sold_date',
+            model_name="offer",
+            old_name="offer_validity",
+            new_name="sold_date",
         ),
         migrations.RemoveField(
-            model_name='offer',
-            name='brokerage_commission',
+            model_name="offer",
+            name="brokerage_commission",
         ),
         migrations.RemoveField(
-            model_name='offer',
-            name='price',
+            model_name="offer",
+            name="price",
         ),
         migrations.RemoveField(
-            model_name='offer',
-            name='property_size',
+            model_name="offer",
+            name="property_size",
         ),
         migrations.RemoveField(
-            model_name='offer',
-            name='rooms',
+            model_name="offer",
+            name="rooms",
         ),
         migrations.RemoveField(
-            model_name='offer',
-            name='video',
+            model_name="offer",
+            name="video",
         ),
         migrations.AddField(
-            model_name='offer',
-            name='actual_sold_price',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, max_digits=10, null=True),
+            model_name="offer",
+            name="actual_sold_price",
+            field=djmoney.models.fields.MoneyField(
+                blank=True, decimal_places=2, max_digits=10, null=True
+            ),
         ),
         migrations.AddField(
-            model_name='offer',
-            name='listed_price',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Price cannot be negative.')]),
+            model_name="offer",
+            name="listed_price",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Price cannot be negative."
+                    )
+                ],
+            ),
         ),
         migrations.AddField(
-            model_name='offer',
-            name='listed_property',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='listed_for_sales', to='properties.property'),
+            model_name="offer",
+            name="listed_property",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="listed_for_sales",
+                to="properties.property",
+            ),
         ),
         migrations.AlterField(
-            model_name='offer',
-            name='offer_status',
-            field=models.CharField(blank=True, choices=[('Active', 'Active'), ('Sold', 'Sold')], max_length=15, null=True),
+            model_name="offer",
+            name="offer_status",
+            field=models.CharField(
+                blank=True,
+                choices=[("Active", "Active"), ("Sold", "Sold")],
+                max_length=15,
+                null=True,
+            ),
         ),
         migrations.CreateModel(
-            name='OfferImages',
+            name="OfferImages",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', cloudinary.models.CloudinaryField(max_length=255, verbose_name='image')),
-                ('uploaded_at', models.DateTimeField(auto_now_add=True)),
-                ('related_property', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='offers.offer')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "image",
+                    cloudinary.models.CloudinaryField(
+                        max_length=255, verbose_name="image"
+                    ),
+                ),
+                ("uploaded_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "related_property",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="images",
+                        to="offers.offer",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='OfferVideos',
+            name="OfferVideos",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('video', cloudinary.models.CloudinaryField(max_length=255, verbose_name='video')),
-                ('uploaded_at', models.DateTimeField(auto_now_add=True)),
-                ('related_property', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='videos', to='offers.offer')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "video",
+                    cloudinary.models.CloudinaryField(
+                        max_length=255, verbose_name="video"
+                    ),
+                ),
+                ("uploaded_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "related_property",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="videos",
+                        to="offers.offer",
+                    ),
+                ),
             ],
         ),
     ]

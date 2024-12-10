@@ -10,7 +10,7 @@ register = template.Library()
 @register.filter(is_safe=True)
 @stringfilter
 def markdown(value):
-    return md.markdown(value, extensions=['markdown.extensions.fenced_code'])
+    return md.markdown(value, extensions=["markdown.extensions.fenced_code"])
 
 
 @register.filter(is_safe=True)
@@ -21,10 +21,10 @@ def add_dashes(value):
     example. Less useful for escaping JavaScript; use the ``escapejs``
     filter instead.
     """
-    return value.strip().replace(' ', '-')
+    return value.strip().replace(" ", "-")
 
 
-@register.filter(is_safe=True, name='readtime')
+@register.filter(is_safe=True, name="readtime")
 @stringfilter
 def read(html):
     return readtime.of_html(html)

@@ -6,13 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0005_alter_profile_options'),
+        ("accounts", "0005_alter_profile_options"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='profile',
-            name='profile_type',
-            field=models.CharField(blank=True, choices=[('Personal', 'Personal'), ('Company', 'Company')], max_length=10, null=True),
+            model_name="profile",
+            name="profile_type",
+            field=models.CharField(
+                blank=True,
+                choices=[("Personal", "Personal"), ("Company", "Company")],
+                max_length=10,
+                null=True,
+            ),
         ),
     ]

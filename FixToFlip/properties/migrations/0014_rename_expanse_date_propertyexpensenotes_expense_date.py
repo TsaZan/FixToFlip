@@ -6,13 +6,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('properties', '0013_remove_propertyexpensenotes_relates_expenses_and_more'),
+        ("properties", "0013_remove_propertyexpensenotes_relates_expenses_and_more"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='propertyexpensenotes',
-            old_name='expanse_date',
-            new_name='expense_date',
+            model_name="propertyexpensenotes",
+            old_name="expanse_date",
+            new_name="expense_date",
         ),
     ]

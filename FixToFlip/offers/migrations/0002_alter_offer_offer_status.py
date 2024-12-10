@@ -6,13 +6,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('offers', '0001_initial'),
+        ("offers", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='offer',
-            name='offer_status',
-            field=models.CharField(blank=True, choices=[('Proposed', 'Proposed'), ('Active', 'Active'), ('Negotiations', 'Negotiations'), ('Expired', 'Expired'), ('Sold', 'Sold')], max_length=15, null=True),
+            model_name="offer",
+            name="offer_status",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("Proposed", "Proposed"),
+                    ("Active", "Active"),
+                    ("Negotiations", "Negotiations"),
+                    ("Expired", "Expired"),
+                    ("Sold", "Sold"),
+                ],
+                max_length=15,
+                null=True,
+            ),
         ),
     ]

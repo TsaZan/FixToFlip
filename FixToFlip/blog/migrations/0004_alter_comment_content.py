@@ -8,13 +8,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blog', '0003_alter_blogpost_title_alter_category_name_and_more'),
+        ("blog", "0003_alter_blogpost_title_alter_category_name_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='comment',
-            name='content',
-            field=models.TextField(validators=[django.core.validators.MinLengthValidator(20, 'Comment must be at least 20 characters long'), FixToFlip.validators.bad_words_validator]),
+            model_name="comment",
+            name="content",
+            field=models.TextField(
+                validators=[
+                    django.core.validators.MinLengthValidator(
+                        20, "Comment must be at least 20 characters long"
+                    ),
+                    FixToFlip.validators.bad_words_validator,
+                ]
+            ),
         ),
     ]

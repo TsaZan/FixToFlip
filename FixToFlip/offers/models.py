@@ -17,30 +17,31 @@ class Offer(models.Model):
     MAX_DECIMAL_PLACES = 2
 
     class Meta:
-        verbose_name = 'Offer'
-        verbose_name_plural = 'Offers'
-        ordering = ['-updated_at']
+        verbose_name = "Offer"
+        verbose_name_plural = "Offers"
+        ordering = ["-updated_at"]
 
     title = models.CharField(
         max_length=100,
         validators=[
-            MinLengthValidator(20, 'Title must be at least 20 characters long'),
+            MinLengthValidator(20, "Title must be at least 20 characters long"),
             bad_words_validator,
-        ]
+        ],
     )
 
     featured_image = CloudinaryField(
-        'image',
-        resource_type='image',
-        validators=[image_validator,
-                    ],
+        "image",
+        resource_type="image",
+        validators=[
+            image_validator,
+        ],
         blank=True,
         null=True,
     )
 
     description = models.TextField(
         validators=[
-            MinLengthValidator(50, 'Description must be at least 50 characters long'),
+            MinLengthValidator(50, "Description must be at least 50 characters long"),
             bad_words_validator,
         ]
     )
@@ -48,12 +49,12 @@ class Offer(models.Model):
     listed_price = MoneyField(
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
-        default=Money(0, 'EUR'),
-        validators=[MinMoneyValidator(
-            Decimal(1),
-            message='Price cannot be negative or 0.')],
+        default=Money(0, "EUR"),
+        validators=[
+            MinMoneyValidator(Decimal(1), message="Price cannot be negative or 0.")
+        ],
         blank=False,
-        null=False
+        null=False,
     )
 
     offer_status = models.CharField(
@@ -77,7 +78,7 @@ class Offer(models.Model):
 
     listed_property = models.ForeignKey(
         to=Property,
-        related_name='listed_for_sales',
+        related_name="listed_for_sales",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -86,10 +87,8 @@ class Offer(models.Model):
     actual_sold_price = MoneyField(
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
-        default=Money(0, 'EUR'),
-        validators=[MinMoneyValidator(
-            Decimal(0),
-            message='Price cannot be negative.')],
+        default=Money(0, "EUR"),
+        validators=[MinMoneyValidator(Decimal(0), message="Price cannot be negative.")],
         blank=True,
         null=True,
     )

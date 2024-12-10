@@ -7,18 +7,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('credits', '0006_alter_credit_options'),
+        ("credits", "0006_alter_credit_options"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='credit',
-            name='credit_type',
-            field=models.CharField(choices=[('Business Credit', 'Business Credit'), ('Personal Credit', 'Personal Credit'), ('Mortgage', 'Mortgage')], max_length=30),
+            model_name="credit",
+            name="credit_type",
+            field=models.CharField(
+                choices=[
+                    ("Business Credit", "Business Credit"),
+                    ("Personal Credit", "Personal Credit"),
+                    ("Mortgage", "Mortgage"),
+                ],
+                max_length=30,
+            ),
         ),
         migrations.AlterField(
-            model_name='creditpayment',
-            name='credit',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='credit_payments', to='credits.credit'),
+            model_name="creditpayment",
+            name="credit",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="credit_payments",
+                to="credits.credit",
+            ),
         ),
     ]

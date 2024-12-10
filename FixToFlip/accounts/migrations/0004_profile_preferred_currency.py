@@ -6,13 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0003_profile'),
+        ("accounts", "0003_profile"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='profile',
-            name='preferred_currency',
-            field=models.CharField(blank=True, choices=[('EUR', 'Euro')], default='EUR', max_length=3, null=True),
+            model_name="profile",
+            name="preferred_currency",
+            field=models.CharField(
+                blank=True,
+                choices=[("EUR", "Euro")],
+                default="EUR",
+                max_length=3,
+                null=True,
+            ),
         ),
     ]

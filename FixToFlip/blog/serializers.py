@@ -11,23 +11,22 @@ class BlogPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BlogPost
-        fields = ['title',
-                  'slug',
-                  'keywords',
-                  'image',
-                  'content',
-                  'author',
-                  'category',
-                  'created_at',
-                  'updated_at',
-                  ]
+        fields = [
+            "title",
+            "slug",
+            "keywords",
+            "image",
+            "content",
+            "author",
+            "category",
+            "created_at",
+            "updated_at",
+        ]
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        image = (
-            instance.image.url if instance.image else None
-        )
-        data['comment_count'] = instance.comments.count()
+        image = instance.image.url if instance.image else None
+        data["comment_count"] = instance.comments.count()
         post_data = {
             "id": data.get("id"),
             "title": data.get("title"),
@@ -49,7 +48,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['id',
-                  'name',
-                  'posts',
-                  ]
+        fields = [
+            "id",
+            "name",
+            "posts",
+        ]

@@ -6,12 +6,16 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0004_profile_preferred_currency'),
+        ("accounts", "0004_profile_preferred_currency"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='profile',
-            options={'ordering': ['user'], 'verbose_name': 'Profile', 'verbose_name_plural': 'Profiles'},
+            name="profile",
+            options={
+                "ordering": ["user"],
+                "verbose_name": "Profile",
+                "verbose_name_plural": "Profiles",
+            },
         ),
     ]

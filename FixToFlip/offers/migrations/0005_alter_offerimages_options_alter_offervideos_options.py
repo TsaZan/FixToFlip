@@ -6,16 +6,24 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('offers', '0004_alter_offer_options_offer_is_published_and_more'),
+        ("offers", "0004_alter_offer_options_offer_is_published_and_more"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='offerimages',
-            options={'ordering': ['-uploaded_at'], 'verbose_name': 'Offer Image', 'verbose_name_plural': 'Offer Images'},
+            name="offerimages",
+            options={
+                "ordering": ["-uploaded_at"],
+                "verbose_name": "Offer Image",
+                "verbose_name_plural": "Offer Images",
+            },
         ),
         migrations.AlterModelOptions(
-            name='offervideos',
-            options={'ordering': ['-uploaded_at'], 'verbose_name': 'Offer Video', 'verbose_name_plural': 'Offer Videos'},
+            name="offervideos",
+            options={
+                "ordering": ["-uploaded_at"],
+                "verbose_name": "Offer Video",
+                "verbose_name_plural": "Offer Videos",
+            },
         ),
     ]

@@ -10,108 +10,344 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('properties', '0020_propertyexpense_credit_interest_and_more'),
+        ("properties", "0020_propertyexpense_credit_interest_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='property',
-            name='year_of_built',
-            field=models.SmallIntegerField(blank=True, null=True, validators=[django.core.validators.MinValueValidator(1800, message='Year of built must be greater than 1800.')]),
+            model_name="property",
+            name="year_of_built",
+            field=models.SmallIntegerField(
+                blank=True,
+                null=True,
+                validators=[
+                    django.core.validators.MinValueValidator(
+                        1800, message="Year of built must be greater than 1800."
+                    )
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='administrative_fees',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Administrative Fees'),
+            model_name="propertyexpense",
+            name="administrative_fees",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Administrative Fees",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='advertising',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Advertising'),
+            model_name="propertyexpense",
+            name="advertising",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Advertising",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='bathroom_repair_expenses',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Bathroom Repair Expenses'),
+            model_name="propertyexpense",
+            name="bathroom_repair_expenses",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Bathroom Repair Expenses",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='credit_interest',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Credit Interest'),
+            model_name="propertyexpense",
+            name="credit_interest",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Credit Interest",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='electrical_repair_expenses',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Electrical Repair Expenses'),
+            model_name="propertyexpense",
+            name="electrical_repair_expenses",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Electrical Repair Expenses",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='facade_repair_expenses',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Facade Repair Expenses'),
+            model_name="propertyexpense",
+            name="facade_repair_expenses",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Facade Repair Expenses",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='floors_repair_expenses',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Floors Repair Expenses'),
+            model_name="propertyexpense",
+            name="floors_repair_expenses",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Floors Repair Expenses",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='insurance',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Insurance'),
+            model_name="propertyexpense",
+            name="insurance",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Insurance",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='kitchen_repair_expenses',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Kitchen Repair Expenses'),
+            model_name="propertyexpense",
+            name="kitchen_repair_expenses",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Kitchen Repair Expenses",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='municipality_taxes',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Municipality Taxes'),
+            model_name="propertyexpense",
+            name="municipality_taxes",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Municipality Taxes",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='notary_taxes',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Notary Taxes'),
+            model_name="propertyexpense",
+            name="notary_taxes",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Notary Taxes",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='other_expenses',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Other Expenses'),
+            model_name="propertyexpense",
+            name="other_expenses",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Other Expenses",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='other_repair_expenses',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Other Repair Expenses'),
+            model_name="propertyexpense",
+            name="other_repair_expenses",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Other Repair Expenses",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='plumbing_repair_expenses',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Plumbing Repair Expenses'),
+            model_name="propertyexpense",
+            name="plumbing_repair_expenses",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Plumbing Repair Expenses",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='profit_tax',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Profit Tax'),
+            model_name="propertyexpense",
+            name="profit_tax",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Profit Tax",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='roof_repair_expenses',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Insurance'),
+            model_name="propertyexpense",
+            name="roof_repair_expenses",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Insurance",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='utilities',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Utilities'),
+            model_name="propertyexpense",
+            name="utilities",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Utilities",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='walls_repair_expenses',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Walls Repair Expenses'),
+            model_name="propertyexpense",
+            name="walls_repair_expenses",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Walls Repair Expenses",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='windows_doors_repair_expenses',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Expense amount cannot be negative.')], verbose_name='Windows and Doors Repair Expenses'),
+            model_name="propertyexpense",
+            name="windows_doors_repair_expenses",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Expense amount cannot be negative."
+                    )
+                ],
+                verbose_name="Windows and Doors Repair Expenses",
+            ),
         ),
     ]

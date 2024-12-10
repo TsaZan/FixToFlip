@@ -6,30 +6,33 @@ from FixToFlip.credits.models import Credit, CreditPayment
 class CreditBaseForm(forms.ModelForm):
     class Meta:
         model = Credit
-        fields = '__all__'
+        fields = "__all__"
 
 
 class CreditAddForm(CreditBaseForm):
     class Meta:
         model = Credit
-        fields = '__all__'
+        fields = "__all__"
 
         widgets = {
-            'credit_term': forms.DateInput(attrs={
-                'type': 'date', 'min': '1900-01-01', 'placeholder': 'YYYY-MM-DD'}),
-            'credit_start_date': forms.DateInput(attrs={
-                'type': 'date', 'min': '1900-01-01', 'placeholder': 'YYYY-MM-DD'}),
-
+            "credit_term": forms.DateInput(
+                attrs={"type": "date", "min": "1900-01-01", "placeholder": "YYYY-MM-DD"}
+            ),
+            "credit_start_date": forms.DateInput(
+                attrs={"type": "date", "min": "1900-01-01", "placeholder": "YYYY-MM-DD"}
+            ),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['credit_owner'].required = False
-        self.fields['credit_type'].widget.attrs['class'] = 'nice-select'
+        self.fields["credit_owner"].required = False
+        self.fields["credit_type"].widget.attrs["class"] = "nice-select"
 
-        self.fields['bank_name'].widget.attrs['placeholder'] = 'Bank Name'
-        self.fields['credit_description'].widget.attrs['placeholder'] = 'Notes (optional)'
-        self.fields['credit_interest'].widget.attrs['placeholder'] = '%'
+        self.fields["bank_name"].widget.attrs["placeholder"] = "Bank Name"
+        self.fields["credit_description"].widget.attrs[
+            "placeholder"
+        ] = "Notes (optional)"
+        self.fields["credit_interest"].widget.attrs["placeholder"] = "%"
 
 
 class CreditEditForm(CreditAddForm):
@@ -43,26 +46,30 @@ class CreditDeleteForm(CreditBaseForm):
 class CreditPaymentForm(forms.ModelForm):
     class Meta:
         model = CreditPayment
-        exclude = ['credit']
+        exclude = ["credit"]
         widgets = {
-            'payment_date': forms.DateInput(attrs={'type': 'date'}),
+            "payment_date": forms.DateInput(attrs={"type": "date"}),
         }
 
     def __init__(self, *args, **kwargs):
-        self.credit = kwargs.pop('credit', None)
+        self.credit = kwargs.pop("credit", None)
         super().__init__(*args, **kwargs)
-        self.fields['principal_amount'].widget.attrs['class'] = 'form-control'
-        self.fields['interest_amount'].widget.attrs['class'] = 'form-control'
+        self.fields["principal_amount"].widget.attrs["class"] = "form-control"
+        self.fields["interest_amount"].widget.attrs["class"] = "form-control"
 
     def clean(self):
         cleaned_data = super().clean()
-        payment_date = cleaned_data.get('payment_date')
+        payment_date = cleaned_data.get("payment_date")
         if not self.credit:
-            raise forms.ValidationError('Credit instance not provided.')
+            raise forms.ValidationError("Credit instance not provided.")
         if payment_date:
             if payment_date < self.credit.credit_start_date:
-                raise forms.ValidationError('Payment date must be after the start date of the credit.')
+                raise forms.ValidationError(
+                    "Payment date must be after the start date of the credit."
+                )
             if payment_date > self.credit.credit_term:
-                raise forms.ValidationError('Payment date must be before the end date of the credit.')
+                raise forms.ValidationError(
+                    "Payment date must be before the end date of the credit."
+                )
 
         return cleaned_data
