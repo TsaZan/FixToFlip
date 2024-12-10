@@ -8,18 +8,40 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('offers', '0007_alter_offer_is_published_alter_offer_listed_property_and_more'),
+        (
+            "offers",
+            "0007_alter_offer_is_published_alter_offer_listed_property_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='offer',
-            name='description',
-            field=models.TextField(blank=True, null=True, validators=[django.core.validators.MinLengthValidator(30, 'Description must be at least 30 characters long'), FixToFlip.validators.bad_words_validator]),
+            model_name="offer",
+            name="description",
+            field=models.TextField(
+                blank=True,
+                null=True,
+                validators=[
+                    django.core.validators.MinLengthValidator(
+                        30, "Description must be at least 30 characters long"
+                    ),
+                    FixToFlip.validators.bad_words_validator,
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='offer',
-            name='title',
-            field=models.CharField(blank=True, max_length=100, null=True, validators=[django.core.validators.MinLengthValidator(10, 'Title must be at least 10 characters long'), FixToFlip.validators.bad_words_validator]),
+            model_name="offer",
+            name="title",
+            field=models.CharField(
+                blank=True,
+                max_length=100,
+                null=True,
+                validators=[
+                    django.core.validators.MinLengthValidator(
+                        10, "Title must be at least 10 characters long"
+                    ),
+                    FixToFlip.validators.bad_words_validator,
+                ],
+            ),
         ),
     ]

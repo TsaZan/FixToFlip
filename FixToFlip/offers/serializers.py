@@ -7,44 +7,47 @@ from FixToFlip.properties.models import Property
 
 class OfferPublisherSerializer(serializers.ModelSerializer):
     profile_type = serializers.CharField(
-        source='profile.profile_type',
+        source="profile.profile_type",
         allow_null=True,
     )
 
     class Meta:
         model = BaseAccount
-        fields = ('profile_type',)
+        fields = ("profile_type",)
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
 
-        if data['profile_type'] == 'Personal':
-            data['profile_name'] = instance.profile.user.first_name + ' ' + instance.profile.user.last_name
-            data['phone_number'] = str(instance.profile.phone_number)
+        if data["profile_type"] == "Personal":
+            data["profile_name"] = (
+                instance.profile.user.first_name + " " + instance.profile.user.last_name
+            )
+            data["phone_number"] = str(instance.profile.phone_number)
 
         else:
-            data['company_name'] = instance.profile.company_name
-            data['company_phone'] = str(instance.profile.company_phone)
+            data["company_name"] = instance.profile.company_name
+            data["company_phone"] = str(instance.profile.company_phone)
 
         return data
 
 
 class OfferedPropertySerializer(serializers.ModelSerializer):
-    seller = OfferPublisherSerializer(source='owner')
+    seller = OfferPublisherSerializer(source="owner")
 
     class Meta:
         model = Property
-        fields = ['country',
-                  'city',
-                  'address',
-                  'property_type',
-                  'year_of_built',
-                  'property_size',
-                  'floor',
-                  'bedrooms',
-                  'bathrooms',
-                  'seller',
-                  ]
+        fields = [
+            "country",
+            "city",
+            "address",
+            "property_type",
+            "year_of_built",
+            "property_size",
+            "floor",
+            "bedrooms",
+            "bathrooms",
+            "seller",
+        ]
 
 
 class OfferAPISerializer(serializers.ModelSerializer):
@@ -52,13 +55,14 @@ class OfferAPISerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Offer
-        exclude = ['is_published',
-                   'updated_at',
-                   'created_at',
-                   'actual_sold_price',
-                   'actual_sold_price_currency',
-                   'sold_date'
-                   ]
+        exclude = [
+            "is_published",
+            "updated_at",
+            "created_at",
+            "actual_sold_price",
+            "actual_sold_price_currency",
+            "sold_date",
+        ]
 
     def to_representation(self, instance):
         data = super().to_representation(instance)

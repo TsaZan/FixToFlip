@@ -8,18 +8,31 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('properties', '0009_propertyexpense_bathroom_repair_expenses_and_more'),
+        ("properties", "0009_propertyexpense_bathroom_repair_expenses_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='propertyexpense',
-            name='other_expenses',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True, verbose_name='Insurance'),
+            model_name="propertyexpense",
+            name="other_expenses",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=7,
+                null=True,
+                verbose_name="Insurance",
+            ),
         ),
         migrations.AddField(
-            model_name='propertyexpense',
-            name='other_expenses_currency',
-            field=djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3, null=True),
+            model_name="propertyexpense",
+            name="other_expenses_currency",
+            field=djmoney.models.fields.CurrencyField(
+                choices=[("EUR", "Euro")],
+                default="EUR",
+                editable=False,
+                max_length=3,
+                null=True,
+            ),
         ),
     ]

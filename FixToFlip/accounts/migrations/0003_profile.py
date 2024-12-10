@@ -9,23 +9,65 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0002_alter_baseaccount_managers'),
-        ('cities_light', '0011_alter_city_country_alter_city_region_and_more'),
+        ("accounts", "0002_alter_baseaccount_managers"),
+        ("cities_light", "0011_alter_city_country_alter_city_region_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Profile',
+            name="Profile",
             fields=[
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
-                ('profile_type', models.CharField(blank=True, choices=[('Personal', 'Personal'), ('Company', 'Company')], default='personal', max_length=10, null=True)),
-                ('company_name', models.CharField(blank=True, max_length=50, null=True)),
-                ('url', models.URLField(blank=True, null=True)),
-                ('profile_picture', cloudinary.models.CloudinaryField(blank=True, max_length=255, null=True, verbose_name='image')),
-                ('linkedin_url', models.URLField(blank=True, null=True)),
-                ('facebook_url', models.URLField(blank=True, null=True)),
-                ('company_location_country', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='company_location_profile', to='cities_light.country')),
-                ('user_location', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='cities_light.country')),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        primary_key=True,
+                        serialize=False,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "profile_type",
+                    models.CharField(
+                        blank=True,
+                        choices=[("Personal", "Personal"), ("Company", "Company")],
+                        default="personal",
+                        max_length=10,
+                        null=True,
+                    ),
+                ),
+                (
+                    "company_name",
+                    models.CharField(blank=True, max_length=50, null=True),
+                ),
+                ("url", models.URLField(blank=True, null=True)),
+                (
+                    "profile_picture",
+                    cloudinary.models.CloudinaryField(
+                        blank=True, max_length=255, null=True, verbose_name="image"
+                    ),
+                ),
+                ("linkedin_url", models.URLField(blank=True, null=True)),
+                ("facebook_url", models.URLField(blank=True, null=True)),
+                (
+                    "company_location_country",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="company_location_profile",
+                        to="cities_light.country",
+                    ),
+                ),
+                (
+                    "user_location",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="cities_light.country",
+                    ),
+                ),
             ],
         ),
     ]

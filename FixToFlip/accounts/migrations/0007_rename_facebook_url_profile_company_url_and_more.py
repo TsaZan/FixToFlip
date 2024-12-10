@@ -7,31 +7,35 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0006_alter_profile_profile_type'),
+        ("accounts", "0006_alter_profile_profile_type"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='profile',
-            old_name='facebook_url',
-            new_name='company_url',
+            model_name="profile",
+            old_name="facebook_url",
+            new_name="company_url",
         ),
         migrations.RemoveField(
-            model_name='profile',
-            name='linkedin_url',
+            model_name="profile",
+            name="linkedin_url",
         ),
         migrations.RemoveField(
-            model_name='profile',
-            name='url',
+            model_name="profile",
+            name="url",
         ),
         migrations.AddField(
-            model_name='profile',
-            name='company_phone',
-            field=phonenumber_field.modelfields.PhoneNumberField(blank=True, max_length=128, region=None),
+            model_name="profile",
+            name="company_phone",
+            field=phonenumber_field.modelfields.PhoneNumberField(
+                blank=True, max_length=128, region=None
+            ),
         ),
         migrations.AddField(
-            model_name='profile',
-            name='phone_number',
-            field=phonenumber_field.modelfields.PhoneNumberField(blank=True, max_length=128, region=None),
+            model_name="profile",
+            name="phone_number",
+            field=phonenumber_field.modelfields.PhoneNumberField(
+                blank=True, max_length=128, region=None
+            ),
         ),
     ]

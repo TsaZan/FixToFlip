@@ -17,38 +17,108 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=30)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=30)),
             ],
         ),
         migrations.CreateModel(
-            name='BlogPost',
+            name="BlogPost",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=200, validators=[django.core.validators.MinLengthValidator(10)])),
-                ('slug', models.SlugField(editable=False, max_length=150, unique=True)),
-                ('keywords', models.CharField(blank=True, help_text='Keywords that describe the post, separated by commas', max_length=50, null=True)),
-                ('image', cloudinary.models.CloudinaryField(blank=True, max_length=255, null=True, verbose_name='image')),
-                ('content', models.TextField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='posts', to=settings.AUTH_USER_MODEL)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='posts', to='blog.category')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "title",
+                    models.CharField(
+                        max_length=200,
+                        validators=[django.core.validators.MinLengthValidator(10)],
+                    ),
+                ),
+                ("slug", models.SlugField(editable=False, max_length=150, unique=True)),
+                (
+                    "keywords",
+                    models.CharField(
+                        blank=True,
+                        help_text="Keywords that describe the post, separated by commas",
+                        max_length=50,
+                        null=True,
+                    ),
+                ),
+                (
+                    "image",
+                    cloudinary.models.CloudinaryField(
+                        blank=True, max_length=255, null=True, verbose_name="image"
+                    ),
+                ),
+                ("content", models.TextField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "author",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="posts",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="posts",
+                        to="blog.category",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-created_at'],
+                "ordering": ["-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='Comment',
+            name="Comment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content', models.TextField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='blog.blogpost')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("content", models.TextField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "author",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "post",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="comments",
+                        to="blog.blogpost",
+                    ),
+                ),
             ],
         ),
     ]

@@ -19,20 +19,94 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Credit',
+            name="Credit",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('bank_name', models.CharField(max_length=100)),
-                ('credit_amount_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3)),
-                ('credit_amount', djmoney.models.fields.MoneyField(decimal_places=2, default=Decimal('0'), max_digits=10, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'))])),
-                ('amounts_paid_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3)),
-                ('amounts_paid', djmoney.models.fields.MoneyField(decimal_places=2, default=Decimal('0'), max_digits=10, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'))])),
-                ('credit_interest', models.DecimalField(decimal_places=2, max_digits=5, validators=[django.core.validators.MinValueValidator(0)])),
-                ('credit_description', models.TextField(blank=True, help_text='You can add all usefull information about your credit e.g. credit consultant name, phone number, etc.', null=True)),
-                ('credit_start_date', models.DateField()),
-                ('credit_term', models.DateField()),
-                ('credit_type', models.CharField(choices=[('B', 'Business Credit'), ('P', 'Personal Credit'), ('M', 'Mortgage')], max_length=30)),
-                ('credit_owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("bank_name", models.CharField(max_length=100)),
+                (
+                    "credit_amount_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                    ),
+                ),
+                (
+                    "credit_amount",
+                    djmoney.models.fields.MoneyField(
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=10,
+                        validators=[
+                            djmoney.models.validators.MinMoneyValidator(Decimal("0"))
+                        ],
+                    ),
+                ),
+                (
+                    "amounts_paid_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                    ),
+                ),
+                (
+                    "amounts_paid",
+                    djmoney.models.fields.MoneyField(
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=10,
+                        validators=[
+                            djmoney.models.validators.MinMoneyValidator(Decimal("0"))
+                        ],
+                    ),
+                ),
+                (
+                    "credit_interest",
+                    models.DecimalField(
+                        decimal_places=2,
+                        max_digits=5,
+                        validators=[django.core.validators.MinValueValidator(0)],
+                    ),
+                ),
+                (
+                    "credit_description",
+                    models.TextField(
+                        blank=True,
+                        help_text="You can add all usefull information about your credit e.g. credit consultant name, phone number, etc.",
+                        null=True,
+                    ),
+                ),
+                ("credit_start_date", models.DateField()),
+                ("credit_term", models.DateField()),
+                (
+                    "credit_type",
+                    models.CharField(
+                        choices=[
+                            ("B", "Business Credit"),
+                            ("P", "Personal Credit"),
+                            ("M", "Mortgage"),
+                        ],
+                        max_length=30,
+                    ),
+                ),
+                (
+                    "credit_owner",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

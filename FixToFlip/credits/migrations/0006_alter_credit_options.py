@@ -6,12 +6,16 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('credits', '0005_alter_creditpayment_credit'),
+        ("credits", "0005_alter_creditpayment_credit"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='credit',
-            options={'ordering': ['-credit_term'], 'verbose_name': 'Credit', 'verbose_name_plural': 'Credits'},
+            name="credit",
+            options={
+                "ordering": ["-credit_term"],
+                "verbose_name": "Credit",
+                "verbose_name_plural": "Credits",
+            },
         ),
     ]

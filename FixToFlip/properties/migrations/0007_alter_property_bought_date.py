@@ -8,13 +8,21 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('properties', '0006_alter_property_bought_date'),
+        ("properties", "0006_alter_property_bought_date"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='property',
-            name='bought_date',
-            field=models.DateField(blank=True, null=True, validators=[django.core.validators.MaxValueValidator(datetime.date(2024, 11, 11))]),
+            model_name="property",
+            name="bought_date",
+            field=models.DateField(
+                blank=True,
+                null=True,
+                validators=[
+                    django.core.validators.MaxValueValidator(
+                        datetime.date(2024, 11, 11)
+                    )
+                ],
+            ),
         ),
     ]

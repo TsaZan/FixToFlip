@@ -14,8 +14,8 @@ from FixToFlip.validators import OnlyLettersValidator, image_validator
 class BaseAccount(AbstractUser):
     first_name = models.CharField(
         validators=[
-            MinLengthValidator(2, 'First name must be at least 2 characters long.'),
-            OnlyLettersValidator('First name must contain only letters'),
+            MinLengthValidator(2, "First name must be at least 2 characters long."),
+            OnlyLettersValidator("First name must contain only letters"),
         ],
         max_length=30,
         blank=True,
@@ -24,8 +24,8 @@ class BaseAccount(AbstractUser):
 
     last_name = models.CharField(
         validators=[
-            MinLengthValidator(2, 'Last name must be at least 2 characters long.'),
-            OnlyLettersValidator('Last name must contain only letters'),
+            MinLengthValidator(2, "Last name must be at least 2 characters long."),
+            OnlyLettersValidator("Last name must contain only letters"),
         ],
         max_length=30,
         blank=True,
@@ -43,14 +43,12 @@ class BaseAccount(AbstractUser):
 
 class Profile(models.Model):
     class Meta:
-        ordering = ['user']
-        verbose_name = 'Profile'
-        verbose_name_plural = 'Profiles'
+        ordering = ["user"]
+        verbose_name = "Profile"
+        verbose_name_plural = "Profiles"
 
     user = models.OneToOneField(
-        to=BaseAccount,
-        on_delete=models.CASCADE,
-        primary_key=True
+        to=BaseAccount, on_delete=models.CASCADE, primary_key=True
     )
 
     profile_type = models.CharField(
@@ -63,11 +61,7 @@ class Profile(models.Model):
     phone_number = PhoneNumberField(blank=True)
 
     preferred_currency = models.CharField(
-        max_length=3,
-        choices=CURRENCY_CHOICES,
-        default='EUR',
-        null=True,
-        blank=True
+        max_length=3, choices=CURRENCY_CHOICES, default="EUR", null=True, blank=True
     )
 
     user_location = models.ForeignKey(
@@ -75,11 +69,12 @@ class Profile(models.Model):
         null=True,
         blank=True,
         on_delete=models.CASCADE,
-
     )
 
     company_name = models.CharField(
-        validators=[MinLengthValidator(2, 'Company name must be at least 2 characters long.')],
+        validators=[
+            MinLengthValidator(2, "Company name must be at least 2 characters long.")
+        ],
         max_length=50,
         null=True,
         blank=True,
@@ -92,7 +87,7 @@ class Profile(models.Model):
         null=True,
         blank=True,
         on_delete=models.CASCADE,
-        related_name='company_location_profile'
+        related_name="company_location_profile",
     )
 
     company_url = models.URLField(
@@ -101,10 +96,11 @@ class Profile(models.Model):
     )
 
     profile_picture = CloudinaryField(
-        'image',
-        resource_type='image',
-        validators=[image_validator,
-                    ],
+        "image",
+        resource_type="image",
+        validators=[
+            image_validator,
+        ],
         blank=True,
         null=True,
     )

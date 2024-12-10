@@ -8,7 +8,9 @@ from FixToFlip.blog.models import Category, BlogPost
 class BlogPostTestCase(TestCase):
     @classmethod
     def setUp(cls):
-        cls.user = BaseAccount.objects.create_user(username="testuser", password="password")
+        cls.user = BaseAccount.objects.create_user(
+            username="testuser", password="password"
+        )
         cls.category = Category.objects.create(name="Test Category")
 
         for i in range(10):
@@ -19,7 +21,7 @@ class BlogPostTestCase(TestCase):
                 slug=slug,
                 content="Test content",
                 author=cls.user,
-                category=cls.category
+                category=cls.category,
             )
 
     def test_create_blogpost(self):
@@ -27,7 +29,7 @@ class BlogPostTestCase(TestCase):
         self.assertEqual(posts.count(), 10)
 
     def test_blogpost_slug(self):
-        slugs = BlogPost.objects.values_list('slug', flat=True)
+        slugs = BlogPost.objects.values_list("slug", flat=True)
         self.assertEqual(len(slugs), len(set(slugs)))
 
     def test_blogpost_content_(self):

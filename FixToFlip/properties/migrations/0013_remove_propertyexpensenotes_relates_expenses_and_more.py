@@ -7,18 +7,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('properties', '0012_remove_propertyexpense_expense_details_and_more'),
+        ("properties", "0012_remove_propertyexpense_expense_details_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='propertyexpensenotes',
-            name='relates_expenses',
+            model_name="propertyexpensenotes",
+            name="relates_expenses",
         ),
         migrations.AddField(
-            model_name='propertyexpensenotes',
-            name='relates_expenses',
-            field=models.OneToOneField(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='expenses_notes', to='properties.propertyexpense'),
+            model_name="propertyexpensenotes",
+            name="relates_expenses",
+            field=models.OneToOneField(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="expenses_notes",
+                to="properties.propertyexpense",
+            ),
             preserve_default=False,
         ),
     ]

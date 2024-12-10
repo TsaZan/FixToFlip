@@ -12,15 +12,15 @@ from FixToFlip.accounts.models import BaseAccount, Profile
 
 
 def ajax_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return JsonResponse({'success': True})
+            return JsonResponse({"success": True})
         else:
-            return JsonResponse({'success': False}, status=400)
+            return JsonResponse({"success": False}, status=400)
 
 
 async def ajax_signup(request):
@@ -29,27 +29,27 @@ async def ajax_signup(request):
         if await sync_to_async(form.is_valid)():
             user = await sync_to_async(form.save)(request)
             send_email_confirmation_task.delay(user.id)
-            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            user.backend = "django.contrib.auth.backends.ModelBackend"
             await sync_to_async(login)(request, user)
-            return JsonResponse({'success': True, 'refresh': True})
+            return JsonResponse({"success": True, "refresh": True})
         else:
-            return JsonResponse({'success': False, 'errors': form.errors}, status=400)
-    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
+            return JsonResponse({"success": False, "errors": form.errors}, status=400)
+    return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
 
 
 class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    template_name = 'account/profile.html'
+    template_name = "account/profile.html"
 
     def test_func(self):
-        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        profile = get_object_or_404(Profile, pk=self.kwargs["pk"])
         return self.request.user == profile.user
 
     def get_context_data(self, **kwargs):
         user = self.request.user
         profile = user.profile
         return {
-            'user_form': UserEditForm(instance=user),
-            'profile_form': ProfileEditForm(instance=profile),
+            "user_form": UserEditForm(instance=user),
+            "profile_form": ProfileEditForm(instance=profile),
         }
 
     def get(self, request, *args, **kwargs):
@@ -66,19 +66,23 @@ class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            return redirect('profile_edit', pk=self.kwargs['pk'])
+            return redirect("profile_edit", pk=self.kwargs["pk"])
 
-        return render(request, self.template_name, {
-            'user_form': user_form,
-            'profile_form': profile_form,
-        })
+        return render(
+            request,
+            self.template_name,
+            {
+                "user_form": user_form,
+                "profile_form": profile_form,
+            },
+        )
 
 
 class AccountDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = BaseAccount
-    template_name = 'account/delete-account.html'
-    success_url = reverse_lazy('index')
+    template_name = "account/delete-account.html"
+    success_url = reverse_lazy("index")
 
     def test_func(self):
-        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        profile = get_object_or_404(Profile, pk=self.kwargs["pk"])
         return self.request.user == profile.user

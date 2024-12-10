@@ -9,18 +9,31 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('credits', '0002_credit_monthly_payment_and_more'),
+        ("credits", "0002_credit_monthly_payment_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='credit',
-            name='amounts_paid',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'))]),
+            model_name="credit",
+            name="amounts_paid",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[djmoney.models.validators.MinMoneyValidator(Decimal("0"))],
+            ),
         ),
         migrations.AlterField(
-            model_name='credit',
-            name='amounts_paid_currency',
-            field=djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3, null=True),
+            model_name="credit",
+            name="amounts_paid_currency",
+            field=djmoney.models.fields.CurrencyField(
+                choices=[("EUR", "Euro")],
+                default="EUR",
+                editable=False,
+                max_length=3,
+                null=True,
+            ),
         ),
     ]

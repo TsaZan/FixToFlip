@@ -7,7 +7,7 @@ import re
 @deconstructible
 class OnlyLettersValidator:
     def __init__(self, message=None):
-        self.message = message or 'Only letters are allowed.'
+        self.message = message or "Only letters are allowed."
 
     def __call__(self, value):
         for char in value:
@@ -30,12 +30,14 @@ def image_validator(value):
     if not value:
         return value
 
-    valid_mime_types = ['image/jpeg', 'image/png', 'image/gif']
+    valid_mime_types = ["image/jpeg", "image/png", "image/gif"]
     if value.content_type not in valid_mime_types:
-        raise ValidationError('Unsupported file type. Please upload a JPEG, PNG or GIF image.')
+        raise ValidationError(
+            "Unsupported file type. Please upload a JPEG, PNG or GIF image."
+        )
 
     max_file_size = 5 * 1024 * 1024
     if value.size > max_file_size:
-        raise ValidationError('File size exceeds the maximum limit of 5MB.')
+        raise ValidationError("File size exceeds the maximum limit of 5MB.")
 
     return value

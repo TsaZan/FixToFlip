@@ -8,26 +8,38 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('blog', '0001_initial'),
+        ("blog", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='blogpost',
-            options={'ordering': ['-created_at'], 'verbose_name': 'Blog Post', 'verbose_name_plural': 'Blog Posts'},
+            name="blogpost",
+            options={
+                "ordering": ["-created_at"],
+                "verbose_name": "Blog Post",
+                "verbose_name_plural": "Blog Posts",
+            },
         ),
         migrations.AlterModelOptions(
-            name='category',
-            options={'verbose_name': 'Category', 'verbose_name_plural': 'Categories'},
+            name="category",
+            options={"verbose_name": "Category", "verbose_name_plural": "Categories"},
         ),
         migrations.AlterModelOptions(
-            name='comment',
-            options={'ordering': ['-created_at'], 'verbose_name': 'Comment', 'verbose_name_plural': 'Comments'},
+            name="comment",
+            options={
+                "ordering": ["-created_at"],
+                "verbose_name": "Comment",
+                "verbose_name_plural": "Comments",
+            },
         ),
         migrations.AlterField(
-            model_name='comment',
-            name='author',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to=settings.AUTH_USER_MODEL),
+            model_name="comment",
+            name="author",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="comments",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

@@ -17,6 +17,7 @@ class BaseAccountManager(BaseUserManager):
         # manager method can be used in migrations. This is fine because
         # managers are by definition working on the real model.
         from django.apps import apps
+
         GlobalUserModel = apps.get_model(
             self.model._meta.app_label, self.model._meta.object_name
         )
@@ -43,7 +44,7 @@ class BaseAccountManager(BaseUserManager):
         return self._create_user(username, email, password, **extra_fields)
 
     def with_perm(
-            self, perm, is_active=True, include_superusers=True, backend=None, obj=None
+        self, perm, is_active=True, include_superusers=True, backend=None, obj=None
     ):
         if backend is None:
             backends = auth._get_backends(return_tuples=True)

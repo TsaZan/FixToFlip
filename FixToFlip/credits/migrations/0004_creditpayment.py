@@ -10,25 +10,76 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('credits', '0003_alter_credit_amounts_paid_and_more'),
+        ("credits", "0003_alter_credit_amounts_paid_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CreditPayment',
+            name="CreditPayment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('payment_date', models.DateField()),
-                ('principal_amount_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3)),
-                ('principal_amount', djmoney.models.fields.MoneyField(decimal_places=2, default=Decimal('0'), max_digits=10, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'))])),
-                ('interest_amount_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3)),
-                ('interest_amount', djmoney.models.fields.MoneyField(decimal_places=2, default=Decimal('0'), max_digits=10, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'))])),
-                ('credit', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='credit_payments', to='credits.credit')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("payment_date", models.DateField()),
+                (
+                    "principal_amount_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                    ),
+                ),
+                (
+                    "principal_amount",
+                    djmoney.models.fields.MoneyField(
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=10,
+                        validators=[
+                            djmoney.models.validators.MinMoneyValidator(Decimal("0"))
+                        ],
+                    ),
+                ),
+                (
+                    "interest_amount_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                    ),
+                ),
+                (
+                    "interest_amount",
+                    djmoney.models.fields.MoneyField(
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=10,
+                        validators=[
+                            djmoney.models.validators.MinMoneyValidator(Decimal("0"))
+                        ],
+                    ),
+                ),
+                (
+                    "credit",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="credit_payments",
+                        to="credits.credit",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Credit Payment',
-                'verbose_name_plural': 'Credit Payments',
-                'ordering': ['-payment_date'],
+                "verbose_name": "Credit Payment",
+                "verbose_name_plural": "Credit Payments",
+                "ordering": ["-payment_date"],
             },
         ),
     ]

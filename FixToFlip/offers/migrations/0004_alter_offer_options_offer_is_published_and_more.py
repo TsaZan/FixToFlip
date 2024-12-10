@@ -9,27 +9,50 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('offers', '0003_rename_brokerage_commission_currency_offer_actual_sold_price_currency_and_more'),
+        (
+            "offers",
+            "0003_rename_brokerage_commission_currency_offer_actual_sold_price_currency_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='offer',
-            options={'ordering': ['-updated_at'], 'verbose_name': 'Offer', 'verbose_name_plural': 'Offers'},
+            name="offer",
+            options={
+                "ordering": ["-updated_at"],
+                "verbose_name": "Offer",
+                "verbose_name_plural": "Offers",
+            },
         ),
         migrations.AddField(
-            model_name='offer',
-            name='is_published',
+            model_name="offer",
+            name="is_published",
             field=models.BooleanField(blank=True, default=False, null=True),
         ),
         migrations.AlterField(
-            model_name='offer',
-            name='actual_sold_price',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True, validators=[djmoney.models.validators.MinMoneyValidator(Decimal('0'), message='Price cannot be negative.')]),
+            model_name="offer",
+            name="actual_sold_price",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=10,
+                null=True,
+                validators=[
+                    djmoney.models.validators.MinMoneyValidator(
+                        Decimal("0"), message="Price cannot be negative."
+                    )
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='offer',
-            name='offer_status',
-            field=models.CharField(blank=True, choices=[('Active', 'Active'), ('Sold', 'Sold')], max_length=6, null=True),
+            model_name="offer",
+            name="offer_status",
+            field=models.CharField(
+                blank=True,
+                choices=[("Active", "Active"), ("Sold", "Sold")],
+                max_length=6,
+                null=True,
+            ),
         ),
     ]

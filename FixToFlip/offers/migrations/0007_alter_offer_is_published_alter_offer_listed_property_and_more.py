@@ -7,24 +7,40 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('offers', '0006_alter_offer_description_alter_offer_is_published_and_more'),
-        ('properties', '0019_alter_propertyexpense_administrative_fees_and_more'),
+        ("offers", "0006_alter_offer_description_alter_offer_is_published_and_more"),
+        ("properties", "0019_alter_propertyexpense_administrative_fees_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='offer',
-            name='is_published',
-            field=models.CharField(blank=True, choices=[('True', 'Published'), ('False', 'Not Published')], default='False', max_length=5),
+            model_name="offer",
+            name="is_published",
+            field=models.CharField(
+                blank=True,
+                choices=[("True", "Published"), ("False", "Not Published")],
+                default="False",
+                max_length=5,
+            ),
         ),
         migrations.AlterField(
-            model_name='offer',
-            name='listed_property',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='listed_for_sales', to='properties.property'),
+            model_name="offer",
+            name="listed_property",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="listed_for_sales",
+                to="properties.property",
+            ),
         ),
         migrations.AlterField(
-            model_name='offer',
-            name='offer_status',
-            field=models.CharField(blank=True, choices=[('Active', 'Active'), ('Sold', 'Sold')], default='Active', max_length=6),
+            model_name="offer",
+            name="offer_status",
+            field=models.CharField(
+                blank=True,
+                choices=[("Active", "Active"), ("Sold", "Sold")],
+                default="Active",
+                max_length=6,
+            ),
         ),
     ]

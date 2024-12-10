@@ -10,53 +10,117 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('properties', '0007_alter_property_bought_date'),
+        ("properties", "0007_alter_property_bought_date"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='property',
-            name='bought_date',
-            field=models.DateField(blank=True, null=True, validators=[django.core.validators.MaxValueValidator(datetime.date(2024, 11, 13))]),
+            model_name="property",
+            name="bought_date",
+            field=models.DateField(
+                blank=True,
+                null=True,
+                validators=[
+                    django.core.validators.MaxValueValidator(
+                        datetime.date(2024, 11, 13)
+                    )
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='administrative_fees',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True, verbose_name='Administrative Fees'),
+            model_name="propertyexpense",
+            name="administrative_fees",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=7,
+                null=True,
+                verbose_name="Administrative Fees",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='advertising',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True, verbose_name='Advertising'),
+            model_name="propertyexpense",
+            name="advertising",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=7,
+                null=True,
+                verbose_name="Advertising",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='expected_expenses',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True, verbose_name='Expected Expenses'),
+            model_name="propertyexpense",
+            name="expected_expenses",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=7,
+                null=True,
+                verbose_name="Expected Expenses",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='insurance',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True, verbose_name='Insurance'),
+            model_name="propertyexpense",
+            name="insurance",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=7,
+                null=True,
+                verbose_name="Insurance",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='municipality_taxes',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True, verbose_name='Municipality Taxes'),
+            model_name="propertyexpense",
+            name="municipality_taxes",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=7,
+                null=True,
+                verbose_name="Municipality Taxes",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='notary_taxes',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True, verbose_name='Notary Taxes'),
+            model_name="propertyexpense",
+            name="notary_taxes",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=7,
+                null=True,
+                verbose_name="Notary Taxes",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='profit_tax',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True, verbose_name='Profit Tax'),
+            model_name="propertyexpense",
+            name="profit_tax",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=7,
+                null=True,
+                verbose_name="Profit Tax",
+            ),
         ),
         migrations.AlterField(
-            model_name='propertyexpense',
-            name='utilities',
-            field=djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True, verbose_name='Utilities'),
+            model_name="propertyexpense",
+            name="utilities",
+            field=djmoney.models.fields.MoneyField(
+                blank=True,
+                decimal_places=2,
+                default=Decimal("0"),
+                max_digits=7,
+                null=True,
+                verbose_name="Utilities",
+            ),
         ),
     ]

@@ -25,8 +25,7 @@ class OfferModelTest(TestCase):
             bought_date="2023-01-01",
             property_condition="New",
             owner=User.objects.create_user(
-                username='testuser',
-                password='testpassword'
+                username="testuser", password="testpassword"
             ),
         )
 
@@ -74,5 +73,3 @@ class OfferModelTest(TestCase):
         offers = Offer.objects.all()
         self.assertEqual(offers.first(), second_offer)
         self.assertEqual(offers.last(), self.offer)
-
-

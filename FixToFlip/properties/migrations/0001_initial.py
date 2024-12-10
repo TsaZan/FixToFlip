@@ -14,98 +14,418 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('credits', '0001_initial'),
+        ("credits", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Property',
+            name="Property",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('property_name', models.CharField(blank=True, max_length=100, null=True)),
-                ('property_description', models.TextField(blank=True, null=True)),
-                ('country', models.CharField(blank=True, max_length=100, null=True)),
-                ('city', models.CharField(blank=True, max_length=100, null=True)),
-                ('address', models.CharField(blank=True, max_length=100, null=True)),
-                ('property_type', models.CharField(blank=True, choices=[('TH', 'Townhouse'), ('AP', 'Apartment'), ('C', 'Condo'), ('V', 'Villa'), ('CN', 'Caravan')], max_length=100, null=True)),
-                ('bedrooms', models.PositiveIntegerField(blank=True, null=True)),
-                ('bathrooms', models.PositiveIntegerField(blank=True, null=True)),
-                ('floor', models.PositiveIntegerField(blank=True, null=True)),
-                ('year_of_built', models.SmallIntegerField()),
-                ('property_size', models.PositiveIntegerField(blank=True, null=True)),
-                ('bought_date', models.DateField(blank=True, null=True, validators=[django.core.validators.MaxValueValidator(datetime.date(2024, 11, 6))])),
-                ('notes', models.TextField(blank=True, null=True)),
-                ('property_condition', models.CharField(blank=True, choices=[('Ready to sell', 'Ready to sell'), ('Sold', 'Sold'), ('For sale', 'For sale'), ('Repaired', 'Repaired'), ('Under repair', 'Under repair')], max_length=100, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='owned_properties', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "property_name",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                ("property_description", models.TextField(blank=True, null=True)),
+                ("country", models.CharField(blank=True, max_length=100, null=True)),
+                ("city", models.CharField(blank=True, max_length=100, null=True)),
+                ("address", models.CharField(blank=True, max_length=100, null=True)),
+                (
+                    "property_type",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("TH", "Townhouse"),
+                            ("AP", "Apartment"),
+                            ("C", "Condo"),
+                            ("V", "Villa"),
+                            ("CN", "Caravan"),
+                        ],
+                        max_length=100,
+                        null=True,
+                    ),
+                ),
+                ("bedrooms", models.PositiveIntegerField(blank=True, null=True)),
+                ("bathrooms", models.PositiveIntegerField(blank=True, null=True)),
+                ("floor", models.PositiveIntegerField(blank=True, null=True)),
+                ("year_of_built", models.SmallIntegerField()),
+                ("property_size", models.PositiveIntegerField(blank=True, null=True)),
+                (
+                    "bought_date",
+                    models.DateField(
+                        blank=True,
+                        null=True,
+                        validators=[
+                            django.core.validators.MaxValueValidator(
+                                datetime.date(2024, 11, 6)
+                            )
+                        ],
+                    ),
+                ),
+                ("notes", models.TextField(blank=True, null=True)),
+                (
+                    "property_condition",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("Ready to sell", "Ready to sell"),
+                            ("Sold", "Sold"),
+                            ("For sale", "For sale"),
+                            ("Repaired", "Repaired"),
+                            ("Under repair", "Under repair"),
+                        ],
+                        max_length=100,
+                        null=True,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "owner",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="owned_properties",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Property',
-                'verbose_name_plural': 'Properties',
-                'ordering': ['-created_at'],
+                "verbose_name": "Property",
+                "verbose_name_plural": "Properties",
+                "ordering": ["-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='PropertyExpense',
+            name="PropertyExpense",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('utilities_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3, null=True)),
-                ('utilities', djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True)),
-                ('notary_taxes_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3, null=True)),
-                ('notary_taxes', djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True)),
-                ('profit_tax_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3, null=True)),
-                ('profit_tax', djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True)),
-                ('municipality_taxes_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3, null=True)),
-                ('municipality_taxes', djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True)),
-                ('advertising_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3, null=True)),
-                ('advertising', djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True)),
-                ('administrative_fees_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3, null=True)),
-                ('administrative_fees', djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True)),
-                ('insurance_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3, null=True)),
-                ('insurance', djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True)),
-                ('expected_expenses_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3, null=True)),
-                ('expected_expenses', djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=7, null=True)),
-                ('expense_details', models.TextField(blank=True, null=True)),
-                ('expense_date', models.DateField(blank=True, null=True)),
-                ('property', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='property_expenses', to='properties.property')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "utilities_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                        null=True,
+                    ),
+                ),
+                (
+                    "utilities",
+                    djmoney.models.fields.MoneyField(
+                        blank=True,
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=7,
+                        null=True,
+                    ),
+                ),
+                (
+                    "notary_taxes_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                        null=True,
+                    ),
+                ),
+                (
+                    "notary_taxes",
+                    djmoney.models.fields.MoneyField(
+                        blank=True,
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=7,
+                        null=True,
+                    ),
+                ),
+                (
+                    "profit_tax_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                        null=True,
+                    ),
+                ),
+                (
+                    "profit_tax",
+                    djmoney.models.fields.MoneyField(
+                        blank=True,
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=7,
+                        null=True,
+                    ),
+                ),
+                (
+                    "municipality_taxes_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                        null=True,
+                    ),
+                ),
+                (
+                    "municipality_taxes",
+                    djmoney.models.fields.MoneyField(
+                        blank=True,
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=7,
+                        null=True,
+                    ),
+                ),
+                (
+                    "advertising_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                        null=True,
+                    ),
+                ),
+                (
+                    "advertising",
+                    djmoney.models.fields.MoneyField(
+                        blank=True,
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=7,
+                        null=True,
+                    ),
+                ),
+                (
+                    "administrative_fees_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                        null=True,
+                    ),
+                ),
+                (
+                    "administrative_fees",
+                    djmoney.models.fields.MoneyField(
+                        blank=True,
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=7,
+                        null=True,
+                    ),
+                ),
+                (
+                    "insurance_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                        null=True,
+                    ),
+                ),
+                (
+                    "insurance",
+                    djmoney.models.fields.MoneyField(
+                        blank=True,
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=7,
+                        null=True,
+                    ),
+                ),
+                (
+                    "expected_expenses_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                        null=True,
+                    ),
+                ),
+                (
+                    "expected_expenses",
+                    djmoney.models.fields.MoneyField(
+                        blank=True,
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=7,
+                        null=True,
+                    ),
+                ),
+                ("expense_details", models.TextField(blank=True, null=True)),
+                ("expense_date", models.DateField(blank=True, null=True)),
+                (
+                    "property",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="property_expenses",
+                        to="properties.property",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Expense',
-                'verbose_name_plural': 'Expenses',
+                "verbose_name": "Expense",
+                "verbose_name_plural": "Expenses",
             },
         ),
         migrations.CreateModel(
-            name='PropertyFinancialInformation',
+            name="PropertyFinancialInformation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('initial_price_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3)),
-                ('initial_price', djmoney.models.fields.MoneyField(decimal_places=2, default=Decimal('0'), max_digits=10)),
-                ('repair_cost_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3, null=True)),
-                ('repair_cost', djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True)),
-                ('is_credited', models.BooleanField()),
-                ('credited_amount_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3, null=True)),
-                ('credited_amount', djmoney.models.fields.MoneyField(blank=True, decimal_places=2, default=Decimal('0'), max_digits=10, null=True)),
-                ('credit', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='credit_financial_information', to='credits.credit')),
-                ('property', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='property_financial_information', to='properties.property')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "initial_price_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                    ),
+                ),
+                (
+                    "initial_price",
+                    djmoney.models.fields.MoneyField(
+                        decimal_places=2, default=Decimal("0"), max_digits=10
+                    ),
+                ),
+                (
+                    "repair_cost_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                        null=True,
+                    ),
+                ),
+                (
+                    "repair_cost",
+                    djmoney.models.fields.MoneyField(
+                        blank=True,
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=10,
+                        null=True,
+                    ),
+                ),
+                ("is_credited", models.BooleanField()),
+                (
+                    "credited_amount_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                        null=True,
+                    ),
+                ),
+                (
+                    "credited_amount",
+                    djmoney.models.fields.MoneyField(
+                        blank=True,
+                        decimal_places=2,
+                        default=Decimal("0"),
+                        max_digits=10,
+                        null=True,
+                    ),
+                ),
+                (
+                    "credit",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="credit_financial_information",
+                        to="credits.credit",
+                    ),
+                ),
+                (
+                    "property",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="property_financial_information",
+                        to="properties.property",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Property Financial Information',
-                'verbose_name_plural': 'Property Financial Information',
+                "verbose_name": "Property Financial Information",
+                "verbose_name_plural": "Property Financial Information",
             },
         ),
         migrations.CreateModel(
-            name='PropertyForSale',
+            name="PropertyForSale",
             fields=[
-                ('property_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='properties.property')),
-                ('listed_price_currency', djmoney.models.fields.CurrencyField(choices=[('EUR', 'Euro')], default='EUR', editable=False, max_length=3)),
-                ('listed_price', djmoney.models.fields.MoneyField(decimal_places=2, max_digits=10)),
-                ('is_furnished', models.BooleanField(default=False)),
-                ('list_description', models.TextField()),
-                ('listed_date', models.DateField(auto_now_add=True)),
-                ('listed_property', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='listed_for_sales', to='properties.property')),
+                (
+                    "property_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="properties.property",
+                    ),
+                ),
+                (
+                    "listed_price_currency",
+                    djmoney.models.fields.CurrencyField(
+                        choices=[("EUR", "Euro")],
+                        default="EUR",
+                        editable=False,
+                        max_length=3,
+                    ),
+                ),
+                (
+                    "listed_price",
+                    djmoney.models.fields.MoneyField(decimal_places=2, max_digits=10),
+                ),
+                ("is_furnished", models.BooleanField(default=False)),
+                ("list_description", models.TextField()),
+                ("listed_date", models.DateField(auto_now_add=True)),
+                (
+                    "listed_property",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="listed_for_sales",
+                        to="properties.property",
+                    ),
+                ),
             ],
-            bases=('properties.property',),
+            bases=("properties.property",),
         ),
     ]
