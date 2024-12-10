@@ -8,7 +8,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 from FixToFlip.accounts.managers import BaseAccountManager
 from FixToFlip.choices import ProfileTypes
-from FixToFlip.validators import OnlyLettersValidator
+from FixToFlip.validators import OnlyLettersValidator, image_validator
 
 
 class BaseAccount(AbstractUser):
@@ -102,6 +102,9 @@ class Profile(models.Model):
 
     profile_picture = CloudinaryField(
         'image',
+        resource_type='image',
+        validators=[image_validator,
+                    ],
         blank=True,
         null=True,
     )

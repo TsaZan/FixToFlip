@@ -62,6 +62,8 @@ Dashboard Body
             <h4 class="dash-title-three mb-4">Offer Photos</h4>
             <div class="row align-items-center">
                 <div class="col-md-6">
+                    <div class="error-message">
+                        {{ offer_form.featured_image.errors }}</div>
                     {{ offer_form.featured_image }}<br/><br/>
 
                     {% if offer.featured_image %}

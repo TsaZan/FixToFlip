@@ -14,6 +14,8 @@ Dashboard Body
     <div class="bg-white card-box border-20 p-4">
         <h2 class="mb-4">User Profile</h2>
         <div class="user-avatar-setting d-flex flex-column align-items-start mb-4">
+            <div class="error-message">
+                {{ profile_form.profile_picture.errors }}</div>
             {% if user.profile.profile_picture %}
                 <img src="{% static 'images/lazy.svg' %}" data-src="{{ user.profile.profile_picture.url }}" class="lazy-img user-img mb-3" alt="Profile Picture" />
             {% elif user.socialaccount_set.all.0.get_avatar_url %}

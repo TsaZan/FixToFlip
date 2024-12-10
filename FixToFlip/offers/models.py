@@ -9,7 +9,7 @@ from djmoney.money import Money
 
 from FixToFlip.choices import OfferStatusChoices, PublishChoices
 from FixToFlip.properties.models import Property
-from FixToFlip.validators import bad_words_validator
+from FixToFlip.validators import bad_words_validator, image_validator
 
 
 class Offer(models.Model):
@@ -32,6 +32,8 @@ class Offer(models.Model):
     featured_image = CloudinaryField(
         'image',
         resource_type='image',
+        validators=[image_validator,
+                    ],
         blank=True,
         null=True,
     )
