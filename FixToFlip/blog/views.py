@@ -23,7 +23,7 @@ class BlogMainPageView(TemplateView):
 
         if 'q' in self.request.GET:
             q = self.request.GET.get('q', '')
-            posts = BlogPost.objects.filter(title__icontains=q)
+            posts = BlogPost.objects.filter(content__icontains=q)
 
         elif 'category' in self.request.GET:
             category = self.request.GET.get('category', '')

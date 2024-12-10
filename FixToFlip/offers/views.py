@@ -104,6 +104,7 @@ class EditOfferView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
         if offer_form.is_valid() and property_form.is_valid():
             offer_form.save()
+            property_form.instance.property_condition = 'For Sale'
             property_form.save()
             action = request.POST.get('action', None)
             if action == 'photo-submit':

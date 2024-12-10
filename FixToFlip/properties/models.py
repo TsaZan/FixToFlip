@@ -457,6 +457,9 @@ class PropertyExpense(models.Model):
     def actual_expenses(self):
         return self.expense_total() + self.total_repair_expenses()
 
+    def remaining_expected_expenses(self):
+        return self.expected_expenses - self.expense_total()
+
     def expenses_per_sqm(self):
         if self.property.property_size == 0 or self.property.property_size is None:
             return 0
