@@ -23,7 +23,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 AUTH_USER_MODEL = 'accounts.BaseAccount'
 DEBUG = bool(int(os.getenv('DEBUG', 0)))
 
-CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = bool(int(os.getenv('CSRF_COOKIE', 1)))
 
 RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
@@ -105,11 +105,9 @@ MIDDLEWARE = [
     # Allauth middleware:
     "allauth.account.middleware.AccountMiddleware",
 ]
-#ANOTHER EXCHANGE RATES - Fixer.io
-# EXCHANGE_BACKEND = 'djmoney.contrib.exchange.backends.FixerBackend'
-#FIXER_ACCESS_KEY = os.getenv('FIXER_API_KEY')
 
 SERIALIZATION_MODULES = {"json": "djmoney.serializers"}
+
 OPEN_EXCHANGE_RATES_APP_ID = os.getenv('EXCHANGE_RATE_API_KEY')
 DJANGO_MONEY_RATES = {
     'DEFAULT_BACKEND': 'djmoney.contrib.exchange.backends.OpenExchangeRatesBackend',
@@ -185,6 +183,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
 SITE_ID = 1
 
 WSGI_APPLICATION = 'FixToFlip.wsgi.application'
@@ -235,10 +234,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 mimetypes.add_type("image/svg+xml", ".svg", True)
 mimetypes.add_type("image/svg+xml", ".svgz", True)
 
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_HOST_USER = os.getenv('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
-EMAIL_PORT = 587
+EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_USE_TLS = True
 ADMIN_EMAIL = os.getenv('ADMIN_EMAIL')
 
@@ -246,6 +245,7 @@ CELERY_BROKER_URL = os.getenv('BROKER_URL')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+
 CELERY_IMPORTS = (
     'FixToFlip.common.task',
 )

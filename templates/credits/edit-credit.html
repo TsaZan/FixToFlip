@@ -8,22 +8,21 @@ Dashboard Body
 ============================================== 
 -->
 
-    <h2 class="main-title d-block d-lg-none">Add New Property</h2>
+    <h2 class="main-title d-block d-lg-none">Edit Credit Details</h2>
     <form method="POST">
         <div class="bg-white card-box border-20">
-            <h4 class="dash-title-three">Add Credit</h4>
-            {{ form.errors }}
+            <h4 class="dash-title-three">Edit Credit Details</h4>
             {% csrf_token %}
             <div class="dash-input-wrapper mb-30">
                 <label for="">Bank Name*</label>
                 {{ form.bank_name }}
-                {{ form.bank_name.errors }}
+                <div class="error-message">{{ form.bank_name.errors }}</div>
             </div>
             <!-- /.dash-input-wrapper -->
             <div class="dash-input-wrapper mb-30">
                 <label for="">Credit Notes</label>
                 {{ form.credit_description }}
-                {{ form.credit_description.errors }}
+                <div class="error-message">{{ form.credit_description.errors }}</div>
 
             </div>
             <!-- /.dash-input-wrapper -->
@@ -32,7 +31,7 @@ Dashboard Body
                     <div class="dash-input-wrapper mb-30">
                         <label for="">Credit Amount</label>
                         {{ form.credit_amount }}
-                        {{ form.credit_amount.errors }}
+                        <div class="error-message">{{ form.credit_amount.errors }}</div>
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
@@ -40,7 +39,7 @@ Dashboard Body
                     <div class="dash-input-wrapper mb-60">
                         <label for="">Interest Rate</label>
                         {{ form.credit_interest }}
-                        {{ form.credit_interest.errors }}
+                        <div class="error-message">{{ form.credit_interest.errors }}</div>
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
@@ -48,7 +47,7 @@ Dashboard Body
                     <div class="dash-input-wrapper mb-30">
                         <label for="">Monthly Payment</label>
                         {{ form.monthly_payment }}
-                        {{ form.monthly_payment.errors }}
+                        <div class="error-message">{{ form.monthly_payment.errors }}</div>
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
@@ -56,7 +55,7 @@ Dashboard Body
                     <div class="dash-input-wrapper mb-60">
                         <label for="">Credit Type</label>
                         {{ form.credit_type }}
-                        {{ form.type.errors }}
+                        <div class="error-message">{{ form.type.errors }}</div>
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
@@ -64,7 +63,7 @@ Dashboard Body
                     <div class="dash-input-wrapper mb-30">
                         <label for="">Credit Start Date</label>
                         {{ form.credit_start_date }}
-                        {{ form.credit_start_date.errors }}
+                        <div class="error-message">{{ form.credit_start_date.errors }}</div>
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
@@ -72,7 +71,7 @@ Dashboard Body
                     <div class="dash-input-wrapper mb-30">
                         <label for="">Credit End Date</label>
                         {{ form.credit_term }}
-                        {{ form.credit_term.errors }}
+                        <div class="error-message">{{ form.credit_term.errors }}</div>
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
