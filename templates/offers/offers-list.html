@@ -37,7 +37,6 @@ Dashboard Body
                 <tr>
                     <th class="text-start" scope="col">Featured Image & Offer Title</th>
                     <th class="text-start" scope="col">Listed Property</th>
-                    <th class="text-start" scope="col">Listed Date</th>
                     <th class="text-start" scope="col">Listed Price</th>
                     <th class="text-start" scope="col">Description</th>
                     <th class="text-start" scope="col">Status</th>
@@ -53,19 +52,18 @@ Dashboard Body
                                 <img src="{{ offer.featured_image.url }}" alt="" class="p-img">
                                 <div class="ps-lg-4 md-pt-10">
                                     <a href="{% url 'edit_offer' pk=offer.pk %}"
-                                       class="property-name tran3s color-dark fw-500 fs-20 stretched-link">{{ offer.title }}</a>
+                                       class="property-name tran3s color-dark fw-500 fs-20 stretched-link">{{ offer.title|linebreaks }}</a>
                                 </div>
 
                             </div>
                         </td>
                         <td>
-                            <a href="{% url 'property_details' pk=offer.listed_property.pk %}">{{ offer.listed_property.property_name }}</a>
+                            <a href="{% url 'property_details' pk=offer.listed_property.pk %}">{{ offer.listed_property.property_name|linebreaks   }}</a>
                         </td>
-                        <td>{{ offer.listed_property.bought_date | date:"d-m-Y" }}</td>
                         <td><strong class="price">{{ offer.listed_price }}</strong></td>
                         <td>
                             <div style="white-space: normal; overflow-wrap: break-word;">
-                                {{ offer.description }}
+                                {{ offer.description|linebreaks }}
                             </div>
                         </td>
                         {% if offer.is_published == 'True' %}
