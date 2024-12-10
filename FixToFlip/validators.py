@@ -1,3 +1,6 @@
+import mimetypes
+
+from cloudinary import CloudinaryResource
 from django.core.exceptions import ValidationError
 
 from django.utils.deconstruct import deconstructible
@@ -27,11 +30,16 @@ def bad_words_validator(text):
 
 
 def image_validator(value):
+    if isinstance(value, CloudinaryResource):
+        return value
+
     if not value:
         return value
 
     valid_mime_types = ["image/jpeg", "image/png", "image/gif"]
-    if value.content_type not in valid_mime_types:
+    content_type = mimetypes.guess_type(value.name)[0]
+
+    if content_type not in valid_mime_types:
         raise ValidationError(
             "Unsupported file type. Please upload a JPEG, PNG or GIF image."
         )

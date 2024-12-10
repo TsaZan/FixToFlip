@@ -9,6 +9,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from FixToFlip import choices
 from FixToFlip.offers.filters import OffersFilter
 from FixToFlip.offers.forms import (
     OfferBaseForm,
@@ -127,7 +128,9 @@ class EditOfferView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
         if offer_form.is_valid() and property_form.is_valid():
             offer_form.save()
-            property_form.instance.property_condition = "For Sale"
+            property_form.instance.property_condition = (
+                choices.PropertyConditionChoices.FOR_SALE
+            )
             property_form.save()
             action = request.POST.get("action", None)
             if action == "photo-submit":
