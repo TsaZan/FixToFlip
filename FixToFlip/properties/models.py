@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.core.validators import MinValueValidator
 from django.db import models
 from djmoney.models.fields import MoneyField
 from djmoney.models.validators import MinMoneyValidator
@@ -73,6 +74,10 @@ class Property(models.Model):
     year_of_built = models.SmallIntegerField(
         null=True,
         blank=True,
+        validators=[
+            MinValueValidator(1800,
+                              message='Year of built must be greater than 1800.'),
+        ],
     )
 
     property_size = models.PositiveIntegerField(
@@ -179,7 +184,6 @@ class PropertyFinancialInformation(models.Model):
 
 
 class PropertyExpense(models.Model):
-
     MAX_DIGITS = 10
     MAX_DECIMAL_PLACES = 2
 
@@ -192,6 +196,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Utilities',
         null=True,
         blank=True,
@@ -201,6 +208,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Notary Taxes',
         null=True,
         blank=True,
@@ -210,6 +220,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Profit Tax',
         null=True,
         blank=True,
@@ -219,6 +232,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Municipality Taxes',
 
         null=True,
@@ -229,6 +245,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Advertising',
         null=True,
         blank=True,
@@ -238,6 +257,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Administrative Fees',
         null=True,
         blank=True,
@@ -247,6 +269,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Insurance',
         null=True,
         blank=True,
@@ -256,6 +281,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Credit Interest',
         null=True,
         blank=True,
@@ -265,6 +293,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Other Expenses',
         null=True,
         blank=True,
@@ -284,6 +315,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Bathroom Repair Expenses',
         null=True,
         blank=True,
@@ -293,6 +327,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Kitchen Repair Expenses',
         null=True,
         blank=True,
@@ -302,6 +339,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Floors Repair Expenses',
         null=True,
         blank=True,
@@ -311,6 +351,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Walls Repair Expenses',
         null=True,
         blank=True,
@@ -320,6 +363,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Windows and Doors Repair Expenses',
         null=True,
         blank=True,
@@ -329,6 +375,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Plumbing Repair Expenses',
         null=True,
         blank=True,
@@ -338,6 +387,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Electrical Repair Expenses',
         null=True,
         blank=True,
@@ -347,6 +399,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Insurance',
         null=True,
         blank=True,
@@ -356,6 +411,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Facade Repair Expenses',
         null=True,
         blank=True,
@@ -365,6 +423,9 @@ class PropertyExpense(models.Model):
         max_digits=MAX_DIGITS,
         decimal_places=MAX_DECIMAL_PLACES,
         default=Money(0, 'EUR'),
+        validators=[MinMoneyValidator(
+            Decimal(0), message='Expense amount cannot be negative.'
+        )],
         verbose_name='Other Repair Expenses',
         null=True,
         blank=True,
@@ -396,33 +457,12 @@ class PropertyExpense(models.Model):
     def actual_expenses(self):
         return self.expense_total() + self.total_repair_expenses()
 
-    def remaining_expected_expenses(self):
-        return self.expected_expenses - self.expense_total()
-
     def expenses_per_sqm(self):
         if self.property.property_size == 0 or self.property.property_size is None:
             return 0
         elif self.actual_expenses() == 0 or self.actual_expenses() is None:
             return 0
         return self.actual_expenses() / self.property.property_size
-
-    def biggest_expense(self):
-        expenses = {
-            'utilities': self.utilities,
-            'notary_taxes': self.notary_taxes,
-            'profit_tax': self.profit_tax,
-            'municipality_taxes': self.municipality_taxes,
-            'advertising': self.advertising,
-            'administrative_fees': self.administrative_fees,
-            'insurance': self.insurance,
-            'other_expenses': self.other_repair_expenses,
-
-        }
-        biggest_expense_name = max(expenses, key=expenses.get)
-
-        verbose_name = self._meta.get_field(biggest_expense_name).verbose_name
-
-        return verbose_name, expenses[biggest_expense_name]
 
     def __str__(self):
         return (f'Property: {str(self.property)} - Added Expenses: {self.expense_total()} '

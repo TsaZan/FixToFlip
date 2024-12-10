@@ -9,11 +9,10 @@ Dashboard Body
 ============================================== 
 -->
 
-    <h2 class="main-title d-block d-lg-none">Add New Property</h2>
+    <h2 class="main-title d-block d-lg-none">Add New Credit</h2>
     <form method="POST">
         <div class="bg-white card-box border-20">
             <h4 class="dash-title-three">Credit Details</h4>
-            {{ form.errors }}
             {% csrf_token %}
             <div class="dash-input-wrapper mb-30">
                 <label for="">Bank Name*</label>
@@ -53,7 +52,7 @@ Dashboard Body
                     </div>
                     <!-- /.dash-input-wrapper -->
                 </div>
-                                <div class="col-md-3">
+                <div class="col-md-3">
                     <div class="dash-input-wrapper mb-60">
                         <label for="">Credit Type</label>
                         {{ form.credit_type }}

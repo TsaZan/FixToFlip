@@ -63,6 +63,12 @@ class CreditAddView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.credit_owner = self.request.user
+        if form.cleaned_data['credit_start_date'] > form.cleaned_data['credit_term']:
+            form.add_error('credit_term', 'Credit end date must be after the start date.')
+            context = self.get_context_data()
+            context['form'] = form
+            return self.render_to_response(context)
+
         return super().form_valid(form)
 
 
@@ -136,6 +142,11 @@ class EditCreditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.credit_owner = self.request.user
+        if form.cleaned_data['credit_start_date'] > form.cleaned_data['credit_term']:
+            form.add_error('credit_term', 'Credit end date must be after the start date.')
+            context = self.get_context_data()
+            context['form'] = form
+            return self.render_to_response(context)
         return super().form_valid(form)
 
 
