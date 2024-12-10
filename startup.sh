@@ -1,6 +1,6 @@
 #!/bin/bash
 
-gunicorn FixToFlip.wsgi --bind=0.0.0.0:8000 &
+gunicorn FixToFlip.wsgi --bind=0.0.0.0:$PORT
 
 celery -A FixToFlip worker --loglevel=info &
 
