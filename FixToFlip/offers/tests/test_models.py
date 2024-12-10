@@ -70,6 +70,6 @@ class OfferModelTest(TestCase):
             title="Another Test Offer",
             description="Second description.",
         )
-        offers = Offer.objects.all()
+        offers = Offer.objects.all().order_by("-created_at")
         self.assertEqual(offers.first(), second_offer)
         self.assertEqual(offers.last(), self.offer)
