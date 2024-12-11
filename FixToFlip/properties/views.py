@@ -500,9 +500,13 @@ class PropertyExpensesApiView(generics.ListAPIView):
 
 
 class PropertyExpenseNoteCreateAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, pk, *args, **kwargs):
         try:
-            related_expense = PropertyExpense.objects.get(id=pk)
+            related_expense = PropertyExpense.objects.get(
+                id=pk, property__owner=self.request.user
+            )
         except PropertyExpense.DoesNotExist:
             return Response(
                 {"error": "PropertyExpense not found"}, status=status.HTTP_404_NOT_FOUND
