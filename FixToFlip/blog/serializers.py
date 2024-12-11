@@ -28,7 +28,6 @@ class BlogPostSerializer(serializers.ModelSerializer):
         image = instance.image.url if instance.image else None
         data["comment_count"] = instance.comments.count()
         post_data = {
-            "id": data.get("id"),
             "title": data.get("title"),
             "slug": data.get("slug"),
             "image": image,
