@@ -39,7 +39,10 @@ class DashboardOffersView(LoginRequiredMixin, TemplateView):
 
         if "q" in self.request.GET:
             q = self.request.GET.get("q", "")
-            offers = Offer.objects.filter(listed_property__property_name__icontains=q)
+            offers = Offer.objects.filter(
+                listed_property__property_name__icontains=q,
+                listed_property__owner=self.request.user,
+            ).distinct()
 
         context["offers"] = offers
         context["filter"] = offers_filter
