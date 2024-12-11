@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from .tasks import contact_form_mail
+from FixToFlip.common.tasks import contact_form_mail
 from FixToFlip.common.forms import ContactUsForm
 
 

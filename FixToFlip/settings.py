@@ -240,7 +240,7 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 
-CELERY_IMPORTS = ("FixToFlip.common.task",)
+# CELERY_IMPORTS = ("FixToFlip.common.tasks",)
 
 CELERY_BEAT_SCHEDULE = {
     "delete-unverified-users-everyday": {
