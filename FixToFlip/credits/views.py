@@ -34,7 +34,9 @@ class DashboardCreditsView(LoginRequiredMixin, TemplateView):
 
         if "q" in self.request.GET:
             q = self.request.GET.get("q", "")
-            credits = Credit.objects.filter(bank_name__icontains=q)
+            credits = Credit.objects.filter(
+                bank_name__icontains=q, credit_owner=self.request.user
+            ).distinct()
 
         for credit in credits:
             credit.remainder = credit_reminder_calculation(credit.id)

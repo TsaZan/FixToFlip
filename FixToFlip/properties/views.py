@@ -59,7 +59,9 @@ class DashboardPropertiesView(LoginRequiredMixin, TemplateView):
 
         if "q" in self.request.GET:
             q = self.request.GET.get("q", "")
-            properties = Property.objects.filter(property_name__icontains=q)
+            properties = Property.objects.filter(
+                property_name__icontains=q, owner=self.request.user
+            ).distinct()
 
         for property in properties:
             property.current_expenses = sum_current_expenses(property.id)

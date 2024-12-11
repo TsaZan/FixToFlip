@@ -8,13 +8,19 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('offers', '0009_remove_offervideos_related_property_and_more'),
+        ("offers", "0009_remove_offervideos_related_property_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='offer',
-            name='featured_image',
-            field=cloudinary.models.CloudinaryField(blank=True, max_length=255, null=True, validators=[FixToFlip.validators.image_validator], verbose_name='image'),
+            model_name="offer",
+            name="featured_image",
+            field=cloudinary.models.CloudinaryField(
+                blank=True,
+                max_length=255,
+                null=True,
+                validators=[FixToFlip.validators.image_validator],
+                verbose_name="image",
+            ),
         ),
     ]
