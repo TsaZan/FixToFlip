@@ -21,9 +21,9 @@ class PropertiesFilter(django_filters.FilterSet):
         elif value == "1":
             return queryset.order_by("bought_date")
         elif value == "2":
-            return queryset.order_by("-property_financial_information")
+            return queryset.order_by("property_financial_information__credited_amount")
         elif value == "3":
-            return queryset.order_by("property_financial_information")
+            return queryset.order_by("-property_financial_information__credited_amount")
 
         return queryset
 

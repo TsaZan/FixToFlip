@@ -52,18 +52,18 @@ Dashboard Body
                                 <img src="{{ offer.featured_image.url }}" alt="" class="p-img mb-3 mb-lg-0">
                                 <div class="ps-lg-4 md-pt-10">
                                     <a href="{% url 'edit_offer' pk=offer.pk %}"
-                                       class="property-name tran3s color-dark fw-500 fs-20 stretched-link">{{ offer.title|wordwrap:"20" }}</a>
+                                       class="property-name tran3s color-dark fw-500 fs-20 stretched-link">{{ offer.title|truncatechars:30 }}</a>
                                 </div>
 
                             </div>
                         </td>
                         <td>
-                            <a href="{% url 'property_details' pk=offer.listed_property.pk %}">{{ offer.listed_property.property_name|wordwrap:"50" }}</a>
+                            <a href="{% url 'property_details' pk=offer.listed_property.pk %}">{{ offer.listed_property.property_name|wordwrap:20 }}</a>
                         </td>
                         <td><strong class="price">{{ offer.listed_price }}</strong></td>
                         <td>
                             <div style="white-space: normal; overflow-wrap: break-word;">
-                                {{ offer.description|linebreaks }}
+                                {{ offer.description|linebreaks|truncatechars:150 }}
                             </div>
                         </td>
                         {% if offer.is_published == 'True' %}
