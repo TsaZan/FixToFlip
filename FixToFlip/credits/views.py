@@ -185,3 +185,15 @@ class DeleteCreditView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         credit = self.get_object()
         return self.request.user == credit.credit_owner
+
+    def post(self, request, *args, **kwargs):
+        credit = self.get_object()
+
+        linked_info = PropertyFinancialInformation.objects.filter(credit=credit)
+        if linked_info.exists():
+            for info in linked_info:
+                info.credit = None
+                info.credited_amount = Money(0, "EUR")
+                info.save()
+
+        return super().post(request, *args, **kwargs)
