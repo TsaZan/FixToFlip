@@ -84,14 +84,14 @@ class BlogPostView(View):
         return render(request, self.template_name, context)
 
 
-class BlogPostsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+class DashboardBlogPostsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     model = BlogPost
     template_name = "blog/blogposts-list.html"
     filterset_class = BlogPostsFilter
     login_url = "index"
 
     def test_func(self):
-        return self.request.user.groups.filter(name__contains="moderator").exists()
+        return self.request.user.groups.filter(name__icontains="moderator").exists()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -121,7 +121,7 @@ class AddBlogPostView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     login_url = "index"
 
     def test_func(self):
-        return self.request.user.groups.filter(name__contains="moderator").exists()
+        return self.request.user.groups.filter(name__icontains="moderator").exists()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -138,7 +138,7 @@ class EditBlogPostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     permission_denied_message = "You do not have permission to edit this post"
 
     def test_func(self):
-        return self.request.user.groups.filter(name__contains="moderator").exists()
+        return self.request.user.groups.filter(name__icontains="moderator").exists()
 
     model = BlogPost
     form_class = AddBlogPostForm
@@ -179,7 +179,7 @@ class BlogCommentsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     login_url = "index"
 
     def test_func(self):
-        return self.request.user.groups.filter(name__contains="moderator").exists()
+        return self.request.user.groups.filter(name__icontains="moderator").exists()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -201,7 +201,7 @@ class BlogCommentsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         return context
 
 
-@user_passes_test(lambda user: user.groups.filter(name__contains="moderator").exists())
+@user_passes_test(lambda user: user.groups.filter(name__icontains="moderator").exists())
 def delete_comment(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.delete()

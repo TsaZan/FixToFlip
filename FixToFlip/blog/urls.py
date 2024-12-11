@@ -4,7 +4,7 @@ from FixToFlip.blog.views import (
     BlogMainPageView,
     BlogPostView,
     delete_comment,
-    BlogPostsView,
+    DashboardBlogPostsView,
     EditBlogPostView,
     AddBlogPostView,
     DeleteBlogPostView,
@@ -16,7 +16,7 @@ urlpatterns = [
         "moderate/",
         include(
             [
-                path("", BlogPostsView.as_view(), name="dashboard_blogposts"),
+                path("", DashboardBlogPostsView.as_view(), name="dashboard_blogposts"),
                 path(
                     "<str:slug>/edit/", EditBlogPostView.as_view(), name="edit_blogpost"
                 ),
