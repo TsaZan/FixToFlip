@@ -32,14 +32,7 @@
 
                 </div>
                 <div class="d-flex align-items-center mt-3 justify-content-xxl-between">
-{#                    <div class="d-none d-md-block me-3 order-3">#}
-{#                        <a href="{% url 'add_property' %}" class="btn-two"><span>Add Property</span> <i#}
-{#                                class="fa-thin fa-arrow-up-right"></i></a>#}
-{#                    </div>#}
-{#                    <div class="d-none d-md-block me-3 order-4">#}
-{#                        <a href="{% url 'add_credit' %}" class="btn-two"><span>Add Credit</span> <i#}
-{#                                class="fa-thin fa-arrow-up-right"></i></a>#}
-{#                    </div>#}
+
                     <div class="user-data position-relative order-5">
                         <button class="online position-relative rounded-circle" type="button"
                                 id="profile-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside"
@@ -69,6 +62,12 @@
                                        data-bs-target="#deleteModal"><img src="{% static 'images/lazy.svg' %}"
                                                                           data-src="{% static 'images/icon/icon_25.svg' %}" alt=""
                                                                           class="lazy-img"><span class="ms-2 ps-1">Delete Account</span></a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center" href="{% url 'account_logout' %}"><img
+                                            src="{% static 'images/lazy.svg' %}"
+                                            data-src="{% static 'images/icon/icon_32.svg' %}" alt=""
+                                            class="lazy-img"><span class="ms-2 ps-1">Logout</span></a>
                                 </li>
                             </ul>
                         </div>

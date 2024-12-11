@@ -118,7 +118,7 @@ class Comment(models.Model):
         null=False,
         blank=False,
         validators=[
-            MinLengthValidator(20, "Comment must be at least 20 characters long"),
+            MinLengthValidator(10, "Comment must be at least 10 characters long"),
             bad_words_validator,
         ],
     )

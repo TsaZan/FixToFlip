@@ -17,23 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 return response.json();
             })
             .then(data => {
-                console.log('API Response:', data);
+                // console.log('API Response:', data);
 
                 const expenseData = allCategories.map(category => {
                     if (data[category] === undefined) {
-                        console.warn(`Missing data for ${category}, assigning 0.`);
+                        // console.warn(`Missing data for ${category}, assigning 0.`);
                         return 0;
                     }
                     return data[category];
                 });
 
-                console.log('Mapped Expense Data:', expenseData);
+                // console.log('Mapped Expense Data:', expenseData);
 
                 if (window.propertyExpensesChart) {
                     window.propertyExpensesChart.destroy();
                 }
 
-                // Създаване на нова графика
                 const ctx = document.getElementById('property-expenses-chart').getContext('2d');
                 window.propertyExpensesChart = new Chart(ctx, {
                     type: 'bar',
@@ -74,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             })
             .catch(error => {
-                console.error('Error loading chart:', error);
+                // console.error('Error loading chart:', error);
             });
     }
 

@@ -44,6 +44,7 @@ class Credit(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(0, message="Interest must be greater than 0.")],
     )
+
     monthly_payment = MoneyField(
         max_digits=10,
         decimal_places=2,
@@ -54,6 +55,7 @@ class Credit(models.Model):
             )
         ],
     )
+
     credit_description = models.TextField(
         blank=True,
         null=True,
@@ -82,12 +84,14 @@ class Credit(models.Model):
             credit=self
         ).aggregate(total=Sum("credited_amount"))
         credited_amount = taken_credit["total"] or 0
+
         if isinstance(self.credit_amount, Money) and isinstance(
             credited_amount, (int, float, Decimal)
         ):
             return self.credit_amount - Money(
                 credited_amount, self.credit_amount.currency
             )
+
         return self.credit_amount
 
     def __str__(self):

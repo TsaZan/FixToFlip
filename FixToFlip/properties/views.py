@@ -233,6 +233,10 @@ class PropertyDetailsView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         context["head_title"] = "Property Details"
         return context
 
+    def test_func(self):
+        property = self.get_object()
+        return self.request.user == property.owner
+
     def post(self, request, *args, **kwargs):
         property = self.get_object()
         form = AddCreditToPropertyForm(request.POST, user=self.request.user)
@@ -283,10 +287,6 @@ class PropertyDetailsView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         context["credit_form"] = form
         return self.render_to_response(context)
 
-    def test_func(self):
-        property = self.get_object()
-        return self.request.user == property.owner
-
 
 class DashboardExpensesView(LoginRequiredMixin, TemplateView):
     model = PropertyExpense
@@ -320,11 +320,11 @@ class DashboardExpensesView(LoginRequiredMixin, TemplateView):
 
 @login_required(login_url="index")
 def add_expense(request, pk):
-    expenses = get_object_or_404(PropertyExpense, pk=pk)
+    expenses = get_object_or_404(PropertyExpense, pk=pk, property__owner=request.user)
     expenses_notes = PropertyExpenseNotes.objects.all().filter(
         relates_expenses=expenses
     )
-    property = Property.objects.get(id=expenses.property_id)
+    property = get_object_or_404(Property, id=expenses.property_id, owner=request.user)
 
     if request.method == "POST":
         notes_form = ExpenseNotesForm(request.POST)
@@ -366,6 +366,9 @@ def delete_expense(request, pk):
     note = get_object_or_404(PropertyExpenseNotes, pk=pk)
     related_expense = note.relates_expenses
     expense_type = note.expense_type.lower().replace(" ", "_")
+
+    if related_expense.property.owner != request.user:
+        raise Http404("You do not have permission to delete this expense.")
 
     try:
         field = ExpenseTypeChoices.get_choice(note.expense_type)

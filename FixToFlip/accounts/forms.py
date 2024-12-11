@@ -17,6 +17,7 @@ class ProfileEditForm(forms.ModelForm):
             "company_url",
             "company_name",
         ]
+
         widgets = {
             "company_url": forms.TextInput(attrs={"placeholder": "http://...."}),
             "company_name": forms.TextInput(attrs={"placeholder": "Company Name"}),

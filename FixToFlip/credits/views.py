@@ -46,6 +46,7 @@ class DashboardCreditsView(LoginRequiredMixin, TemplateView):
                     .first()
                     .payment_date
                 )
+
         context = super().get_context_data(**kwargs)
         context["credits"] = credits
         context["filter"] = credits_filter
@@ -82,7 +83,7 @@ class CreditAddView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return super().form_valid(form)
 
 
-class CreditDetailsView(LoginRequiredMixin, TemplateView):
+class CreditDetailsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     template_name = "credits/credit-details.html"
 
     def get_context_data(self, **kwargs):
@@ -119,6 +120,10 @@ class CreditDetailsView(LoginRequiredMixin, TemplateView):
         context["properties"] = properties
         return context
 
+    def test_func(self):
+        credit = Credit.objects.get(id=self.kwargs["pk"])
+        return self.request.user == credit.credit_owner
+
     def post(self, request, *args, **kwargs):
         credit = Credit.objects.get(id=self.kwargs["pk"])
         form = CreditPaymentForm(request.POST or None, credit=credit)
@@ -132,7 +137,11 @@ class CreditDetailsView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
 
-class CreditPaymentDeleteView(LoginRequiredMixin, View):
+class CreditPaymentDeleteView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def test_func(self):
+        payment = get_object_or_404(CreditPayment, pk=self.kwargs["pk"])
+        return payment.credit.credit_owner == self.request.user
+
     def post(self, request, *args, **kwargs):
         payment = get_object_or_404(CreditPayment, pk=self.kwargs["pk"])
         credit_id = payment.credit.id
