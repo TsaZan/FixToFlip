@@ -68,7 +68,7 @@ Dashboard Body
 
                         <td>
                             {% for expense in property.property_expenses.all %}
-                                <div class="price"> EUR {{ expense.actual_expenses | default:"0" }}</div>
+                                <div class="price">{{ expense.actual_expenses | default:"0" }}</div>
                             {% endfor %}
                         </td>
 
