@@ -63,21 +63,21 @@ THIRD_PARTY_APPS = [
 ]
 
 INSTALLED_APPS = (
-    [
-        "unfold",
-        "unfold.contrib.filters",
-        "django.contrib.admin",
-        "django.contrib.auth",
-        "django.contrib.sites",
-        "django.contrib.contenttypes",
-        "django.contrib.sessions",
-        "django.contrib.messages",
-        "django.contrib.staticfiles",
-        "django.contrib.sitemaps",
-    ]
-    + PROJECT_APPS
-    + THIRD_PARTY_APPS
-    + AUTHENTICATION_APPS
+        [
+            "unfold",
+            "unfold.contrib.filters",
+            "django.contrib.admin",
+            "django.contrib.auth",
+            "django.contrib.sites",
+            "django.contrib.contenttypes",
+            "django.contrib.sessions",
+            "django.contrib.messages",
+            "django.contrib.staticfiles",
+            "django.contrib.sitemaps",
+        ]
+        + PROJECT_APPS
+        + THIRD_PARTY_APPS
+        + AUTHENTICATION_APPS
 )
 
 REST_FRAMEWORK = {
