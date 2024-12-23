@@ -12,6 +12,8 @@ import cloudinary.uploader
 import cloudinary.api
 import mimetypes
 import json
+import sentry_sdk
+
 
 config = cloudinary.config(secure=True)
 
@@ -23,7 +25,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 AUTH_USER_MODEL = "accounts.BaseAccount"
 DEBUG = bool(int(os.getenv("DEBUG", 0)))
 
-CSRF_COOKIE_SECURE = bool(int(os.getenv("CSRF_COOKIE", 1)))
+CSRF_COOKIE_SECURE = True
 
 RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
 RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
@@ -63,21 +65,21 @@ THIRD_PARTY_APPS = [
 ]
 
 INSTALLED_APPS = (
-    [
-        "unfold",
-        "unfold.contrib.filters",
-        "django.contrib.admin",
-        "django.contrib.auth",
-        "django.contrib.sites",
-        "django.contrib.contenttypes",
-        "django.contrib.sessions",
-        "django.contrib.messages",
-        "django.contrib.staticfiles",
-        "django.contrib.sitemaps",
-    ]
-    + PROJECT_APPS
-    + THIRD_PARTY_APPS
-    + AUTHENTICATION_APPS
+        [
+            "unfold",
+            "unfold.contrib.filters",
+            "django.contrib.admin",
+            "django.contrib.auth",
+            "django.contrib.sites",
+            "django.contrib.contenttypes",
+            "django.contrib.sessions",
+            "django.contrib.messages",
+            "django.contrib.staticfiles",
+            "django.contrib.sitemaps",
+        ]
+        + PROJECT_APPS
+        + THIRD_PARTY_APPS
+        + AUTHENTICATION_APPS
 )
 
 REST_FRAMEWORK = {
@@ -249,3 +251,13 @@ CELERY_BEAT_SCHEDULE = {
         "args": (),
     }
 }
+
+sentry_sdk.init(
+    dsn=os.getenv("SENTRY_DSN"),
+
+    traces_sample_rate=1.0,
+    _experiments={
+
+        "continuous_profiling_auto_start": True,
+    },
+)
